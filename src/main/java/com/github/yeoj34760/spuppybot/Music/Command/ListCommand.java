@@ -16,9 +16,9 @@ public class ListCommand extends Command {
 
 	public ListCommand(MyGuild myGuild) {
 		this.myGuild = myGuild;
-		this.name = "����Ʈ";
+		this.name = "리스트";
 		this.aliases = new String[] { "list", "리스트", "모음집"};
-		this.help = "����Ʈ Ȯ���մϴ�.";
+		this.help = "재생 목록을 불러옵니다.";
 	}
 
 	@Override

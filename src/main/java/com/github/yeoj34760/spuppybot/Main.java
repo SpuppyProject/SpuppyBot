@@ -22,9 +22,10 @@ public class Main {
 		client.addCommands(new PlayCommand(waiter, myGuild));
 		client.addCommands(new StopCommand(myGuild));
 		client.addCommands(new SkipCommand(myGuild));
+		client.addCommands(new ListCommand(myGuild));
+		client.addCommands(new PauseCommand(myGuild));
 		client.addCommands(new JoinCommand());
 		client.addCommands(new LeaveCommand());
-		client.addCommands(new ListCommand(myGuild));
 		new JDABuilder("토큰")
 				.addEventListeners(waiter, client.build()).setAudioSendFactory(new NativeAudioSendFactory()).build();
 
