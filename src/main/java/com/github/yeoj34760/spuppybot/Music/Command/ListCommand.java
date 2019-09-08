@@ -24,6 +24,7 @@ public class ListCommand extends Command {
 	@Override
 	protected void execute(CommandEvent event) {
 		TrackScheduler scheduler = myGuild.getGuildAudioPlayer(event.getGuild()).scheduler;
+		
 		ListPrint listPrint;
 		if (!scheduler.getQueue().isEmpty() && scheduler.getPlayer().getPlayingTrack() != null) {
 			listPrint = new PlayingAndList();

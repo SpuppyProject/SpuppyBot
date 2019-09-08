@@ -26,7 +26,7 @@ public class Main {
 		client.addCommands(new PauseCommand(myGuild));
 		client.addCommands(new JoinCommand());
 		client.addCommands(new LeaveCommand());
-		new JDABuilder("토큰")
+		new JDABuilder("멘트")
 				.addEventListeners(waiter, client.build()).setAudioSendFactory(new NativeAudioSendFactory()).build();
 
 	}
