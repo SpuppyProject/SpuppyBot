@@ -3,14 +3,16 @@ package com.github.yeoj34760.spuppybot.Music.Command.Play;
 import com.github.yeoj34760.spuppybot.Music.GuildMusicManager;
 import com.github.yeoj34760.spuppybot.Music.MyGuild;
 import com.github.yeoj34760.spuppybot.Music.TrackScheduler;
+import com.github.yeoj34760.spuppybot.utility.SpuppybotUri;
+import com.github.yeoj34760.spuppybot.utility.Video;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -28,7 +30,9 @@ public abstract class MusicStart {
 
 	protected void start(CommandEvent event, String uri) {
 		VoiceChannel channel = event.getGuild()
-				.getVoiceChannelsByName(event.getMember().getVoiceState().getChannel().getName(), true).get(0);// 유저가 들어와 있는 음성방 정보
+				.getVoiceChannelsByName(event.getMember().getVoiceState().getChannel().getName(), true).get(0);// 유저가
+																												// 들어와
+																												// 있는 정보
 		GuildMusicManager musicManager = myGuild.getGuildAudioPlayer(channel.getGuild());
 		myGuild.playerManager.registerSourceManager(new YoutubeAudioSourceManager());
 		myGuild.playerManager.loadItemOrdered(musicManager, uri, new AudioLoadResultHandler() {
@@ -50,14 +54,28 @@ public abstract class MusicStart {
 			@Override
 			public void playlistLoaded(AudioPlaylist playlist) {
 				AudioTrack firstTrack = playlist.getSelectedTrack();
+				EmbedBuilder builder = new EmbedBuilder();
+
 				if (firstTrack == null) {
-					firstTrack = playlist.getTracks().get(0);
+					builder.setDescription(playlist.getName());
+					connectToFirstVoiceChannel(event.getGuild().getAudioManager(), event.getMember()); // 자동 음성방에 들어옴
+					for (int i = 0; i <= 5; i++) {
+						System.out.println(playlist.getTracks().get(i).getInfo().title);
+						musicManager.scheduler.queue(playlist.getTracks().get(i)); // 플레이리스트 추가합니다.
+					}
+				} else {
+					builder.setDescription(firstTrack.getInfo().title);
+					play(event.getGuild(), musicManager, firstTrack, event.getMember());
 				}
 
-				event.getChannel().sendMessage("음악을 재생합니다." + firstTrack.getInfo().title + " (first track of playlist "
-						+ playlist.getName() + ")").queue();
+				Video video = new Video();
+				builder.setAuthor("SpuppyBot", SpuppybotUri.Github, SpuppybotUri.Icon_128);
+				builder.setTitle("추가 됨!");
 
-				play(event.getGuild(), musicManager, firstTrack, event.getMember());
+				builder.setThumbnail(video.thumbnail(video.Id(playlist.getTracks().get(0).getInfo().uri)));
+				builder.setFooter(Long.toString(playlist.getTracks().get(0).getInfo().length));
+				event.getChannel().sendMessage(builder.build()).queue();
+
 			}
 
 			@Override
@@ -73,8 +91,8 @@ public abstract class MusicStart {
 	}
 
 	void play(Guild guild, GuildMusicManager musicManager, AudioTrack track, Member member) {
-		connectToFirstVoiceChannel(guild.getAudioManager(), member); //자동 음성방에 들어옴
-		musicManager.scheduler.queue(track); //플레이리스트 추가합니다.
+		connectToFirstVoiceChannel(guild.getAudioManager(), member); // 자동 음성방에 들어옴
+		musicManager.scheduler.queue(track); // 플레이리스트 추가합니다.
 
 	}
 
