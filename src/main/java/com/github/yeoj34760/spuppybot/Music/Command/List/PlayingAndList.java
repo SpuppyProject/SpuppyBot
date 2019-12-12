@@ -22,7 +22,7 @@ public class PlayingAndList implements ListPrint {
 			message += "**[" + i++ + "]**" + track.getInfo().title + '\n';
 		}
 		String thumbnail = video.thumbnail(video.Id(AudioInfo.uri));
-		event.reply(new SpuppybotComment("재생중 : " + AudioInfo.title, null, message, SpuppybotColor.blue, thumbnail)
-				.get().build());
+		event.reply(new SpuppybotComment("재생중 : " + AudioInfo.title, AudioInfo.uri, message, SpuppybotColor.blue, thumbnail,
+				"총 개수 : " + String.valueOf(scheduler.getQueue().size())).get().build());
 	}
 }

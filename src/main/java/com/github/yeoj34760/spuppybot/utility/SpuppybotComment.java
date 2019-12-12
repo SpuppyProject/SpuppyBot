@@ -7,12 +7,12 @@ import net.dv8tion.jda.api.EmbedBuilder;
 public class SpuppybotComment {
 	EmbedBuilder builder;
 
-	public SpuppybotComment(String Title, String TitleUri, String Contest, Color Color, String Uri, String Footer) {
+	public SpuppybotComment(String Title, String TitleUri, String Contest, Color Color, String Thumbnail, String Footer) {
 		builder = new EmbedBuilder();
 		builder.setAuthor("SpuppyBot", SpuppybotUri.Github, SpuppybotUri.Icon_128);
 		builder.setTitle(Title, TitleUri);
 		builder.setDescription(Contest);
-		builder.setThumbnail(Uri);
+		builder.setThumbnail(Thumbnail);
 		builder.setFooter(Footer);
 		builder.setColor(Color);
 	}
