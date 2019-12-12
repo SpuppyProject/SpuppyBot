@@ -1,6 +1,8 @@
 package com.github.yeoj34760.spuppybot.Music.Command;
 
 import com.github.yeoj34760.spuppybot.Music.MyGuild;
+import com.github.yeoj34760.spuppybot.utility.SpuppybotColor;
+import com.github.yeoj34760.spuppybot.utility.SpuppybotComment;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 
@@ -19,6 +21,6 @@ public class SkipCommand extends Command {
 	@Override
 	protected void execute(CommandEvent event) {
 		myGuild.getGuildAudioPlayer(event.getGuild()).scheduler.nextTrack();
-		event.reply(new EmbedBuilder().setAuthor("SpuppyBot", "https://github.com/yeoj34760", "https://yeoj34760.github.io/Spuppybot/Spuppybotlogo_128.png").setTitle("스킵합니다.").build());
+		event.reply(new SpuppybotComment("스킵합니다.", SpuppybotColor.blue).get().build());
 	}
 }

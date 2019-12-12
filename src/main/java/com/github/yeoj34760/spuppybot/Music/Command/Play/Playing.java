@@ -1,5 +1,6 @@
 package com.github.yeoj34760.spuppybot.Music.Command.Play;
 
+import com.github.yeoj34760.spuppybot.utility.SpuppybotColor;
 import com.github.yeoj34760.spuppybot.utility.SpuppybotUri;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
@@ -14,6 +15,7 @@ public class Playing implements State { // 음악이 재생중일경우 (재생�
 		
 		builder.setThumbnail(video.thumbnail(video.Id(track.getInfo().uri)));
 		builder.setFooter(Long.toString(track.getInfo().length));
+		builder.setColor(SpuppybotColor.green);
 		return builder;
 	}
 }

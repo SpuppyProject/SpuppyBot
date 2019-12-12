@@ -9,7 +9,7 @@ import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
 import net.dv8tion.jda.api.JDABuilder;
 
 public class Main {
-
+	final static String Token = "Token";
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		final MyGuild myGuild = new MyGuild();
@@ -24,11 +24,11 @@ public class Main {
 		client.addCommands(new SkipCommand(myGuild));
 		client.addCommands(new ListCommand(myGuild));
 		client.addCommands(new PauseCommand(myGuild));
+		client.addCommands(new RemoveCommand(myGuild));
 		client.addCommands(new JoinCommand());
 		client.addCommands(new LeaveCommand());
-		new JDABuilder("토큰")
+		new JDABuilder(Token)
 				.addEventListeners(waiter, client.build()).setAudioSendFactory(new NativeAudioSendFactory()).build();
-
 	}
 
 }

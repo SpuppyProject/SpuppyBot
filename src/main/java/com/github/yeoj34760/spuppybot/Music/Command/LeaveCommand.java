@@ -1,5 +1,7 @@
 package com.github.yeoj34760.spuppybot.Music.Command;
 
+import com.github.yeoj34760.spuppybot.utility.SpuppybotColor;
+import com.github.yeoj34760.spuppybot.utility.SpuppybotComment;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 
@@ -15,6 +17,6 @@ public class LeaveCommand extends Command {
 	@Override
 	protected void execute(CommandEvent event) {
 		event.getGuild().getAudioManager().closeAudioConnection();
-		event.reply(new EmbedBuilder().setAuthor("SpuppyBot", "https://github.com/yeoj34760", "https://yeoj34760.github.io/Spuppybot/Spuppybotlogo_128.png").setTitle("나갔습니다.").build());
+		event.reply(new SpuppybotComment("나갑니다.", SpuppybotColor.blue).get().build());
 	}
 }

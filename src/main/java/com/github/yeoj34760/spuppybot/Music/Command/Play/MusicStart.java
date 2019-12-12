@@ -3,6 +3,8 @@ package com.github.yeoj34760.spuppybot.Music.Command.Play;
 import com.github.yeoj34760.spuppybot.Music.GuildMusicManager;
 import com.github.yeoj34760.spuppybot.Music.MyGuild;
 import com.github.yeoj34760.spuppybot.Music.TrackScheduler;
+import com.github.yeoj34760.spuppybot.utility.SpuppybotColor;
+import com.github.yeoj34760.spuppybot.utility.SpuppybotComment;
 import com.github.yeoj34760.spuppybot.utility.SpuppybotUri;
 import com.github.yeoj34760.spuppybot.utility.Video;
 import com.jagrosh.jdautilities.command.CommandEvent;
@@ -74,18 +76,20 @@ public abstract class MusicStart {
 
 				builder.setThumbnail(video.thumbnail(video.Id(playlist.getTracks().get(0).getInfo().uri)));
 				builder.setFooter(Long.toString(playlist.getTracks().get(0).getInfo().length));
+				builder.setColor(SpuppybotColor.green);
 				event.getChannel().sendMessage(builder.build()).queue();
 
 			}
 
 			@Override
 			public void noMatches() {
-				event.getChannel().sendMessage("찾을 수가 읎어요 ").queue();
+				event.reply(new SpuppybotComment("찾을 수 없음", SpuppybotColor.red).get().build());
+
 			}
 
 			@Override
 			public void loadFailed(FriendlyException exception) {
-				event.getChannel().sendMessage("불러오는데 오류가 발생했습니다. " + exception.getMessage()).queue();
+				event.reply(new SpuppybotComment("불러오는 데 오류가 발생했습니다.", SpuppybotColor.red).get().build());
 			}
 		});
 	}

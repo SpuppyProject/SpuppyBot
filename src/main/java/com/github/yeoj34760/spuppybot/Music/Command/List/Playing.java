@@ -1,6 +1,8 @@
 package com.github.yeoj34760.spuppybot.Music.Command.List;
 
 import com.github.yeoj34760.spuppybot.Music.TrackScheduler;
+import com.github.yeoj34760.spuppybot.utility.SpuppybotColor;
+import com.github.yeoj34760.spuppybot.utility.SpuppybotComment;
 import com.github.yeoj34760.spuppybot.utility.SpuppybotUri;
 import com.github.yeoj34760.spuppybot.utility.Video;
 import com.jagrosh.jdautilities.command.CommandEvent;
@@ -15,6 +17,6 @@ public class Playing implements ListPrint {
 		Video video = new Video();
 		AudioTrackInfo AudioInfo = scheduler.getPlayer().getPlayingTrack().getInfo();
 		String thumbnail = video.thumbnail(video.Id(AudioInfo.uri));
-		event.reply(new EmbedBuilder().setAuthor("SpuppyBot", SpuppybotUri.Github, SpuppybotUri.Icon_128).setTitle(AudioInfo.title).setThumbnail(thumbnail).setFooter("재생 목록이 없습니다.").build());
+		event.reply(new SpuppybotComment("재생중 : " + AudioInfo.title, null, "재생 목록이 없습니다.", SpuppybotColor.blue, thumbnail).get().build());
 	}
 }
