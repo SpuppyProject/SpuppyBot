@@ -1,0 +1,24 @@
+plugins {
+    id('org.jetbrains.kotlin.jvm') version '1.3.71'
+   // application
+
+}
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'com.sedmelluq:lavaplayer:1.3.50'
+    implementation 'com.jagrosh:jda-utilities:3.0.4'
+    implementation 'net.dv8tion:JDA:4.2.0_173'
+    implementation 'org.jetbrains.kotlin:kotlin-bom'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+}
+
+/*application {
+    mainClassName = 'com.github.yeoj34760.spuppybot.Start'
+}*/
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
