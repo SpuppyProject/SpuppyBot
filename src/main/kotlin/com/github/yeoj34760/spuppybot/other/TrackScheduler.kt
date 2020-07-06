@@ -79,6 +79,7 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
             isPlayed = false
             return
         }
+        isPlayed = true
         audioPlayer.playTrack(trackQueue.poll())
     }
 }

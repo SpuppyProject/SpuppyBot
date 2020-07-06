@@ -1,10 +1,14 @@
 package com.github.yeoj34760.spuppybot.commands
 
-import com.github.yeoj34760.spuppybot.other.AudioStartHandler
-import com.github.yeoj34760.spuppybot.other.GuildManager
-import com.github.yeoj34760.spuppybot.playerManager
+import com.github.yeoj34760.spuppybot.other.Util
+import com.github.yeoj34760.spuppybot.other.Util.checkURL
+import com.github.yeoj34760.spuppybot.other.Util.youtubeSearch
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 
 
 /**
@@ -13,17 +17,34 @@ import com.jagrosh.jdautilities.command.CommandEvent
 object Play : Command() {
     init {
         super.name = "play"
-        super.aliases = arrayOf("play")
+        super.aliases = arrayOf("play", "p", "ㅔ")
     }
 
     override fun execute(event: CommandEvent) {
-        event.member.voiceState!!.channel?.let {
-            val id = event.guild.idLong
-            val audioManager = event.guild.audioManager
-            GuildManager.check(audioManager, id)
-
-            audioManager.openAudioConnection(it)
-            playerManager.loadItem(event.args, AudioStartHandler(event, GuildManager.get(id)))
+        if (!event.member.voiceState!!.inVoiceChannel()) {
+            event.channel.sendMessage("음성 방에 들어와 주세요.").queue()
+            return
         }
+
+        if (event.args.isEmpty()) {
+            event.channel.sendMessage("올바르게 써주세요 \n`예시: ?play 진진자라`").queue()
+            return
+        }
+
+            event.channel.sendMessage("검색 중..").queue {
+                if (checkURL(event.args))
+                    Util.youtubePlay(event,it, event.args)
+                else {
+                    var audioList: AudioPlaylist? = youtubeSearch(event.args, it)
+                    if (audioList == null)
+                        return@queue
+
+                    else if (audioList.tracks.isEmpty()) {
+                        it.editMessage("검색 결과가 없습니다").queue()
+                        return@queue
+                    }
+                    Util.youtubePlay(event,it, audioList.tracks[0].info.identifier)
+                }
+            }
     }
 }
