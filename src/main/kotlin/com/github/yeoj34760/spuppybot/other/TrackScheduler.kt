@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason
+import net.dv8tion.jda.api.entities.User
 import java.util.*
 
 /**
@@ -11,42 +12,44 @@ import java.util.*
  * 트랙 추가하거나 트랙 끝났을 때 등등
  */
 class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter() {
-    var trackQueue: Queue<AudioTrack> = LinkedList<AudioTrack>()
+    var trackQueue: Queue<CustomTrack> = LinkedList()
         private set
 
     var isPlayed: Boolean = false
         private set
 
+    var nowUser: User? = null
+
     /**
      * 음악을 시작하거나 추가합니다.
      */
-    fun playOrAdd(audioTrack: AudioTrack) {
-        println(trackQueue.size)
-
-        if (trackQueue.size <= 0 && !isPlayed) {
+    fun playOrAdd(user: User,audioTrack: AudioTrack) {
+        if (trackQueue.isEmpty() && !isPlayed) {
             isPlayed = true
+            nowUser = user
             audioPlayer.playTrack(audioTrack)
             return
         }
 
-        trackQueue.add(audioTrack)
+        trackQueue.add(CustomTrack(user, audioTrack))
     }
 
     /**
      * 현재 음악을 멈추고 다음 음악으로 재생하며 다음 음악 트랙을 반환합니다.
      * 다음 음악이 없을 경우 null로 반환합니다.
      */
-    fun skip(): AudioTrack? =
-            if (trackQueue.size > 0) {
-                var audioTrack = trackQueue.poll()
-                audioPlayer.playTrack(audioTrack)
-                audioTrack
+    fun skip(): CustomTrack? =
+            if (trackQueue.isNotEmpty()) {
+                val track = trackQueue.poll()
+                nowUser = track.user
+                audioPlayer.playTrack(track.audioTrack)
+                track
             } else {
                 null
             }
 
     /**
-     * 볼륨 조절합니다. 숫자는 1 ~ 100까지 허용합니다.
+     * 볼륨 조절합니다.
      */
     fun volume(v: Int) {
          audioPlayer.volume = v
@@ -57,6 +60,7 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
      */
     fun stop() {
         audioPlayer.stopTrack()
+        nowUser = null
         trackQueue.clear()
     }
 
@@ -75,11 +79,13 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
      * 음악이 끝났을 경우
      */
     override fun onTrackEnd(player: AudioPlayer, track: AudioTrack, endReason: AudioTrackEndReason) {
-        if (trackQueue.size < 1) {
+        if (trackQueue.isEmpty()) {
             isPlayed = false
             return
         }
+        val nextTrack = trackQueue.poll()
         isPlayed = true
-        audioPlayer.playTrack(trackQueue.poll())
+        nowUser = nextTrack.user
+        audioPlayer.playTrack(nextTrack.audioTrack)
     }
 }

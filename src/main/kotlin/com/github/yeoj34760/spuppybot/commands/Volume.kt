@@ -13,14 +13,14 @@ import com.jagrosh.jdautilities.command.CommandEvent
 object Volume : Command() {
 init {
     super.name = "volume"
-    super.aliases = arrayOf("volume")
+    super.aliases = arrayOf("volume", "v", "ㅍ", "패")
 }
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
         val audioManager = event.guild.audioManager
         GuildManager.check(audioManager, id)
 
-        var argsInt: Int = event.args.toInt()
+        val argsInt: Int = event.args.toInt()
 
         if (argsInt in 0..100){
             GuildManager.get(id).volume(argsInt)

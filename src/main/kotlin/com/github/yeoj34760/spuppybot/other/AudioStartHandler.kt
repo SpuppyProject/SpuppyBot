@@ -19,9 +19,9 @@ class AudioStartHandler(val event: CommandEvent,val message: Message , val track
     }
 
     override fun trackLoaded(track: AudioTrack) {
-        var sdf = SimpleDateFormat("HH시 mm분 ss초")
+        val sdf = SimpleDateFormat("HH시 mm분 ss초")
 
-        var embed: MessageEmbed = EmbedBuilder()
+        val embed: MessageEmbed = EmbedBuilder()
                 .setTitle("SpuppyBot")
                 .addField("만든이", track.info.author, false)
                 .addField("음성 채널", event.member.voiceState!!.channel!!.name, true)
@@ -31,7 +31,7 @@ class AudioStartHandler(val event: CommandEvent,val message: Message , val track
                 .setThumbnail(youtubeToThumbnail(track.info.identifier))
                 .build()
         message.editMessage(embed).content("성공!").queue()
-        trackScheduler.playOrAdd(track)
+        trackScheduler.playOrAdd(event.author, track)
     }
 
     override fun noMatches() {

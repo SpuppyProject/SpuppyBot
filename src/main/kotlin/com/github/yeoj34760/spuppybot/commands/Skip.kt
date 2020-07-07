@@ -8,7 +8,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 object Skip : Command() {
     init {
         super.name = "skip"
-        super.aliases = arrayOf("skip")
+        super.aliases = arrayOf("skip", "s", "ㄴ", "나ㅑㅔ")
     }
 
     override fun execute(event: CommandEvent?) {
@@ -17,10 +17,11 @@ object Skip : Command() {
             event.channel.sendMessage("현재 재생되어 있지 않습니다.").queue()
             return
         }
-        var x: AudioTrack? = GuildManager.get(id)!!.skip()
+        val x = GuildManager.get(id).skip()
 
-        event.channel.sendMessage("다음 음악으로 재생합니다. -> `${if (x != null) x.info.title else {
-            GuildManager.get(id).skip();event.guild.audioManager.closeAudioConnection(); "없음"
+        event.channel.sendMessage("다음 음악으로 재생합니다. -> `${if (x != null) "${x.audioTrack.info.title}\n신청자: ${x.user.name}"
+        else {
+            GuildManager.get(id).stop();event.guild.audioManager.closeAudioConnection(); "없음"
         }}`").queue()
     }
 }

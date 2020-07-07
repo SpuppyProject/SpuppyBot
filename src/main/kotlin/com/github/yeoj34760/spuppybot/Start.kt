@@ -28,14 +28,14 @@ fun main() {
                     Skip,
                     Volume,
                     List,
-            Search,
-            Connect)
+                    Search,
+                    Connect)
             .setOwnerId(ownerId)
             .setHelpConsumer { }
             .setActivity(Activity.playing("fuck"))
             .build()
 
-    var jda = JDABuilder
+    JDABuilder
             .createDefault(token)
             .setAudioSendFactory(NativeAudioSendFactory())
             .addEventListeners(commandClient, waiter)

@@ -6,7 +6,9 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.entities.VoiceChannel
 import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
@@ -40,10 +42,14 @@ object Util {
         return Pattern.compile(urlRegex).matcher(url).find()
     }
 
+    /**
+     * 유튜브 검색을 해서 음악 리스트를 불러와 반환합니다.
+     */
     //fun youtubeSearch(query: String): AudioPlaylist? = YoutubeSearchProvider().loadSearchResult(query) { YoutubeAudioTrack(it, YoutubeAudioSourceManager()) } as? AudioPlaylist
     fun youtubeSearch(query: String, errorMessage: Message): AudioPlaylist? {
         return try {
-            YoutubeSearchProvider().loadSearchResult(query) { YoutubeAudioTrack(it, YoutubeAudioSourceManager()) } as? AudioPlaylist
+           YoutubeSearchProvider().loadSearchResult(query) { YoutubeAudioTrack(it, YoutubeAudioSourceManager()) } as? AudioPlaylist
+
         } catch (e: Exception) {
             errorMessage.editMessage("오류가 발생했습니다. \nlog : ${e.message}").queue()
             null

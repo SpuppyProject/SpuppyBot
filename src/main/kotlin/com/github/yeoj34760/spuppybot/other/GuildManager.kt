@@ -21,10 +21,11 @@ object GuildManager {
         val trackScheduler: TrackScheduler
         if (!tracks.containsKey(id)) {
             val player = playerManager.createPlayer()
+            player.volume = 85
             audioManager.sendingHandler = PlayerSendHandler(player)
             trackScheduler = TrackScheduler(player)
             player.addListener(trackScheduler)
-            GuildManager.tracks[id] = trackScheduler
+            tracks[id] = trackScheduler
         }
     }
 
