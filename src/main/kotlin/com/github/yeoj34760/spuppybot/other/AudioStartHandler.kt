@@ -27,7 +27,7 @@ class AudioStartHandler(val event: CommandEvent,val message: Message , val track
                 .addField("음성 채널", event.member.voiceState!!.channel!!.name, true)
                 .addField("길이", sdf.format(track.info.length), true)
                 .addField("URL", "[클릭](${track.info.uri})", false)
-                .addField("대기열", "${if (trackScheduler.count() == 0 && !trackScheduler.isPlayed) "없음" else  "${trackScheduler.count()+1}남음"}", true)
+                .addField("대기열", if (trackScheduler.count() == 0 && !trackScheduler.isPlayed) "없음" else  "${trackScheduler.count()+1}남음", true)
                 .setThumbnail(youtubeToThumbnail(track.info.identifier))
                 .build()
         message.editMessage(embed).content("성공!").queue()

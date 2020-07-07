@@ -1,11 +1,17 @@
 package com.github.yeoj34760.spuppybot.other
 
+import com.github.natanbc.lavadsp.timescale.TimescalePcmAudioFilter
+import com.github.yeoj34760.spuppybot.playerManager
+import com.github.yeoj34760.spuppybot.waiter
+import com.sedmelluq.discord.lavaplayer.filter.AudioFilter
+import com.sedmelluq.discord.lavaplayer.filter.PcmFilterFactory
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason
 import net.dv8tion.jda.api.entities.User
 import java.util.*
+
 
 /**
  * 트랙관리 할 때 쓰입니다.
@@ -23,14 +29,13 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
     /**
      * 음악을 시작하거나 추가합니다.
      */
-    fun playOrAdd(user: User,audioTrack: AudioTrack) {
+    fun playOrAdd(user: User, audioTrack: AudioTrack) {
         if (trackQueue.isEmpty() && !isPlayed) {
             isPlayed = true
             nowUser = user
             audioPlayer.playTrack(audioTrack)
             return
         }
-
         trackQueue.add(CustomTrack(user, audioTrack))
     }
 
@@ -52,7 +57,7 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
      * 볼륨 조절합니다.
      */
     fun volume(v: Int) {
-         audioPlayer.volume = v
+        audioPlayer.volume = v
     }
 
     /**
@@ -62,6 +67,21 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
         audioPlayer.stopTrack()
         nowUser = null
         trackQueue.clear()
+    }
+
+    /**
+     * 스피드 조절합니다.
+     */
+    fun speed(speed: Double) {
+        var copyTrack = audioPlayer.playingTrack.makeClone()
+        copyTrack.position = audioPlayer.playingTrack.position
+        audioPlayer.setFilterFactory { track, format, output ->
+            val audioFilter = TimescalePcmAudioFilter(output, format.channelCount, format.sampleRate)
+            audioFilter.speed= speed
+            listOf(audioFilter)
+        }
+        audioPlayer.playTrack(copyTrack)
+        isPlayed = true
     }
 
     fun count(): Int = trackQueue.size
@@ -75,6 +95,7 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
     }
 
     fun playingTrack(): AudioTrack = audioPlayer.playingTrack
+
     /**
      * 음악이 끝났을 경우
      */

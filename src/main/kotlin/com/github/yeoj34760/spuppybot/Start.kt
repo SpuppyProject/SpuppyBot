@@ -29,7 +29,8 @@ fun main() {
                     Volume,
                     List,
                     Search,
-                    Connect)
+                    Connect,
+            Speed)
             .setOwnerId(ownerId)
             .setHelpConsumer { }
             .setActivity(Activity.playing("fuck"))
