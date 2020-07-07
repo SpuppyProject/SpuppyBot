@@ -12,7 +12,7 @@ object Pause : Command() {
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
         if (!GuildManager.isTrackCreated(id) || !GuildManager.tracks[id]!!.isPlayed) {
-            event.channel.sendMessage("현재 재생되어 있지 않습니다.").queue()
+            event.channel.sendMessage("현재 재생되어 있지 않네요").queue()
             return
         }
 

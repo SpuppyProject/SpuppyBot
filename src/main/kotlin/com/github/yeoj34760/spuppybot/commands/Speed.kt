@@ -3,12 +3,15 @@ package com.github.yeoj34760.spuppybot.commands
 import com.github.yeoj34760.spuppybot.other.GuildManager
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
-import com.sun.java.accessibility.util.GUIInitializedListener
 
+
+/**
+ * 스피드를 조절해줍니다.
+ */
 object Speed : Command() {
     init {
         super.name = "speed"
-        super.aliases = arrayOf("speed", "스피드", "네", "sp")
+        super.aliases = arrayOf("speed", "스피드", "네", "sp", "넫ㄷㅇ")
     }
 
     override fun execute(event: CommandEvent) {
@@ -16,6 +19,7 @@ object Speed : Command() {
             event.reply("재생 중이지 않습니다.")
             return
         }
+
         val number: Double? = event.args.toDoubleOrNull()
         when (number) {
             null -> event.reply("올바르지 않은 값입니다.")

@@ -13,7 +13,7 @@ import com.jagrosh.jdautilities.command.CommandEvent
 object Volume : Command() {
 init {
     super.name = "volume"
-    super.aliases = arrayOf("volume", "v", "ㅍ", "패")
+    super.aliases = arrayOf("volume", "v", "ㅍ", "패", "페")
 }
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
