@@ -72,7 +72,7 @@ object Search : Command() {
                                 return@waitForEvent
                             }
 
-                        }, 1, TimeUnit.MINUTES) { event.reply("시간 초과됨") }
+                        }, 1, TimeUnit.MINUTES) {  }
             }
         }
     }

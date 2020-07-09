@@ -21,7 +21,7 @@ object List : Command() {
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
 
-        if (!GuildManager.isTrackCreated(id) || !GuildManager.get(id).isPlayed()) {
+        if (GuildManager[id] == null || !GuildManager.get(id)!!.isPlayed()) {
             event.channel.sendMessage("뭔가 엄청난 걸 보여드리고 싶었지만 아쉽게도 아무 음악이 없네요").queue()
             return
         }
@@ -30,8 +30,8 @@ object List : Command() {
         val page                = if (event.args.isEmpty()) 1 else event.args.toInt()
         val trackScheduler      = GuildManager.get(id)
 
-        var book = MusicListBook(trackScheduler.trackQueue.toTypedArray())
-        val playingTrack = GuildManager.get(event.guild.idLong).playingTrack()
+        var book = MusicListBook(trackScheduler!!.trackQueue.toTypedArray())
+        val playingTrack = GuildManager.get(event.guild.idLong)!!.playingTrack()
 
         val embed = EmbedBuilder()
                 .setAuthor(event.author.name, null, event.author.avatarUrl)

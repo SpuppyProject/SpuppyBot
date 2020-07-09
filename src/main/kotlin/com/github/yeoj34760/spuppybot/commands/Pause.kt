@@ -12,19 +12,19 @@ object Pause : Command() {
     }
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
-        if (!GuildManager.isTrackCreated(id) || !GuildManager.tracks[id]!!.isPlayed()) {
+        if (GuildManager[id] == null || !GuildManager.tracks[id]!!.isPlayed()) {
             event.channel.sendMessage("현재 재생되어 있지 않네요").queue()
             return
         }
 
-        var trackScheduler = GuildManager.get(id)
+        var trackScheduler = GuildManager[id]!!
         if (trackScheduler.isPaused()) {
             trackScheduler.resume()
-            event.channel.sendMessage("일시정지하였습니다.").queue()
+            event.channel.sendMessage("일시정지를 했어요.").queue()
         }
         else {
             trackScheduler.pause()
-            event.channel.sendMessage("다시 시작했습니다.").queue()
+            event.channel.sendMessage("다시 시작했어요.").queue()
         }
     }
 }

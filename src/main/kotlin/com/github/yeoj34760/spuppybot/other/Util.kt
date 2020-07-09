@@ -31,7 +31,7 @@ object Util {
             GuildManager.check(audioManager, id)
             if (!audioManager.isConnected)
                 audioManager.openAudioConnection(it)
-            playerManager.loadItem(url, AudioStartHandler(event, message, GuildManager.get(id)))
+            playerManager.loadItem(url, AudioStartHandler(event, message, GuildManager[id]!!))
         }
     }
 

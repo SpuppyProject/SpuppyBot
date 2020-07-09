@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.Activity
 
 const val TOKEN = ""
 const val OWNER_ID = ""
+const val VERSION = "4.0-beta1"
 
 val playerManager = DefaultAudioPlayerManager()
 val waiter = EventWaiter()
@@ -32,7 +33,8 @@ fun main() {
                     Search,
                     Connect,
                     Speed,
-                    Disconnect
+                    Disconnect,
+                    NowPlay
             )
             .setOwnerId(OWNER_ID)
             .setHelpConsumer { }
@@ -44,5 +46,4 @@ fun main() {
             .setAudioSendFactory(NativeAudioSendFactory())
             .addEventListeners(commandClient, waiter)
             .build()
-
 }

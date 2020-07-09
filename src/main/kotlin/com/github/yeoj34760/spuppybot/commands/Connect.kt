@@ -52,7 +52,8 @@ object Connect : Command() {
                 result += "${x+1}. ${channels[x].name}\n"
 
             val embed = EmbedBuilder()
-                    .setTitle("SpuppyBot")
+                    .setAuthor(event.author.name, null, event.author.avatarUrl)
+                    .setTitle("Channels")
                     .setDescription(result)
                     .build()
 
@@ -79,7 +80,7 @@ object Connect : Command() {
                             }
                             checkPause(trackScheduler)
                             event.guild.audioManager.openAudioConnection(channels[number-1])
-                            event.reply("들어왔습니다.")
+                            event.reply("들어왔어요.")
                             return@waitForEvent
                         }
 

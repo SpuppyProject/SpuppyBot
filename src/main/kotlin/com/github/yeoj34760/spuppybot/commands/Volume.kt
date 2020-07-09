@@ -20,7 +20,7 @@ init {
         val argsInt: Int = event.args.toInt()
 
         if (argsInt in 0..100){
-            GuildManager.get(id).volume(argsInt)
+            GuildManager[id]!!.volume(argsInt)
             event.channel.sendMessage("볼륨 조절했습니다. 현재 볼륨 상태 -> $argsInt").queue()
         }
         else
