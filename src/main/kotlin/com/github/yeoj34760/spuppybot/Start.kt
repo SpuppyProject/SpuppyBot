@@ -16,7 +16,8 @@ const val VERSION = "4.0-beta1"
 
 val playerManager = DefaultAudioPlayerManager()
 val waiter = EventWaiter()
-fun main() {
+
+fun main(args: Array<String>) {
     //플레이어매니저 설정
     playerManager.registerSourceManager(YoutubeAudioSourceManager())
     AudioSourceManagers.registerRemoteSources(playerManager)
@@ -34,11 +35,12 @@ fun main() {
                     Connect,
                     Speed,
                     Disconnect,
-                    NowPlay
+                    NowPlay,
+                    Info
             )
             .setOwnerId(OWNER_ID)
             .setHelpConsumer { }
-            .setActivity(Activity.playing("fuck"))
+            .setActivity(Activity.playing("?info"))
             .build()
 
     JDABuilder
