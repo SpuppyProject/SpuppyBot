@@ -1,9 +1,8 @@
 package com.github.yeoj34760.spuppybot.commands
 
-import com.github.yeoj34760.spuppybot.other.GuildManager
+import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.entities.User
 
 object Skip : Command() {
@@ -14,7 +13,7 @@ object Skip : Command() {
 
     override fun execute(event: CommandEvent?) {
         val id = event!!.guild.idLong
-        if (!GuildManager.isTrackCreated(id) || !GuildManager.get(id).isPlayed) {
+        if (!GuildManager.isTrackCreated(id) || !GuildManager.get(id).isPlayed()) {
             event.channel.sendMessage("현재 재생되어 있지 않습니다.").queue()
             return
         }

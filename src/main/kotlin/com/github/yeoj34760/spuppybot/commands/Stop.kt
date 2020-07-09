@@ -1,6 +1,6 @@
 package com.github.yeoj34760.spuppybot.commands
 
-import com.github.yeoj34760.spuppybot.other.GuildManager
+import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 
@@ -15,9 +15,9 @@ object Stop : Command() {
     override fun execute(event: CommandEvent?) {
         val id = event!!.guild.idLong
 
-        if (GuildManager.isTrackCreated(id) || GuildManager.tracks[id]!!.isPlayed) {
+        if (GuildManager.isTrackCreated(id) || GuildManager.tracks[id]!!.isPlayed()) {
             event.channel.sendMessage("음악을 멈춥니다.").queue()
-            GuildManager.tracks[event.guild.idLong]!!.stop()
+            GuildManager.tracks[id]!!.stop()
             event.guild.audioManager.closeAudioConnection()
         }
         else

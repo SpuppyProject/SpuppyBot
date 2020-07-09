@@ -1,6 +1,6 @@
 package com.github.yeoj34760.spuppybot.commands
 
-import com.github.yeoj34760.spuppybot.other.GuildManager
+import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 
@@ -15,7 +15,7 @@ object Speed : Command() {
     }
 
     override fun execute(event: CommandEvent) {
-        if (!GuildManager.get(event.guild.idLong).isPlayed) {
+        if (!GuildManager.get(event.guild.idLong).isPlayed()) {
             event.reply("재생 중이지 않습니다.")
             return
         }

@@ -1,17 +1,11 @@
-package com.github.yeoj34760.spuppybot.other
+package com.github.yeoj34760.spuppybot.music
 
 import com.github.natanbc.lavadsp.timescale.TimescalePcmAudioFilter
-import com.github.yeoj34760.spuppybot.playerManager
-import com.github.yeoj34760.spuppybot.waiter
-import com.sedmelluq.discord.lavaplayer.filter.AudioFilter
-import com.sedmelluq.discord.lavaplayer.filter.PcmFilterFactory
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason
-import net.dv8tion.jda.api.entities.User
 import java.util.*
-import kotlin.collections.ArrayDeque
 
 
 /**
@@ -22,20 +16,34 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
     var trackQueue: Queue<AudioTrack> = LinkedList<AudioTrack>()
         private set
 
-    var isPlayed: Boolean = false
-        private set
+    /**
+     * 대기열 수를 반환합니다.
+     */
+    fun count(): Int = trackQueue.size
 
-  @Volatile  private  var isSkipped: Boolean = false
+    /**
+     * 현재 플레이중인 트랙을 반환합니다.
+     */
+    fun playingTrack(): AudioTrack = audioPlayer.playingTrack
+
+    /**
+     * 현재 플레이 중인지 반환합니다.
+     */
+    fun isPlayed(): Boolean = audioPlayer.playingTrack != null
+
+    fun isPaused(): Boolean = audioPlayer.isPaused
 
     /**
      * 음악을 시작하거나 추가합니다.
      */
     fun playOrAdd(audioTrack: AudioTrack) {
-        if (trackQueue.isEmpty() && !isPlayed) {
-            isPlayed = true
+        println(audioPlayer.playingTrack)
+        if (trackQueue.isEmpty() && !isPlayed()) {
+            println("음악 시작됨")
             audioPlayer.playTrack(audioTrack)
             return
         }
+        println("추가됨")
         trackQueue.add(audioTrack)
     }
 
@@ -45,7 +53,6 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
      */
     fun skip(): AudioTrack? =
             if (trackQueue.isNotEmpty()) {
-                isSkipped = true
                 val track = trackQueue.poll()
                 audioPlayer.playTrack(track)
                 track
@@ -74,42 +81,38 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
     fun speed(speed: Double) {
         var copyTrack = audioPlayer.playingTrack.makeClone()
         copyTrack.position = audioPlayer.playingTrack.position
+
         audioPlayer.setFilterFactory { track, format, output ->
             val audioFilter = TimescalePcmAudioFilter(output, format.channelCount, format.sampleRate)
-            audioFilter.speed= speed
+            audioFilter.speed = speed
             listOf(audioFilter)
         }
         audioPlayer.playTrack(copyTrack)
-        isPlayed = true
     }
-
-    fun count(): Int = trackQueue.size
 
     /**
      * 일시정지하거나 다시시작합니다. 일시정지할 경우 false 반환되고 다시시작할 경우 true로 반환합니다.
      */
-    fun pause(): Boolean {
+   /* fun pause(): Boolean {
         audioPlayer.isPaused = !audioPlayer.isPaused
         return audioPlayer.isPaused
+    }*/
+    fun pause() {
+        audioPlayer.isPaused = true
     }
 
-    fun playingTrack(): AudioTrack = audioPlayer.playingTrack
+    fun resume() {
+        audioPlayer.isPaused = false
+    }
 
     /**
      * 음악이 끝났을 경우
      */
     override fun onTrackEnd(player: AudioPlayer, track: AudioTrack, endReason: AudioTrackEndReason) {
-        if (isSkipped) {
-            isSkipped = false
+        if (trackQueue.isEmpty() || endReason == AudioTrackEndReason.REPLACED)
             return
-        }
 
-        if (trackQueue.isEmpty()) {
-            isPlayed = false
-            return
-        }
         val nextTrack = trackQueue.poll()
-        isPlayed = true
         audioPlayer.playTrack(nextTrack)
     }
 }

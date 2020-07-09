@@ -1,14 +1,14 @@
 package com.github.yeoj34760.spuppybot.other
 
+import com.github.yeoj34760.spuppybot.music.AudioStartHandler
+import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.playerManager
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
-import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.entities.VoiceChannel
 import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
@@ -19,7 +19,7 @@ object Util {
     fun youtubeToThumbnail(Identifier: String): String = "https://img.youtube.com/vi/$Identifier/mqdefault.jpg"
 
 
-    fun timeMaker(milliseconds: Int) = SimpleDateFormat("hh시 mm분 ss초").format(milliseconds)
+    fun timeMaker(milliseconds: Int) = SimpleDateFormat("HH시 mm분 ss초").format(milliseconds)
 
     /**
      * 유튜브통해 음악을 재생합니다.
@@ -29,7 +29,8 @@ object Util {
             val id = event.guild.idLong
             val audioManager = event.guild.audioManager
             GuildManager.check(audioManager, id)
-            audioManager.openAudioConnection(it)
+            if (!audioManager.isConnected)
+                audioManager.openAudioConnection(it)
             playerManager.loadItem(url, AudioStartHandler(event, message, GuildManager.get(id)))
         }
     }

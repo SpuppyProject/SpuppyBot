@@ -10,8 +10,8 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 
-val token = ""
-val ownerId = ""
+const val TOKEN = ""
+const val OWNER_ID = ""
 
 val playerManager = DefaultAudioPlayerManager()
 val waiter = EventWaiter()
@@ -21,7 +21,8 @@ fun main() {
     AudioSourceManagers.registerRemoteSources(playerManager)
     val commandClient = CommandClientBuilder()
             .setPrefix("?")
-            .addCommands(Ping,
+            .addCommands(
+                    Ping,
                     Play,
                     Stop,
                     Pause,
@@ -30,14 +31,16 @@ fun main() {
                     List,
                     Search,
                     Connect,
-            Speed)
-            .setOwnerId(ownerId)
+                    Speed,
+                    Disconnect
+            )
+            .setOwnerId(OWNER_ID)
             .setHelpConsumer { }
             .setActivity(Activity.playing("fuck"))
             .build()
 
     JDABuilder
-            .createDefault(token)
+            .createDefault(TOKEN)
             .setAudioSendFactory(NativeAudioSendFactory())
             .addEventListeners(commandClient, waiter)
             .build()

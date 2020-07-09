@@ -1,9 +1,6 @@
-package com.github.yeoj34760.spuppybot.other
+package com.github.yeoj34760.spuppybot.music
 
-import com.github.natanbc.lavadsp.timescale.TimescalePcmAudioFilter
 import com.github.yeoj34760.spuppybot.playerManager
-import com.sedmelluq.discord.lavaplayer.filter.PcmFilterFactory
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
 import net.dv8tion.jda.api.entities.VoiceChannel
 import net.dv8tion.jda.api.managers.AudioManager
 

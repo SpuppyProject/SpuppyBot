@@ -1,9 +1,6 @@
 package com.github.yeoj34760.spuppybot.commands
 
-import com.github.yeoj34760.spuppybot.other.GuildManager
-import com.github.yeoj34760.spuppybot.other.PlayerSendHandler
-import com.github.yeoj34760.spuppybot.other.TrackScheduler
-import com.github.yeoj34760.spuppybot.playerManager
+import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 
@@ -13,7 +10,7 @@ import com.jagrosh.jdautilities.command.CommandEvent
 object Volume : Command() {
 init {
     super.name = "volume"
-    super.aliases = arrayOf("volume", "v", "ㅍ", "패", "페")
+    super.aliases = arrayOf("volume", "v", "ㅍ", "패", "페", "패ㅣㅕㅡㄷ")
 }
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong

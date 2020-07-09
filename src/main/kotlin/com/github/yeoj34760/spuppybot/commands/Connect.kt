@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppybot.commands
 
-import com.github.yeoj34760.spuppybot.other.Util
+import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.music.TrackScheduler
 import com.github.yeoj34760.spuppybot.waiter
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
@@ -24,7 +25,7 @@ object Connect : Command() {
 
         //입력한 이름하고 동일한 채널이 있으면 channels에 추가합니다.
         val channels: ArrayList<VoiceChannel> = ArrayList()
-
+        var trackScheduler: TrackScheduler? = GuildManager.tracks[event.guild.idLong]
         if (event.args.isNotEmpty()) {
             event.guild.voiceChannels.forEach { channel ->
                 if (event.args == channel.name)
@@ -41,6 +42,7 @@ object Connect : Command() {
                 return
             }
             event.guild.audioManager.openAudioConnection(channels[0])
+            checkPause(trackScheduler)
             event.reply("들어왔습니다.")
             return
         } else if (channels.isNotEmpty()) {
@@ -75,6 +77,7 @@ object Connect : Command() {
                                 event.reply("해당 음성 채널에 들어가려했으나 권한이 없네요.")
                                 return@waitForEvent
                             }
+                            checkPause(trackScheduler)
                             event.guild.audioManager.openAudioConnection(channels[number-1])
                             event.reply("들어왔습니다.")
                             return@waitForEvent
@@ -84,6 +87,10 @@ object Connect : Command() {
         }
     }
 
+    fun checkPause(trackScheduler: TrackScheduler?) {
+        if (trackScheduler != null && !trackScheduler.isPaused())
+            trackScheduler.resume()
+    }
     fun checkPermission(permissionOverrides: Array<PermissionOverride>): Boolean {
         permissionOverrides.forEach {
             if (it.permissionHolder!!.hasPermission(Permission.VOICE_CONNECT))

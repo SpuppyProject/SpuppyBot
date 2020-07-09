@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppybot.other
+package com.github.yeoj34760.spuppybot.music
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame
