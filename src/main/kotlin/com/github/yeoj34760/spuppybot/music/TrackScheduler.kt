@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason
+import net.dv8tion.jda.api.managers.AudioManager
 import java.util.*
 
 
@@ -12,7 +13,7 @@ import java.util.*
  * 트랙관리 할 때 쓰입니다.
  * 트랙 추가하거나 트랙 끝났을 때 등등
  */
-class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter() {
+class TrackScheduler(private val audioPlayer: AudioPlayer, private val audioManager: AudioManager) : AudioEventAdapter() {
     var trackQueue: Queue<AudioTrack> = LinkedList<AudioTrack>()
         private set
 
@@ -82,7 +83,7 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
         var copyTrack = audioPlayer.playingTrack.makeClone()
         copyTrack.position = audioPlayer.playingTrack.position
 
-        audioPlayer.setFilterFactory { track, format, output ->
+        audioPlayer.setFilterFactory { _, format, output ->
             val audioFilter = TimescalePcmAudioFilter(output, format.channelCount, format.sampleRate)
             audioFilter.speed = speed
             listOf(audioFilter)
@@ -93,10 +94,10 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
     /**
      * 일시정지하거나 다시시작합니다. 일시정지할 경우 false 반환되고 다시시작할 경우 true로 반환합니다.
      */
-   /* fun pause(): Boolean {
-        audioPlayer.isPaused = !audioPlayer.isPaused
-        return audioPlayer.isPaused
-    }*/
+    /* fun pause(): Boolean {
+         audioPlayer.isPaused = !audioPlayer.isPaused
+         return audioPlayer.isPaused
+     }*/
     fun pause() {
         audioPlayer.isPaused = true
     }
@@ -109,10 +110,10 @@ class TrackScheduler(private val audioPlayer: AudioPlayer) : AudioEventAdapter()
      * 음악이 끝났을 경우
      */
     override fun onTrackEnd(player: AudioPlayer, track: AudioTrack, endReason: AudioTrackEndReason) {
-        if (trackQueue.isEmpty() || endReason == AudioTrackEndReason.REPLACED)
-            return
-
-        val nextTrack = trackQueue.poll()
-        audioPlayer.playTrack(nextTrack)
+        when {
+            endReason == AudioTrackEndReason.REPLACED -> return
+            trackQueue.isEmpty() -> trackQueue.isEmpty()
+            trackQueue.isNotEmpty() -> audioPlayer.playTrack(trackQueue.poll())
+        }
     }
 }

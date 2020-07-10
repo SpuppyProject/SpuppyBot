@@ -18,7 +18,7 @@ object GuildManager {
             val player = playerManager.createPlayer()
             player.volume = 85
             audioManager.sendingHandler = PlayerSendHandler(player)
-            trackScheduler = TrackScheduler(player)
+            trackScheduler = TrackScheduler(player, audioManager)
             player.addListener(trackScheduler)
             tracks[id] = trackScheduler
         }

@@ -21,6 +21,7 @@ object Play : Command() {
     }
 
     override fun execute(event: CommandEvent) {
+
         if (!event.member.voiceState!!.inVoiceChannel()) {
             event.channel.sendMessage("음성 방에 들어와 주세요.").queue()
             return
