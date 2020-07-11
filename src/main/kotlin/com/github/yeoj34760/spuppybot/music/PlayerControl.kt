@@ -13,10 +13,11 @@ import java.util.*
  * 트랙관리 할 때 쓰입니다.
  * 트랙 추가하거나 트랙 끝났을 때 등등
  */
-class TrackScheduler(private val audioPlayer: AudioPlayer, private val audioManager: AudioManager) : AudioEventAdapter() {
+class PlayerControl(private val audioPlayer: AudioPlayer, private val audioManager: AudioManager) : AudioEventAdapter() {
     var trackQueue: Queue<AudioTrack> = LinkedList<AudioTrack>()
         private set
 
+    var isLooped : Boolean = false
     /**
      * 대기열 수를 반환합니다.
      */
@@ -32,6 +33,9 @@ class TrackScheduler(private val audioPlayer: AudioPlayer, private val audioMana
      */
     fun isPlayed(): Boolean = audioPlayer.playingTrack != null
 
+    /**
+     * 일시정지되었는지 체크합니다. 일시정지가 되었을 경우 true
+     */
     fun isPaused(): Boolean = audioPlayer.isPaused
 
     /**
@@ -57,9 +61,7 @@ class TrackScheduler(private val audioPlayer: AudioPlayer, private val audioMana
                 val track = trackQueue.poll()
                 audioPlayer.playTrack(track)
                 track
-            } else {
-                null
-            }
+            } else null
 
     /**
      * 볼륨 조절합니다.
@@ -92,16 +94,15 @@ class TrackScheduler(private val audioPlayer: AudioPlayer, private val audioMana
     }
 
     /**
-     * 일시정지하거나 다시시작합니다. 일시정지할 경우 false 반환되고 다시시작할 경우 true로 반환합니다.
+     * 일시정지합니다.
      */
-    /* fun pause(): Boolean {
-         audioPlayer.isPaused = !audioPlayer.isPaused
-         return audioPlayer.isPaused
-     }*/
     fun pause() {
         audioPlayer.isPaused = true
     }
 
+    /**
+     * 다시 시작합니다.
+     */
     fun resume() {
         audioPlayer.isPaused = false
     }
@@ -111,8 +112,11 @@ class TrackScheduler(private val audioPlayer: AudioPlayer, private val audioMana
      */
     override fun onTrackEnd(player: AudioPlayer, track: AudioTrack, endReason: AudioTrackEndReason) {
         when {
+            //음악을 다 끝나지 않고 종료할 경우
             endReason == AudioTrackEndReason.REPLACED -> return
-            trackQueue.isEmpty() -> trackQueue.isEmpty()
+            isLooped -> audioPlayer.playTrack(track.makeClone())
+            //남은 음악이 없을 경우
+            trackQueue.isEmpty() -> audioManager.closeAudioConnection()
             trackQueue.isNotEmpty() -> audioPlayer.playTrack(trackQueue.poll())
         }
     }

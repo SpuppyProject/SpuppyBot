@@ -36,7 +36,9 @@ fun main(args: Array<String>) {
                     Speed,
                     Disconnect,
                     NowPlay,
-                    Info
+                    Info,
+                    Remove,
+                    Loop
             )
             .setOwnerId(OWNER_ID)
             .setHelpConsumer { }

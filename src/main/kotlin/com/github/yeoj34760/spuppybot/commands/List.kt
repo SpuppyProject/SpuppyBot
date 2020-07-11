@@ -27,32 +27,36 @@ object List : Command() {
         }
 
         //입력한 args가 없을 경우 1로 지정합니다.
-        val page                = if (event.args.isEmpty()) 1 else event.args.toInt()
-        val trackScheduler      = GuildManager.get(id)
-
-        var book = MusicListBook(trackScheduler!!.trackQueue.toTypedArray())
+        val pageNumber = if (event.args.isEmpty()) 1 else event.args.toInt()
+        val playerControl = GuildManager.get(id)
+        val book = MusicListBook(playerControl!!.trackQueue.toTypedArray())
         val playingTrack = GuildManager.get(event.guild.idLong)!!.playingTrack()
+        val nextMusic = if (playerControl.isLooped) "무한 루프" else "${(playingTrack.duration - playingTrack.position) / 1000}초 남음"
+        val list = if (playerControl.trackQueue.isEmpty()) "썰렁... 대기열에 아무 것도 없네요." else pageToString(book, pageNumber - 1)
+        val pageContent = if (playerControl.trackQueue.isEmpty()) "page : None" else "page : ${pageNumber}/${book.count()}"
+
 
         val embed = EmbedBuilder()
                 .setAuthor(event.author.name, null, event.author.avatarUrl)
-                .setTitle("대기열 목록들 (${trackScheduler.trackQueue.size}개)")
-                .setDescription(pageToString(book, page-1))
+                .setTitle("대기열 목록들 (${playerControl.trackQueue.size}개)")
+                .setDescription(list)
                 .addField("재생 중..", "[${playingTrack.info.title}](${playingTrack.info.uri})", true)
-                .addField("다음 음악까지", "${(playingTrack.duration - playingTrack.position) / 1000}초 남음", true)
-                .setFooter("page : ${page}/${book.count()}")
+                .addField("다음 음악까지", nextMusic, true)
+                .setFooter(pageContent)
                 .setColor(DiscordColor.GREEN)
                 .build()
         event.reply(embed)
 
 
     }
+
     private fun pageToString(book: MusicListBook, pageNumber: Int): String {
-        var temp : StringBuilder = StringBuilder()
+        var temp: StringBuilder = StringBuilder()
         var number: Int = pageNumber * book.MAX_PAGE
-            for (trackNumber in 0 until book[pageNumber]!!.size) {
-                var track = book.pageTrack(pageNumber, trackNumber)
-                temp.append("${++number} > [${track!!.info.title}](${track.info.uri}) `${(track.userData as User).name}`\n\n")
-            }
+        for (trackNumber in 0 until book[pageNumber]!!.size) {
+            var track = book.pageTrack(pageNumber, trackNumber)
+            temp.append("${++number} > [${track!!.info.title}](${track.info.uri}) `${(track.userData as User).name}`\n\n")
+        }
         return temp.toString()
     }
 }

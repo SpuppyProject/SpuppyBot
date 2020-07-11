@@ -19,8 +19,8 @@ object NowPlay : Command() {
             return
         }
 
-        var trackScheduler = GuildManager.get(event.guild.idLong)
-        var playingTrack = trackScheduler!!.playingTrack()
+        var playerControl = GuildManager[event.guild.idLong]
+        var playingTrack = playerControl!!.playingTrack()
         var embed = EmbedBuilder()
                 .setAuthor(event.author.name, null, event.author.avatarUrl)
                 .setDescription("[${playingTrack.info.title}](${playingTrack.info.uri}) 재생 중")
@@ -30,6 +30,7 @@ object NowPlay : Command() {
                 .addField("최대 길이", "${playingTrack.duration / 1000}초", true)
                 .addField("들은 시간", "${playingTrack.position / 1000}초", true)
                 .addField("남은 시간", "${ (playingTrack.duration-playingTrack.position) / 1000}초", true)
+                .addField("무한 루프 여부", playerControl.isLooped.toString(), true)
                 .setColor(DiscordColor.BLUE)
                 .build()
         event.reply(embed)
