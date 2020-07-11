@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.Activity
 
 const val TOKEN = ""
 const val OWNER_ID = ""
-const val VERSION = "4.0-beta2"
+const val VERSION = "4.0-beta3"
 
 val playerManager = DefaultAudioPlayerManager()
 val waiter = EventWaiter()
