@@ -12,11 +12,8 @@ object Disconnect : Command() {
     override fun execute(event: CommandEvent) {
         if (event.guild.audioManager.isConnected) {
             event.guild.audioManager.closeAudioConnection()
-            val trackScheduler = GuildManager[event.guild.idLong]
-            if (trackScheduler!!.isPlayed())
-                trackScheduler.pause()
 
-            event.reply("재생중인 음악이 있을 경우 일시적으로 중지합니다. 다시 들어오게 되면 재시작될거예요.")
+            event.reply("리스트에 있는 음악이 있을 경우 자동으로 초기화합니다.")
             return
         }
 

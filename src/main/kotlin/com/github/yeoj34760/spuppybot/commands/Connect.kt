@@ -88,11 +88,11 @@ object Connect : Command() {
         }
     }
 
-    fun checkPause(playerControl: PlayerControl?) {
+    private fun checkPause(playerControl: PlayerControl?) {
         if (playerControl != null && !playerControl.isPaused())
             playerControl.resume()
     }
-    fun checkPermission(permissionOverrides: Array<PermissionOverride>): Boolean {
+    private fun checkPermission(permissionOverrides: Array<PermissionOverride>): Boolean {
         permissionOverrides.forEach {
             if (it.permissionHolder!!.hasPermission(Permission.VOICE_CONNECT))
                 return false

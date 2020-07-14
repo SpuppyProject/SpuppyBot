@@ -1,6 +1,10 @@
 package com.github.yeoj34760.spuppybot
 
+import com.github.yeoj34760.spuppybot.Settings.OWNER_ID
+import com.github.yeoj34760.spuppybot.Settings.PREFIX
+import com.github.yeoj34760.spuppybot.Settings.TOKEN
 import com.github.yeoj34760.spuppybot.commands.*
+import com.github.yeoj34760.spuppybot.music.LeaveAutoListener
 import com.jagrosh.jdautilities.command.CommandClientBuilder
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter
 import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory
@@ -10,9 +14,8 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 
-const val TOKEN = ""
-const val OWNER_ID = ""
-const val VERSION = "4.0-beta3"
+
+
 
 val playerManager = DefaultAudioPlayerManager()
 val waiter = EventWaiter()
@@ -22,7 +25,7 @@ fun main(args: Array<String>) {
     playerManager.registerSourceManager(YoutubeAudioSourceManager())
     AudioSourceManagers.registerRemoteSources(playerManager)
     val commandClient = CommandClientBuilder()
-            .setPrefix("?")
+            .setPrefix(PREFIX)
             .addCommands(
                     Ping,
                     Play,
@@ -48,6 +51,6 @@ fun main(args: Array<String>) {
     JDABuilder
             .createDefault(TOKEN)
             .setAudioSendFactory(NativeAudioSendFactory())
-            .addEventListeners(commandClient, waiter)
+            .addEventListeners(commandClient, waiter, LeaveAutoListener)
             .build()
 }

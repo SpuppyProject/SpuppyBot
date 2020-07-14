@@ -17,14 +17,14 @@ object Pause : Command() {
             return
         }
 
-        var trackScheduler = GuildManager[id]!!
+        val trackScheduler = GuildManager[id]!!
         if (trackScheduler.isPaused()) {
             trackScheduler.resume()
-            event.channel.sendMessage("일시정지를 했어요.").queue()
+            event.channel.sendMessage("다시 시작했어요.").queue()
         }
         else {
             trackScheduler.pause()
-            event.channel.sendMessage("다시 시작했어요.").queue()
+            event.channel.sendMessage("일시정지를 했어요.").queue()
         }
     }
 }

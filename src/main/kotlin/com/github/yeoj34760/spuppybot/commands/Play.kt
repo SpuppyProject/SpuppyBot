@@ -22,11 +22,13 @@ object Play : Command() {
 
     override fun execute(event: CommandEvent) {
 
+        //유저가 음성 방에 안 들어와 있을 경우
         if (!event.member.voiceState!!.inVoiceChannel()) {
             event.channel.sendMessage("음성 방에 들어와 주세요.").queue()
             return
         }
 
+        //args 값이 없을 경우
         if (event.args.isEmpty()) {
             event.channel.sendMessage("올바르게 써주세요 \n`예시: ?play 진진자라`").queue()
             return
@@ -36,7 +38,7 @@ object Play : Command() {
                 if (checkURL(event.args))
                     Util.youtubePlay(event,it, event.args)
                 else {
-                    var audioList: AudioPlaylist? = youtubeSearch(event.args, it)
+                    val audioList: AudioPlaylist? = youtubeSearch(event.args, it)
                     if (audioList == null)
                         return@queue
 

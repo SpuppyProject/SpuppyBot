@@ -31,9 +31,9 @@ object List : Command() {
         val playerControl = GuildManager.get(id)
         val book = MusicListBook(playerControl!!.trackQueue.toTypedArray())
         val playingTrack = GuildManager.get(event.guild.idLong)!!.playingTrack()
-        val nextMusic = if (playerControl.isLooped) "무한 루프" else "${(playingTrack.duration - playingTrack.position) / 1000}초 남음"
+        val nextMusic = if (playerControl.isLooped) "무한 루프" else if(playerControl.playingTrack().info.isStream) "LIVE" else "${(playingTrack.duration - playingTrack.position) / 1000}초 남음"
         val list = if (playerControl.trackQueue.isEmpty()) "썰렁... 대기열에 아무 것도 없네요." else pageToString(book, pageNumber - 1)
-        val pageContent = if (playerControl.trackQueue.isEmpty()) "page : None" else "page : ${pageNumber}/${book.count()}"
+        val pageContent = if (playerControl.trackQueue.isEmpty()) "page : 백지" else "page : ${pageNumber}/${book.count()}"
 
 
         val embed = EmbedBuilder()

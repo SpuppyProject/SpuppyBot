@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppybot.commands
 
-import com.github.yeoj34760.spuppybot.VERSION
+
+import com.github.yeoj34760.spuppybot.Settings.VERSION
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent

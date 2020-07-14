@@ -2,7 +2,7 @@
 ## 개요
 스퍼피봇은 JDA와 lavaplayer 라이브러리를 이용해 만든 뮤직봇입니다.
 ## 초대하기
-[이 곳 참고](https://discordapp.com/api/oauth2/authorize?client_id=439755380785152000&permissions=0&scope=bot)
+[LINK](https://discordapp.com/api/oauth2/authorize?client_id=439755380785152000&permissions=0&scope=bot)
 
 ## 명령어
 * `?play (음악 제목 or URI)` - 유튜브이용하여 음악을 재생합니다 (음악 제목 or URI)
@@ -19,6 +19,9 @@
 * `?info` - 봇 정보를 불러옵니다.
 * `?loop` - 무한 루프를 설정합니다.
 * `?Remove (정수)` - 특정 음악을 리스트에서 제외시킵니다. 
+
+## 기타
+봇이 나가지거나, 봇이 들어와 있는 음성 채널에 봇 제외한 아무도 없을 경우 자동으로 리스트 초기화되며 나가집니다.
 
 ## 버그 / 기능 요청
 github의 issues 기능을 이용하세요. 
