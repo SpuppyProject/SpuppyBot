@@ -12,7 +12,7 @@ object Loop : Command() {
         aliases = arrayOf("loop", "ㅣ", "ㅣㅐㅔㅔ", "l")
     }
     override fun execute(event: CommandEvent) {
-        var playerControl = GuildManager[event.guild.idLong]
+        val playerControl = GuildManager[event.guild.idLong]
         if (playerControl == null || !playerControl.isPlayed()) {
             event.reply("현재 재생 중이지 않네요")
             return

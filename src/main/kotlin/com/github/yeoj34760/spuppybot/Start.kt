@@ -41,7 +41,8 @@ fun main(args: Array<String>) {
                     NowPlay,
                     Info,
                     Remove,
-                    Loop
+                    Loop,
+                    Help
             )
             .setOwnerId(OWNER_ID)
             .setHelpConsumer { }

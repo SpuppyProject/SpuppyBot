@@ -7,13 +7,14 @@ import com.jagrosh.jdautilities.command.CommandEvent
 object Remove : Command() {
     init {
         name = "remove"
-        aliases = arrayOf("remove", "삭제", "re", "ㄱㄷ", "그")
+        aliases = arrayOf("remove", "삭제", "re", "ㄱㄷ", "그", "ㄱ드ㅐㅍㄷ")
     }
 
     override fun execute(event: CommandEvent) {
         val playerControl = GuildManager[event.guild.idLong]
         if (playerControl == null || playerControl.trackQueue.isEmpty()) {
             event.reply("umm.. 리스트에 음악이 없네요")
+            return
         }
         if (event.args.isEmpty() || event.args.toIntOrNull() == null) {
             event.reply("숫자를 올바르게 써주세요.")

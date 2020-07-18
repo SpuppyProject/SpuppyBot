@@ -17,6 +17,10 @@ init {
         val audioManager = event.guild.audioManager
         GuildManager.check(audioManager, id)
 
+        if (event.args.toIntOrNull() == null) {
+            event.reply("숫자를 제대로 써주세요.")
+        }
+
         val argsInt: Int = event.args.toInt()
 
         if (argsInt in 0..100){
