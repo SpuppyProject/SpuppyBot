@@ -2,6 +2,7 @@ package com.github.yeoj34760.spuppybot.music
 
 import net.dv8tion.jda.api.events.DisconnectEvent
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent
 import net.dv8tion.jda.api.hooks.EventListener
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
@@ -12,8 +13,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 object LeaveAutoListener : ListenerAdapter() {
     override fun onGuildVoiceLeave(event: GuildVoiceLeaveEvent) {
 
-        val playerControl = GuildManager[event.guild.idLong]
+        if (!event.guild.audioManager.isConnected  || event.guild.audioManager.connectedChannel!!.idLong != event.channelLeft.idLong)
+            return
 
+        val playerControl = GuildManager[event.guild.idLong] ?: return
+        playerControl.isLooped = false
+        playerControl.resume()
         if (event.member.user.idLong != event.jda.selfUser.idLong) {
             if (event.channelLeft.members.size <= 1)
                 stopMusic(playerControl)
@@ -24,6 +29,14 @@ object LeaveAutoListener : ListenerAdapter() {
         stopMusic(playerControl)
     }
 
+    override fun onGuildVoiceMove(event: GuildVoiceMoveEvent) {
+        val playerControl = GuildManager[event.guild.idLong] ?: return
+        playerControl.isLooped = false
+        playerControl.resume()
+        if (event.guild.audioManager.isConnected && event.guild.audioManager.connectedChannel!!.members.size <= 1)
+            stopMusic(GuildManager[event.guild.idLong])
+
+    }
 
    private fun stopMusic(playerControl: PlayerControl?) {
         if (playerControl != null && playerControl.isPlayed())

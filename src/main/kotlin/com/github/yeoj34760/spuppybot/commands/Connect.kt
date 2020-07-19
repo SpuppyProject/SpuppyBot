@@ -24,19 +24,15 @@ object Connect : Command() {
         }
 
         //입력한 이름하고 동일한 채널이 있으면 channels에 추가합니다.
-        val channels: ArrayList<VoiceChannel> = ArrayList()
+        val channels: ArrayList<VoiceChannel> = addChannels(event)
         var playerControl: PlayerControl? = GuildManager.tracks[event.guild.idLong]
-        if (event.args.isNotEmpty()) {
-            event.guild.voiceChannels.forEach { channel ->
-                if (event.args == channel.name)
-                    channels.add(channel)
-            }
-        }
 
         if (channels.isEmpty()) {
             event.reply("해당 이름을 가진 사용가능한 음성 채널을 못 찾았습니다.")
             return
-        } else if (channels.size == 1) {
+        }
+
+        if (channels.size == 1) {
             if (!checkPermission(channels[0].permissionOverrides.toTypedArray())) {
                 event.reply("해당 음성 채널에 들어가려했으나 권한이 없네요.")
                 return
@@ -45,11 +41,13 @@ object Connect : Command() {
             checkPause(playerControl)
             event.reply("들어왔습니다.")
             return
-        } else if (channels.isNotEmpty()) {
+        }
+
+        if (channels.isNotEmpty()) {
             var result: String = ""
             var messageId: Long?
             for (x in 0 until channels.size)
-                result += "${x+1}. ${channels[x].name}\n"
+                result += "${x + 1}. ${channels[x].name}\n"
 
             val embed = EmbedBuilder()
                     .setAuthor(event.author.name, null, event.author.avatarUrl)
@@ -58,8 +56,6 @@ object Connect : Command() {
                     .build()
 
             event.channel.sendMessage("이름이 중복된 음성 채널들을 발견했습니다.\n아래에 있는 숫자중에 골라주세요.\n").embed(embed).queue { messageId = it.idLong }
-
-
 
             waiter.waitForEvent(MessageReceivedEvent::class.java,
                     { e ->
@@ -73,13 +69,12 @@ object Connect : Command() {
                         val number: Int? = e.message.contentRaw.toIntOrNull()
                         //1 ~ channels 최대 사이에 맞지 않을 경우 넘어갑니다.
                         if (number != null && number in 1..channels.size) {
-                            if (!checkPermission(channels[number-1].permissionOverrides.toTypedArray()))
-                            {
+                            if (!checkPermission(channels[number - 1].permissionOverrides.toTypedArray())) {
                                 event.reply("해당 음성 채널에 들어가려했으나 권한이 없네요.")
                                 return@waitForEvent
                             }
                             checkPause(playerControl)
-                            event.guild.audioManager.openAudioConnection(channels[number-1])
+                            event.guild.audioManager.openAudioConnection(channels[number - 1])
                             event.reply("들어왔어요.")
                             return@waitForEvent
                         }
@@ -88,10 +83,26 @@ object Connect : Command() {
         }
     }
 
+    /**
+     * 입력한 값하고 채널 이름이 동일하면 해당 채널에 리스트추가합니다.
+     */
+    private fun addChannels(event: CommandEvent): ArrayList<VoiceChannel> {
+        val temp: ArrayList<VoiceChannel> = ArrayList()
+
+        for (v in event.guild.voiceChannels)
+            if (event.args == v.name)
+                temp.add(v)
+
+        return temp
+
+    }
+
+
     private fun checkPause(playerControl: PlayerControl?) {
         if (playerControl != null && !playerControl.isPaused())
             playerControl.resume()
     }
+
     private fun checkPermission(permissionOverrides: Array<PermissionOverride>): Boolean {
         permissionOverrides.forEach {
             if (it.permissionHolder!!.hasPermission(Permission.VOICE_CONNECT))

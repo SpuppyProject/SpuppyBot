@@ -19,11 +19,7 @@ object Skip : Command() {
         }
 
         val nextTrack = GuildManager[id]!!.skip()
-      /*  event.channel.sendMessage("다음 음악으로 재생합니다. -> `${if (nextTrack != null) "${nextTrack.info.title}\n신청자: ${x.user.name}"
-        else {
-            GuildManager.get(id).stop();event.guild.audioManager.closeAudioConnection(); "없음"
-        }}`").queue()
-       */
+
         if (nextTrack != null) {
             event.channel.sendMessage("다음 음악인 `${nextTrack.info.title}`을(를) 재생합니다.").queue()
         }

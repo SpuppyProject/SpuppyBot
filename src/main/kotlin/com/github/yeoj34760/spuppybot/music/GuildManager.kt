@@ -9,13 +9,13 @@ object GuildManager {
    operator fun get(id: Long): PlayerControl? = tracks[id]
 
     /**
-     * 해당 길드에 트랙 스캐율러가 생성되어 있지 않으면 생성합니다.
+     * 해당 길드에 플레이어 컨트롤러가 생성되어 있지 않으면 생성합니다.
      */
     fun check(audioManager: AudioManager, id: Long) {
         val playerControl: PlayerControl
         if (!tracks.containsKey(id)) {
             val player = playerManager.createPlayer()
-            player.volume = 85
+            player.volume = 70
             audioManager.sendingHandler = PlayerSendHandler(player)
             playerControl = PlayerControl(player, audioManager)
             player.addListener(playerControl)

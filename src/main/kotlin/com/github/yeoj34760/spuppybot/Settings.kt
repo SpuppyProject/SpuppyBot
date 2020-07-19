@@ -4,5 +4,5 @@ object Settings {
     const val TOKEN = ""
     const val PREFIX = "?"
     const val OWNER_ID = ""
-    const val VERSION = "4.0-beta4"
+    const val VERSION = "4.0-beta5"
 }

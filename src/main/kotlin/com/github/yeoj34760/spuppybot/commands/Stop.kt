@@ -10,7 +10,7 @@ import com.jagrosh.jdautilities.command.CommandEvent
 object Stop : Command() {
     init {
         super.name = "stop"
-        super.aliases = arrayOf("stop", "st", "ㄴㅅ", "스탑", "종료")
+        super.aliases = arrayOf("stop", "st", "ㄴㅅ", "스탑", "종료", "ㄴ새ㅔ")
     }
     override fun execute(event: CommandEvent?) {
         val id = event!!.guild.idLong
