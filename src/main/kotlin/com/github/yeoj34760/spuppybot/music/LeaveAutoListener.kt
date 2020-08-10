@@ -1,5 +1,6 @@
 package com.github.yeoj34760.spuppybot.music
 
+import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import net.dv8tion.jda.api.events.DisconnectEvent
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent
@@ -16,7 +17,7 @@ object LeaveAutoListener : ListenerAdapter() {
         if (!event.guild.audioManager.isConnected  || event.guild.audioManager.connectedChannel!!.idLong != event.channelLeft.idLong)
             return
 
-        val playerControl = GuildManager[event.guild.idLong] ?: return
+        val playerControl = playerControls[event.guild.idLong] ?: return
         playerControl.isLooped = false
         playerControl.resume()
         if (event.member.user.idLong != event.jda.selfUser.idLong) {
@@ -30,11 +31,11 @@ object LeaveAutoListener : ListenerAdapter() {
     }
 
     override fun onGuildVoiceMove(event: GuildVoiceMoveEvent) {
-        val playerControl = GuildManager[event.guild.idLong] ?: return
+        val playerControl = playerControls[event.guild.idLong] ?: return
         playerControl.isLooped = false
         playerControl.resume()
         if (event.guild.audioManager.isConnected && event.guild.audioManager.connectedChannel!!.members.size <= 1)
-            stopMusic(GuildManager[event.guild.idLong])
+            stopMusic(playerControls[event.guild.idLong])
 
     }
 

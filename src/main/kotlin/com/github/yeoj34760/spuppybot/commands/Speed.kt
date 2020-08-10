@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppybot.commands
 
 import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 
@@ -15,12 +16,12 @@ object Speed : Command() {
     }
 
     override fun execute(event: CommandEvent) {
-        if (GuildManager[event.guild.idLong] == null || !GuildManager[event.guild.idLong]!!.isPlayed()) {
+        if (playerControls[event.guild.idLong] == null || !playerControls[event.guild.idLong]!!.isPlayed()) {
             event.reply("재생 중이지 않네요")
             return
         }
 
-        if (GuildManager[event.guild.idLong]!!.playingTrack().info.isStream) {
+        if (playerControls[event.guild.idLong]!!.playingTrack().info.isStream) {
             event.reply("라이브 음악은 speed 기능을 제공하지 않습니다.")
             return
         }
@@ -31,7 +32,7 @@ object Speed : Command() {
             null -> event.reply("올바르지 않은 값이네요")
             //올바르게 받을 경우
             in 0.1..5.0 -> {
-                GuildManager[event.guild.idLong]!!.speed(number)
+                playerControls[event.guild.idLong]!!.speed(number)
                 event.reply("`$number` 속도로 설정했습니다.")
             }
             //미만이거나 초과할 경우

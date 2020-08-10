@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppybot.commands
 
 import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.other.MusicListBook
 import com.github.yeoj34760.spuppybot.other.Util
@@ -21,16 +22,16 @@ object List : Command() {
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
 
-        if (GuildManager[id] == null || !GuildManager.get(id)!!.isPlayed()) {
+        if (GuildManager.playerControls[id] == null || !GuildManager.playerControls[id]!!.isPlayed()) {
             event.channel.sendMessage("뭔가 엄청난 걸 보여드리고 싶었지만 아쉽게도 아무 음악이 없네요").queue()
             return
         }
 
         //입력한 args가 없을 경우 1로 지정합니다.
         val pageNumber      = if (event.args.isEmpty()) 1 else event.args.toInt()
-        val playerControl   = GuildManager.get(id)
+        val playerControl   = playerControls[id]
         val book            = MusicListBook(playerControl!!.trackQueue.toTypedArray())
-        val playingTrack    = GuildManager.get(event.guild.idLong)!!.playingTrack()
+        val playingTrack    = playerControl.playingTrack()
         val nextMusic       = if (playerControl.isLooped) "무한 루프" else if (playerControl.playingTrack().info.isStream) "LIVE" else "${(playingTrack.duration - playingTrack.position) / 1000}초 남음"
         val list            = if (playerControl.trackQueue.isEmpty()) "썰렁... 대기열에 아무 것도 없네요." else pageToString(book, pageNumber - 1)
         val pageContent     = if (playerControl.trackQueue.isEmpty()) "page : 백지" else "page : ${pageNumber}/${book.count()}"

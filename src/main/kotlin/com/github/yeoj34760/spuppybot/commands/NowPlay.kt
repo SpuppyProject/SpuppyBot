@@ -14,12 +14,12 @@ object NowPlay : Command() {
         aliases = arrayOf("now", "nowplay", "np", "ㅞ", "ㅜㅐㅈ")
     }
     override fun execute(event: CommandEvent) {
-        if (GuildManager[event.guild.idLong] == null || !GuildManager[event.guild.idLong]!!.isPlayed()) {
+        if (GuildManager.playerControls[event.guild.idLong] == null || !GuildManager.playerControls[event.guild.idLong]!!.isPlayed()) {
             event.reply("현재 재생중인 음악이 없네요.")
             return
         }
 
-        var playerControl = GuildManager[event.guild.idLong]
+        var playerControl = GuildManager.playerControls[event.guild.idLong]
         var playingTrack = playerControl!!.playingTrack()
         val timeMax: String; val timeRemain : String
         if (playingTrack.info.isStream) {

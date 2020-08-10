@@ -25,7 +25,7 @@ object Connect : Command() {
 
         //입력한 이름하고 동일한 채널이 있으면 channels에 추가합니다.
         val channels: ArrayList<VoiceChannel> = addChannels(event)
-        var playerControl: PlayerControl? = GuildManager.tracks[event.guild.idLong]
+        var playerControl: PlayerControl? = GuildManager.playerControls[event.guild.idLong]
 
         if (channels.isEmpty()) {
             event.reply("해당 이름을 가진 사용가능한 음성 채널을 못 찾았습니다.")

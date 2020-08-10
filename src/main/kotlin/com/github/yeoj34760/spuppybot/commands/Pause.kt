@@ -12,12 +12,12 @@ object Pause : Command() {
     }
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
-        if (GuildManager[id] == null || !GuildManager.tracks[id]!!.isPlayed()) {
+        if (GuildManager.playerControls[id] == null || !GuildManager.playerControls[id]!!.isPlayed()) {
             event.channel.sendMessage("현재 재생되어 있지 않네요").queue()
             return
         }
 
-        val trackScheduler = GuildManager[id]!!
+        val trackScheduler = GuildManager.playerControls[id]!!
         if (trackScheduler.isPaused()) {
             trackScheduler.resume()
             event.channel.sendMessage("다시 시작했어요.").queue()

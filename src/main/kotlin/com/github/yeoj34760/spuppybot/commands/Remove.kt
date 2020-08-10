@@ -11,7 +11,7 @@ object Remove : Command() {
     }
 
     override fun execute(event: CommandEvent) {
-        val playerControl = GuildManager[event.guild.idLong]
+        val playerControl = GuildManager.playerControls[event.guild.idLong]
         if (playerControl == null || playerControl.trackQueue.isEmpty()) {
             event.reply("umm.. 리스트에 음악이 없네요")
             return

@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppybot.commands
 
 import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 
@@ -24,7 +25,7 @@ init {
         val argsInt: Int = event.args.toInt()
 
         if (argsInt in 0..100){
-            GuildManager[id]!!.volume(argsInt)
+            playerControls[id]!!.volume(argsInt)
             event.channel.sendMessage("볼륨 조절했습니다. 현재 볼륨 상태 -> $argsInt").queue()
         }
         else

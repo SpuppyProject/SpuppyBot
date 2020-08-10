@@ -2,6 +2,7 @@ package com.github.yeoj34760.spuppybot.other
 
 import com.github.yeoj34760.spuppybot.music.AudioStartHandler
 import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import com.github.yeoj34760.spuppybot.playerManager
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
@@ -31,7 +32,7 @@ object Util {
             GuildManager.check(audioManager, id)
             if (!audioManager.isConnected)
                 audioManager.openAudioConnection(it)
-            playerManager.loadItem(url, AudioStartHandler(event, message, GuildManager[id]!!))
+            playerManager.loadItem(url, AudioStartHandler(event, message, playerControls[id]!!))
         }
     }
 
