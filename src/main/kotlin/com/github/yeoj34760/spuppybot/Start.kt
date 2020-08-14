@@ -21,6 +21,8 @@ val playerManager = DefaultAudioPlayerManager()
 val waiter = EventWaiter()
 
 fun main(args: Array<String>) {
+
+    Class.forName("org.mariadb.jdbc.Driver")
     //플레이어매니저 설정
     playerManager.registerSourceManager(YoutubeAudioSourceManager())
     AudioSourceManagers.registerRemoteSources(playerManager)
@@ -42,7 +44,8 @@ fun main(args: Array<String>) {
                     Info,
                     Remove,
                     Loop,
-                    Help
+                    Help,
+                    Test
             )
             .setOwnerId(OWNER_ID)
             .setHelpConsumer { }

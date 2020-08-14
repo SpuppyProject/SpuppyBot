@@ -5,4 +5,7 @@ object Settings {
     const val PREFIX = "?"
     const val OWNER_ID = ""
     const val VERSION = "4.0-beta5"
+    const val SPUPPYDB_URL = ""
+    const val SPUPPYDB_USER = ""
+    const val SPUPPYDB_PASSWORD = ""
 }
