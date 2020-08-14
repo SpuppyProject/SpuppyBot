@@ -2,6 +2,7 @@ package com.github.yeoj34760.spuppybot.commands
 
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
+import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 
@@ -14,6 +15,9 @@ init {
     super.aliases = arrayOf("volume", "v", "ㅍ", "패", "페", "패ㅣㅕㅡㄷ")
 }
     override fun execute(event: CommandEvent) {
+        if (!SpuppyDBController.checkGuild(event.guild.idLong))
+            SpuppyDBController.addGuild(event.guild.idLong)
+
         val id = event.guild.idLong
         val audioManager = event.guild.audioManager
         GuildManager.check(audioManager, id)
@@ -25,10 +29,11 @@ init {
         val argsInt: Int = event.args.toInt()
 
         if (argsInt in 0..100){
-            playerControls[id]!!.volume(argsInt)
-            event.channel.sendMessage("볼륨 조절했습니다. 현재 볼륨 상태 -> $argsInt").queue()
+            playerControls[id]?.volume(argsInt)
+            SpuppyDBController.guildVolume(id, argsInt)
+            event.channel.sendMessage("`$argsInt`(으)로 볼륨 조정했습니다.").queue()
         }
         else
-            event.channel.sendMessage("죄송합니다만, 숫자를 1 ~ 100로 지정해주세요.").queue()
+            event.channel.sendMessage("죄송합니다만, 숫자를 1 ~ 100으로 지정해주세요.").queue()
     }
 }
