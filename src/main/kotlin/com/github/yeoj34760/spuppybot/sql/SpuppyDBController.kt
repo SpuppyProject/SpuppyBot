@@ -43,7 +43,7 @@ object SpuppyDBController {
      * */
     fun checkGuild(id: Long): Boolean = check(id, "guild")
 
-    fun addUserBox(id: Long) = add(id, "user_box")
+    fun addUserBox(id: Long, name: String, url: String) = connection.createStatement().execute("insert into user_box (id, url, name) values ($id, '$url', '$name')")
     fun delUserBox(id: Long) = del(id, "user_box")
     fun checkUserBox(id: Long): Boolean = check(id, "user_box")
     fun fromUserBox(id: Long): UserBox {
@@ -62,7 +62,33 @@ object SpuppyDBController {
     fun delUser(id: Long) = del(id, "user")
     fun checkUser(id: Long): Boolean = check(id, "user")
 
+    fun checkCommand(name: String, command: String): Boolean {
+      val t =  connection.createStatement().executeQuery("select command from command where name = '$name'")
+            while (t.next()) {
+                if (command.startsWith(Settings.PREFIX + t.getString(1)))
+                    return true
+            }
 
+        return false
+    }
+
+    fun checkCommandGroup(group: String, command: String): Boolean {
+        val t = connection.createStatement().executeQuery("select command from command where _group = '$group'")
+        while (t.next()) {
+            if (command.startsWith(Settings.PREFIX + t.getString(1)))
+                return true
+        }
+
+        return false
+    }
+
+    fun commandFromList(name: String): List<String> {
+        val t = connection.createStatement().executeQuery("select command from command where name = '$name'")
+        val temp = arrayListOf<String>()
+        while (t.next())
+            temp.add(t.getString(1))
+        return temp
+    }
     private fun add(id: Long, table: String) = connection.createStatement().execute("insert into $table (id) values ($id)")
     private fun del(id: Long, table: String) = connection.createStatement().execute("delete from $table where id = $id")
     private fun check(id: Long, table: String): Boolean {

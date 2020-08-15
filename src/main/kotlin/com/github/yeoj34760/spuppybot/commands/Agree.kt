@@ -11,15 +11,15 @@ import java.util.concurrent.TimeUnit
 object Agree : Command() {
     init {
         name = "agree"
-        aliases = arrayOf("동의", "agree")
+        aliases = arrayOf("동의", "가입")
     }
     override fun execute(event: CommandEvent) {
         event.reply("test")
         waiter.waitForEvent(MessageReceivedEvent::class.java,
                 { e ->
-                    e.author.equals(event.author)
-                            && e.channel.equals(event.channel)
-                            && !e.message.equals(event.message)
+                    e.author == event.author
+                            && e.channel == event.channel
+                            && e.message != event.message
               },
 
                 { action ->

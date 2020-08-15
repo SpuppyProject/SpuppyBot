@@ -4,6 +4,7 @@ import com.github.yeoj34760.spuppybot.Settings.OWNER_ID
 import com.github.yeoj34760.spuppybot.Settings.PREFIX
 import com.github.yeoj34760.spuppybot.Settings.TOKEN
 import com.github.yeoj34760.spuppybot.commands.*
+import com.github.yeoj34760.spuppybot.commands.box.Box
 import com.github.yeoj34760.spuppybot.music.LeaveAutoListener
 import com.github.yeoj34760.spuppybot.other.GuildAutoDeleteListener
 import com.jagrosh.jdautilities.command.CommandClientBuilder
@@ -60,7 +61,8 @@ fun main(args: Array<String>) {
                     commandClient,
                     waiter,
                     LeaveAutoListener,
-                    GuildAutoDeleteListener
+                    GuildAutoDeleteListener,
+                    Box
             )
             .build()
 }
