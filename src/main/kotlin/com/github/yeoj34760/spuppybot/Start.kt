@@ -44,7 +44,9 @@ fun main(args: Array<String>) {
                     Remove,
                     Loop,
                     Help,
-                    Test
+                    Test,
+                    Agree,
+                    Cancel
             )
             .setOwnerId(OWNER_ID)
             .setHelpConsumer { }
