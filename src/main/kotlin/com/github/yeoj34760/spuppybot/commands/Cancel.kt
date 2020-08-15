@@ -15,7 +15,7 @@ object Cancel : Command() {
          event.reply("가입안되어 있네요")
          return
      }
-        SpuppyDBController.delUserBox(event.author.idLong)
+        SpuppyDBController.delAllUserBox(event.author.idLong)
         SpuppyDBController.delUser(event.author.idLong)
         event.reply("탈퇴 됨")
     }

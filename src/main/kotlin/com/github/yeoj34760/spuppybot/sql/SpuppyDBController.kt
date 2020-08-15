@@ -5,7 +5,7 @@ import java.sql.Connection
 import java.sql.DriverManager
 
 object SpuppyDBController {
-   private val connection =
+    val connection =
             DriverManager.getConnection(
                     Settings.SPUPPYDB_URL,
                     Settings.SPUPPYDB_USER,
@@ -43,31 +43,43 @@ object SpuppyDBController {
      * */
     fun checkGuild(id: Long): Boolean = check(id, "guild")
 
-    fun addUserBox(id: Long, name: String, url: String) = connection.createStatement().execute("insert into user_box (id, url, name) values ($id, '$url', '$name')")
-    fun delUserBox(id: Long) = del(id, "user_box")
+    fun addUserBox(id: Long, name: String, url: String) = connection.createStatement().execute("insert into user_box (id, url, name, number) values ($id, '$url', '$name', ${fromMaxNumber(id)+1})")
+    fun delAllUserBox(id: Long) = del(id, "user_box")
+    fun delUserBox(id: Long, number: Int) = connection.createStatement().execute("delete from user_box where id = $id and number = $number")
     fun checkUserBox(id: Long): Boolean = check(id, "user_box")
-    fun fromUserBox(id: Long): UserBox {
-        val tempURL = arrayListOf<String>()
-        val tempName = arrayListOf<String>()
-        val t = connection.createStatement().executeQuery("select * from user_box where id = $id")
-        while (t.next()) {
-            tempURL.add(t.getString(UserBoxSql.URL.ordinal))
-            tempName.add(t.getString(UserBoxSql.NAME.ordinal))
-        }
+    fun fromUserBox(id: Long): List<UserBox> {
+        val tempBox = arrayListOf<UserBox>()
+        val t = connection.createStatement().executeQuery("select url, name, number from user_box where id = $id")
+        while (t.next())
+            tempBox.add(UserBox(t.getString(1), t.getString(2), t.getInt(3)))
 
-        return UserBox(tempURL, tempName)
+        return tempBox
+    }
+
+    /**
+     * 해당 유저박스에서 몇 개 있는지 반환합니다.
+     * 찾을 수 없을 경우 0로 반환합니다.
+     */
+    fun fromMaxNumber(id: Long): Int {
+        val t = connection.createStatement().executeQuery("select max(number) from user_box where id = $id")
+        if (t.next()) return t.getInt(1)
+        return 0
     }
 
     fun addUser(id: Long) = add(id, "user")
     fun delUser(id: Long) = del(id, "user")
     fun checkUser(id: Long): Boolean = check(id, "user")
 
+
+    /**
+     * 입력한 커맨드가 데이터베이스에 등록되어 있는지 확인합니다.
+     */
     fun checkCommand(name: String, command: String): Boolean {
-      val t =  connection.createStatement().executeQuery("select command from command where name = '$name'")
-            while (t.next()) {
-                if (command.startsWith(Settings.PREFIX + t.getString(1)))
-                    return true
-            }
+        val t = connection.createStatement().executeQuery("select command from command where name = '$name'")
+        while (t.next()) {
+            if (command.startsWith(Settings.PREFIX + t.getString(1)))
+                return true
+        }
 
         return false
     }
@@ -89,6 +101,7 @@ object SpuppyDBController {
             temp.add(t.getString(1))
         return temp
     }
+
     private fun add(id: Long, table: String) = connection.createStatement().execute("insert into $table (id) values ($id)")
     private fun del(id: Long, table: String) = connection.createStatement().execute("delete from $table where id = $id")
     private fun check(id: Long, table: String): Boolean {

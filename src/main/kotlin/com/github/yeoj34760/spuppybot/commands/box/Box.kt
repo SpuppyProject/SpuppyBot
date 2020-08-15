@@ -11,8 +11,10 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import net.dv8tion.jda.api.requests.RestAction
 
 object Box : ListenerAdapter() {
     override fun onMessageReceived(event: MessageReceivedEvent) {
@@ -21,11 +23,28 @@ object Box : ListenerAdapter() {
 
         if (SpuppyDBController.checkCommand(Commands.BOX, event.message.contentRaw))
             event.channel.sendMessage("test")
-        if (SpuppyDBController.checkCommand(Commands.ADD_BOX, event.message.contentRaw)) {
 
+
+        //box add 커맨드
+        if (SpuppyDBController.checkCommand(Commands.ADD_BOX, event.message.contentRaw)) {
             SpuppyDBController.commandFromList(Commands.ADD_BOX).forEach {
                 if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
                     addBox(event, event.message.contentRaw.substring(Settings.PREFIX.length + it.length).replace(" ", ""))
+                    return
+                }
+            }
+        }
+
+        //box list 커맨드
+        if (SpuppyDBController.checkCommand(Commands.LIST_BOX, event.message.contentRaw))
+            listBox(event)
+
+        SpuppyDBController.commandFromList(Commands.REMOVE_BOX).forEach {
+            if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
+                val temp = event.message.contentRaw.substring(Settings.PREFIX.length + it.length).replace(" ", "")
+                println(temp)
+                if (temp.toIntOrNull() != null) {
+                    removeBox(event, temp.toInt())
                     return
                 }
             }
@@ -56,5 +75,34 @@ object Box : ListenerAdapter() {
                 })
             }
         }
+    }
+
+    private fun listBox(event: MessageReceivedEvent) {
+        val listTemp: StringBuffer = StringBuffer()
+        var userBoxs = SpuppyDBController.fromUserBox(event.author.idLong)
+        for (x in 1..userBoxs.size) {
+            val userBox = userBoxs.stream().filter { it.number == x }.findAny().get()
+            listTemp.append("${userBox.number}. ${userBox.name}\n\n")
+
+        }
+
+        val embed = EmbedBuilder()
+                .setAuthor(event.author.name, null, event.author.avatarUrl)
+                .setTitle("`${event.author.name}`의 박스")
+                .setDescription(listTemp.toString())
+                .build()
+        event.channel.sendMessage(embed).queue()
+    }
+
+    private fun removeBox(event: MessageReceivedEvent, args: Int) {
+        val max = SpuppyDBController.fromMaxNumber(event.author.idLong)
+        when (args) {
+            !in 1..max -> {
+                event.channel.sendMessage("1 ~ $max 입력해주세요.").queue(); return
+            }
+        }
+        SpuppyDBController.delUserBox(event.author.idLong, args)
+        SpuppyDBController.connection.createStatement().execute("update user_box set number = number - 1 where id = ${event.author.idLong} and number > $args")
+        event.channel.sendMessage("삭제완료").queue()
     }
 }
