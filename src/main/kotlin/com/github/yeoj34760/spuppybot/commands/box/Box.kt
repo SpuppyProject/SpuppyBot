@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.requests.RestAction
+import java.util.concurrent.SubmissionPublisher
 
 object Box : ListenerAdapter() {
     override fun onMessageReceived(event: MessageReceivedEvent) {
@@ -22,16 +23,14 @@ object Box : ListenerAdapter() {
             event.channel.sendMessage("박스 기능을 이용하시려면 ₩?가입₩로 입력하셔서 가입해주세요")
 
         if (SpuppyDBController.checkCommand(Commands.BOX, event.message.contentRaw))
-            event.channel.sendMessage("test")
+            event.channel.sendMessage("test").queue()
 
 
         //box add 커맨드
-        if (SpuppyDBController.checkCommand(Commands.ADD_BOX, event.message.contentRaw)) {
-            SpuppyDBController.commandFromList(Commands.ADD_BOX).forEach {
-                if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
-                    addBox(event, event.message.contentRaw.substring(Settings.PREFIX.length + it.length).replace(" ", ""))
-                    return
-                }
+        SpuppyDBController.commandFromList(Commands.ADD_BOX).forEach {
+            if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
+                addBox(event, event.message.contentRaw.substring(Settings.PREFIX.length + it.length).replace(" ", ""))
+                return
             }
         }
 
@@ -39,16 +38,22 @@ object Box : ListenerAdapter() {
         if (SpuppyDBController.checkCommand(Commands.LIST_BOX, event.message.contentRaw))
             listBox(event)
 
+
+        //box remove 커맨드
         SpuppyDBController.commandFromList(Commands.REMOVE_BOX).forEach {
             if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
+                //prefix 문자열 and 커맨드 문자열을 뺀 문자열을 임시저장합니다.
                 val temp = event.message.contentRaw.substring(Settings.PREFIX.length + it.length).replace(" ", "")
-                println(temp)
+                //뺀 문자열에서 숫자외에 들어가있으면 패스합니다.
                 if (temp.toIntOrNull() != null) {
                     removeBox(event, temp.toInt())
                     return
                 }
             }
         }
+
+        if (SpuppyDBController.checkCommand(Commands.REMOVE_ALL_BOX, event.message.contentRaw))
+            removeAllBox(event)
     }
 
     private fun addBox(event: MessageReceivedEvent, args: String) {
@@ -96,13 +101,21 @@ object Box : ListenerAdapter() {
 
     private fun removeBox(event: MessageReceivedEvent, args: Int) {
         val max = SpuppyDBController.fromMaxNumber(event.author.idLong)
+
         when (args) {
             !in 1..max -> {
                 event.channel.sendMessage("1 ~ $max 입력해주세요.").queue(); return
             }
         }
+
         SpuppyDBController.delUserBox(event.author.idLong, args)
+        //재정렬
         SpuppyDBController.connection.createStatement().execute("update user_box set number = number - 1 where id = ${event.author.idLong} and number > $args")
         event.channel.sendMessage("삭제완료").queue()
+    }
+
+    private fun removeAllBox(event: MessageReceivedEvent) {
+        SpuppyDBController.delAllUserBox(event.author.idLong)
+        event.channel.sendMessage("모두 삭제했습니다.").queue()
     }
 }

@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppybot.music
 
 import com.github.yeoj34760.spuppybot.playerManager
+import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import net.dv8tion.jda.api.managers.AudioManager
 
 object GuildManager {
@@ -13,8 +14,11 @@ object GuildManager {
         val playerControl: PlayerControl
         if (!playerControls.containsKey(id)) {
             val player = playerManager.createPlayer()
-            //볼륨 값 70로 설정
-            player.volume = 70
+            val volume = SpuppyDBController.guildVolume(id)
+            if (volume != -1)
+            player.volume = volume
+            else
+                player.volume = 70
             //오디오매니저에 플레이어 등록
             audioManager.sendingHandler = PlayerSendHandler(player)
             //해당 길드전용 플레이어컨트롤 생성
