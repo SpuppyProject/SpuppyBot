@@ -17,7 +17,8 @@ class PlayerControl(private val audioPlayer: AudioPlayer, private val audioManag
     var trackQueue: Queue<AudioTrack> = LinkedList<AudioTrack>()
         private set
 
-    var isLooped : Boolean = false
+    var isLooped: Boolean = false
+
     /**
      * 대기열 수를 반환합니다.
      */

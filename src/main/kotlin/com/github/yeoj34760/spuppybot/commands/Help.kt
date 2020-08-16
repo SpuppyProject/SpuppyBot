@@ -8,8 +8,9 @@ import net.dv8tion.jda.api.EmbedBuilder
 object Help : Command() {
     init {
         name = "help"
-        aliases = arrayOf("help", "헬프", "도움말","ㅚ데")
+        aliases = arrayOf("help", "헬프", "도움말", "ㅚ데")
     }
+
     override fun execute(event: CommandEvent) {
         val embed = EmbedBuilder()
                 .setColor(DiscordColor.YELLOW)

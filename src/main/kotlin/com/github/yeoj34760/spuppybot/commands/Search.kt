@@ -4,7 +4,6 @@ import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.waiter
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -46,10 +45,10 @@ object Search : Command() {
             }
 
             //숫자고르라고 메세지로 수정함.
-            it.editMessage("아래에 있는 숫자중에 골라주세요").queue() {
+            it.editMessage("아래에 있는 숫자중에 골라주세요").queue {
                 var embedId: Long? = null
-                event.channel.sendMessage(createEmbed(event.args, result)).queue() {
-                     embedId = it.idLong
+                event.channel.sendMessage(createEmbed(event.args, result)).queue {
+                    embedId = it.idLong
                 }
                 waiter.waitForEvent(MessageReceivedEvent::class.java,
                         { e ->
@@ -64,15 +63,14 @@ object Search : Command() {
                             //1 ~ 5 사이에 맞지 않을 경우 넘어갑니다.
                             if (number != null && number in 1..5) {
                                 event.channel.deleteMessageById(embedId!!).queue()
-                                Util.youtubePlay(event, it, audioList.tracks[number-1].identifier)
-                            }
-                            else {
+                                Util.youtubePlay(event, it, audioList.tracks[number - 1].identifier)
+                            } else {
                                 it.editMessage("취소됨").queue()
                                 event.channel.deleteMessageById(embedId!!).queue()
                                 return@waitForEvent
                             }
 
-                        }, 1, TimeUnit.MINUTES) {  }
+                        }, 1, TimeUnit.MINUTES) { }
             }
         }
     }

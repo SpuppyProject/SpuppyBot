@@ -5,8 +5,6 @@ import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.playerManager
 import com.github.yeoj34760.spuppybot.sql.Commands
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
@@ -14,8 +12,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
-import net.dv8tion.jda.api.requests.RestAction
-import java.util.concurrent.SubmissionPublisher
 
 object Box : ListenerAdapter() {
     override fun onMessageReceived(event: MessageReceivedEvent) {

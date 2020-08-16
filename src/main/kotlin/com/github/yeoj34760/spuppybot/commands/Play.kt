@@ -5,9 +5,6 @@ import com.github.yeoj34760.spuppybot.other.Util.checkURL
 import com.github.yeoj34760.spuppybot.other.Util.youtubeSearch
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 
 
@@ -34,20 +31,19 @@ object Play : Command() {
             return
         }
 
-            event.channel.sendMessage("검색 중..").queue {
-                if (checkURL(event.args))
-                    Util.youtubePlay(event,it, event.args)
-                else {
-                    val audioList: AudioPlaylist? = youtubeSearch(event.args, it)
-                    if (audioList == null)
-                        return@queue
-
-                    else if (audioList.tracks.isEmpty()) {
-                        it.editMessage("검색 결과가 없습니다").queue()
-                        return@queue
-                    }
-                    Util.youtubePlay(event,it, audioList.tracks[0].info.identifier)
+        event.channel.sendMessage("검색 중..").queue {
+            if (checkURL(event.args))
+                Util.youtubePlay(event, it, event.args)
+            else {
+                val audioList: AudioPlaylist? = youtubeSearch(event.args, it)
+                if (audioList == null)
+                    return@queue
+                else if (audioList.tracks.isEmpty()) {
+                    it.editMessage("검색 결과가 없습니다").queue()
+                    return@queue
                 }
+                Util.youtubePlay(event, it, audioList.tracks[0].info.identifier)
             }
+        }
     }
 }

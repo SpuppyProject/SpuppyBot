@@ -4,14 +4,10 @@ import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.other.MusicListBook
-import com.github.yeoj34760.spuppybot.other.Util
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.EmbedBuilder
-import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.entities.User
-import java.lang.StringBuilder
 
 object List : Command() {
     init {
@@ -28,13 +24,13 @@ object List : Command() {
         }
 
         //입력한 args가 없을 경우 1로 지정합니다.
-        val pageNumber      = if (event.args.isEmpty()) 1 else event.args.toInt()
-        val playerControl   = playerControls[id]
-        val book            = MusicListBook(playerControl!!.trackQueue.toTypedArray())
-        val playingTrack    = playerControl.playingTrack()
-        val nextMusic       = if (playerControl.isLooped) "무한 루프" else if (playerControl.playingTrack().info.isStream) "LIVE" else "${(playingTrack.duration - playingTrack.position) / 1000}초 남음"
-        val list            = if (playerControl.trackQueue.isEmpty()) "썰렁... 대기열에 아무 것도 없네요." else pageToString(book, pageNumber - 1)
-        val pageContent     = if (playerControl.trackQueue.isEmpty()) "page : 백지" else "page : ${pageNumber}/${book.count()}"
+        val pageNumber = if (event.args.isEmpty()) 1 else event.args.toInt()
+        val playerControl = playerControls[id]
+        val book = MusicListBook(playerControl!!.trackQueue.toTypedArray())
+        val playingTrack = playerControl.playingTrack()
+        val nextMusic = if (playerControl.isLooped) "무한 루프" else if (playerControl.playingTrack().info.isStream) "LIVE" else "${(playingTrack.duration - playingTrack.position) / 1000}초 남음"
+        val list = if (playerControl.trackQueue.isEmpty()) "썰렁... 대기열에 아무 것도 없네요." else pageToString(book, pageNumber - 1)
+        val pageContent = if (playerControl.trackQueue.isEmpty()) "page : 백지" else "page : ${pageNumber}/${book.count()}"
 
 
         val embed = EmbedBuilder()

@@ -1,7 +1,6 @@
 package com.github.yeoj34760.spuppybot.sql
 
 import com.github.yeoj34760.spuppybot.Settings
-import java.sql.Connection
 import java.sql.DriverManager
 
 object SpuppyDBController {
@@ -43,7 +42,7 @@ object SpuppyDBController {
      * */
     fun checkGuild(id: Long): Boolean = check(id, "guild")
 
-    fun addUserBox(id: Long, name: String, url: String) = connection.createStatement().execute("insert into user_box (id, url, name, number) values ($id, '$url', '$name', ${fromMaxNumber(id)+1})")
+    fun addUserBox(id: Long, name: String, url: String) = connection.createStatement().execute("insert into user_box (id, url, name, number) values ($id, '$url', '$name', ${fromMaxNumber(id) + 1})")
     fun delAllUserBox(id: Long) = del(id, "user_box")
     fun delUserBox(id: Long, number: Int) = connection.createStatement().execute("delete from user_box where id = $id and number = $number")
     fun checkUserBox(id: Long): Boolean = check(id, "user_box")

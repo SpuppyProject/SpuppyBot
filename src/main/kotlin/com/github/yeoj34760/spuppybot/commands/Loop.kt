@@ -1,8 +1,6 @@
 package com.github.yeoj34760.spuppybot.commands
 
 import com.github.yeoj34760.spuppybot.music.GuildManager
-import com.github.yeoj34760.spuppybot.music.PlayerControl
-import com.github.yeoj34760.spuppybot.playerManager
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 
@@ -11,6 +9,7 @@ object Loop : Command() {
         name = "loop"
         aliases = arrayOf("loop", "ㅣ", "ㅣㅐㅔㅔ", "l")
     }
+
     override fun execute(event: CommandEvent) {
         val playerControl = GuildManager.playerControls[event.guild.idLong]
         if (playerControl == null || !playerControl.isPlayed()) {
@@ -21,8 +20,7 @@ object Loop : Command() {
         if (playerControl.isLooped) {
             event.reply("무한 루프를 해체했습니다.")
             playerControl.isLooped = false
-        }
-        else {
+        } else {
             event.reply("무한 루프를 적용했습니다.")
             playerControl.isLooped = true
         }

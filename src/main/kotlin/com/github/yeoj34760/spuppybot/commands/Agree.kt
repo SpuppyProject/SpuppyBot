@@ -13,6 +13,7 @@ object Agree : Command() {
         name = "agree"
         aliases = arrayOf("동의", "가입")
     }
+
     override fun execute(event: CommandEvent) {
         event.reply("test")
         waiter.waitForEvent(MessageReceivedEvent::class.java,
@@ -20,7 +21,7 @@ object Agree : Command() {
                     e.author == event.author
                             && e.channel == event.channel
                             && e.message != event.message
-              },
+                },
 
                 { action ->
                     if (action.message.contentDisplay == "동의") {

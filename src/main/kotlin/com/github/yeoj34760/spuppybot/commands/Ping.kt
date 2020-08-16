@@ -9,6 +9,7 @@ object Ping : Command() {
         super.help = "핑!"
         super.aliases = arrayOf("ping")
     }
+
     override fun execute(event: CommandEvent) {
         event.channel.sendMessage(event.args).queue()
     }

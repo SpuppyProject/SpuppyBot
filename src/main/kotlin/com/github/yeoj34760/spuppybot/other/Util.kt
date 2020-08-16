@@ -50,7 +50,7 @@ object Util {
     //fun youtubeSearch(query: String): AudioPlaylist? = YoutubeSearchProvider().loadSearchResult(query) { YoutubeAudioTrack(it, YoutubeAudioSourceManager()) } as? AudioPlaylist
     fun youtubeSearch(query: String, errorMessage: Message): AudioPlaylist? {
         return try {
-           YoutubeSearchProvider().loadSearchResult(query) { YoutubeAudioTrack(it, YoutubeAudioSourceManager()) } as? AudioPlaylist
+            YoutubeSearchProvider().loadSearchResult(query) { YoutubeAudioTrack(it, YoutubeAudioSourceManager()) } as? AudioPlaylist
 
         } catch (e: Exception) {
             errorMessage.editMessage("오류가 발생했습니다. \nlog : ${e.message}").queue()

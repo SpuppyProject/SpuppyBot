@@ -21,7 +21,7 @@ object Remove : Command() {
             return
         }
         val number = event.args.toInt()
-        playerControl!!
+        playerControl
         when {
             number > playerControl.trackQueue.size -> event.reply("해당 넘버에서 음악이 없네요")
             number < 1 -> event.reply("1 미만을 입력하실 수 없습니다.")

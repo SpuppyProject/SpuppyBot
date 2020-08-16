@@ -12,6 +12,7 @@ object Info : Command() {
         name = "info"
         aliases = arrayOf("info", "ㅑㅜ래", "ㅑㅜ")
     }
+
     override fun execute(event: CommandEvent) {
         val embed = EmbedBuilder()
                 .setAuthor("SpuppyBot")

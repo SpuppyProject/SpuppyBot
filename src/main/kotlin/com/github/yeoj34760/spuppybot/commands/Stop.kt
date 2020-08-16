@@ -1,6 +1,5 @@
 package com.github.yeoj34760.spuppybot.commands
 
-import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
@@ -13,6 +12,7 @@ object Stop : Command() {
         super.name = "stop"
         super.aliases = arrayOf("stop", "st", "ㄴㅅ", "스탑", "종료", "ㄴ새ㅔ")
     }
+
     override fun execute(event: CommandEvent?) {
         val id = event!!.guild.idLong
 
@@ -22,8 +22,7 @@ object Stop : Command() {
             event.channel.sendMessage("음악을 멈추었어요").queue()
             playerControls[id]!!.stop()
             event.guild.audioManager.closeAudioConnection()
-        }
-        else
+        } else
             event.channel.sendMessage("현재 재생되어 있지 않네요").queue()
     }
 }

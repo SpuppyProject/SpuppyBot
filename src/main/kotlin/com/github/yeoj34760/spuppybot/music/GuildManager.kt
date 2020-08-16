@@ -16,7 +16,7 @@ object GuildManager {
             val player = playerManager.createPlayer()
             val volume = SpuppyDBController.guildVolume(id)
             if (volume != -1)
-            player.volume = volume
+                player.volume = volume
             else
                 player.volume = 70
             //오디오매니저에 플레이어 등록

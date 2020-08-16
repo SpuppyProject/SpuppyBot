@@ -13,6 +13,7 @@ object NowPlay : Command() {
         name = "NowPlay"
         aliases = arrayOf("now", "nowplay", "np", "ㅞ", "ㅜㅐㅈ")
     }
+
     override fun execute(event: CommandEvent) {
         if (GuildManager.playerControls[event.guild.idLong] == null || !GuildManager.playerControls[event.guild.idLong]!!.isPlayed()) {
             event.reply("현재 재생중인 음악이 없네요.")
@@ -21,13 +22,13 @@ object NowPlay : Command() {
 
         var playerControl = GuildManager.playerControls[event.guild.idLong]
         var playingTrack = playerControl!!.playingTrack()
-        val timeMax: String; val timeRemain : String
+        val timeMax: String
+        val timeRemain: String
         if (playingTrack.info.isStream) {
             timeRemain = "LIVE"
             timeMax = "LIVE"
-        }
-        else {
-            timeRemain = "${(playingTrack.duration-playingTrack.position) / 1000}초"
+        } else {
+            timeRemain = "${(playingTrack.duration - playingTrack.position) / 1000}초"
             timeMax = "${playingTrack.duration / 1000}초"
         }
         val embed = EmbedBuilder()
