@@ -71,33 +71,21 @@ object SpuppyDBController {
 
 
     /**
-     * 입력한 커맨드가 데이터베이스에 등록되어 있는지 확인합니다.
+     * Map<name, List<command>>
      */
-    fun checkCommand(name: String, command: String): Boolean {
-        val t = connection.createStatement().executeQuery("select command from command where name = '$name'")
-        while (t.next()) {
-            if (command.startsWith(Settings.PREFIX + t.getString(1)))
-                return true
+    fun fromGroup(group: String): Map<String, List<String>> {
+        val temp: MutableMap<String, MutableList<String>> = mutableMapOf()
+        val t = connection.createStatement().executeQuery("select name, command from command where _group = '$group'")
+        while (t.next()) next@
+        {
+            val name = t.getString(1)
+            val command = t.getString(2)
+
+           if (!temp.containsKey(name))
+               temp[name] = arrayListOf()
+
+            temp[name]!!.add(command)
         }
-
-        return false
-    }
-
-    fun checkCommandGroup(group: String, command: String): Boolean {
-        val t = connection.createStatement().executeQuery("select command from command where _group = '$group'")
-        while (t.next()) {
-            if (command.startsWith(Settings.PREFIX + t.getString(1)))
-                return true
-        }
-
-        return false
-    }
-
-    fun commandFromList(name: String): List<String> {
-        val t = connection.createStatement().executeQuery("select command from command where name = '$name'")
-        val temp = arrayListOf<String>()
-        while (t.next())
-            temp.add(t.getString(1))
         return temp
     }
 

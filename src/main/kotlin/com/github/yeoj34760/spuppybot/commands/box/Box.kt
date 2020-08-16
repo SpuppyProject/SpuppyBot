@@ -12,46 +12,46 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import java.lang.Exception
+import kotlin.streams.toList
 
 object Box : ListenerAdapter() {
     override fun onMessageReceived(event: MessageReceivedEvent) {
-        if (SpuppyDBController.checkCommandGroup("box", event.message.contentRaw) && !SpuppyDBController.checkUser(event.author.idLong))
-            event.channel.sendMessage("박스 기능을 이용하시려면 ₩?가입₩로 입력하셔서 가입해주세요")
 
-        if (SpuppyDBController.checkCommand(Commands.BOX, event.message.contentRaw))
-            event.channel.sendMessage("test").queue()
+        val boxCommands = SpuppyDBController.fromGroup("box")
 
 
-        //box add 커맨드
-        SpuppyDBController.commandFromList(Commands.ADD_BOX).forEach {
-            if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
-                addBox(event, event.message.contentRaw.substring(Settings.PREFIX.length + it.length).replace(" ", ""))
-                return
+        boxCommands.keys.forEach { key ->
+            val commands = boxCommands[key]!!
+            if (!commandCheck(event, commands))
+                return@forEach
+
+            val  args: String? = fromArgs(event, commands)
+            when (key) {
+                Commands.ADD_BOX ->  addBox(event, args!!)
+                Commands.LIST_BOX -> listBox(event)
+                Commands.REMOVE_BOX -> removeBox(event, args!!.toInt())
+                Commands.REMOVE_ALL_BOX -> removeAllBox(event)
             }
         }
-
-        //box list 커맨드
-        if (SpuppyDBController.checkCommand(Commands.LIST_BOX, event.message.contentRaw))
-            listBox(event)
-
-
-        //box remove 커맨드
-        SpuppyDBController.commandFromList(Commands.REMOVE_BOX).forEach {
-            if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
-                //prefix 문자열 and 커맨드 문자열을 뺀 문자열을 임시저장합니다.
-                val temp = event.message.contentRaw.substring(Settings.PREFIX.length + it.length).replace(" ", "")
-                //뺀 문자열에서 숫자외에 들어가있으면 패스합니다.
-                if (temp.toIntOrNull() != null) {
-                    removeBox(event, temp.toInt())
-                    return
-                }
-            }
-        }
-
-        if (SpuppyDBController.checkCommand(Commands.REMOVE_ALL_BOX, event.message.contentRaw))
-            removeAllBox(event)
     }
 
+    private fun fromArgs(event: MessageReceivedEvent, commands: List<String>): String? {
+        commands.forEach {
+            if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
+                return event.message.contentRaw.substring(Settings.PREFIX.length + it.length).replace(" ", "")
+            }
+        }
+        return null
+    }
+    private fun commandCheck(event: MessageReceivedEvent, commands: List<String>): Boolean {
+        commands.forEach {
+            if (event.message.contentRaw.startsWith(Settings.PREFIX + it))
+                return true
+        }
+
+        return false
+    }
     private fun addBox(event: MessageReceivedEvent, args: String) {
         event.channel.sendMessage("검색 중...").queue {
             if (Util.checkURL(args)) {
