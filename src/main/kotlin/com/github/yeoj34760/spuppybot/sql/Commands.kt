@@ -6,4 +6,5 @@ object Commands {
     const val LIST_BOX = "listbox"
     const val REMOVE_BOX = "removebox"
     const val REMOVE_ALL_BOX = "removeallbox"
+    const val COPY_ALL_BOX = "copyallbox"
 }

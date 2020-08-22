@@ -1,21 +1,29 @@
 package com.github.yeoj34760.spuppybot.commands.box
 
 import com.github.yeoj34760.spuppybot.Settings
+import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.playerManager
 import com.github.yeoj34760.spuppybot.sql.Commands
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.UserBoxInfo
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
-import java.lang.Exception
-import kotlin.streams.toList
+import java.util.*
+
 
 object Box : ListenerAdapter() {
+
+
     override fun onMessageReceived(event: MessageReceivedEvent) {
 
         val boxCommands = SpuppyDBController.fromGroup("box")
@@ -26,12 +34,14 @@ object Box : ListenerAdapter() {
             if (!commandCheck(event, commands))
                 return@forEach
 
-            val  args: String? = fromArgs(event, commands)
+            val args: String? = fromArgs(event, commands)
             when (key) {
-                Commands.ADD_BOX ->  addBox(event, args!!)
+                Commands.ADD_BOX -> addBox(event, args!!)
                 Commands.LIST_BOX -> listBox(event)
-                Commands.REMOVE_BOX -> removeBox(event, args!!.toInt())
                 Commands.REMOVE_ALL_BOX -> removeAllBox(event)
+                Commands.REMOVE_BOX -> removeBox(event, args!!.toInt())
+                Commands.COPY_ALL_BOX -> copyAllBox(event)
+
             }
         }
     }
@@ -44,6 +54,7 @@ object Box : ListenerAdapter() {
         }
         return null
     }
+
     private fun commandCheck(event: MessageReceivedEvent, commands: List<String>): Boolean {
         commands.forEach {
             if (event.message.contentRaw.startsWith(Settings.PREFIX + it))
@@ -52,6 +63,8 @@ object Box : ListenerAdapter() {
 
         return false
     }
+
+
     private fun addBox(event: MessageReceivedEvent, args: String) {
         event.channel.sendMessage("검색 중...").queue {
             if (Util.checkURL(args)) {
@@ -61,7 +74,15 @@ object Box : ListenerAdapter() {
                     }
 
                     override fun trackLoaded(track: AudioTrack) {
-                        SpuppyDBController.addUserBox(event.author.idLong, track.info.title, track.info.uri)
+                        val info = UserBoxInfo(
+                                track.info.title,
+                                track.info.length,
+                                track.info.uri,
+                                event.author.name,
+                                track.info.author
+                        )
+                     val infoBase64 =   Base64.getEncoder().encodeToString(Json.encodeToString(info).toByteArray())
+                        SpuppyDBController.addUserBox(event.author.idLong, infoBase64)
                         it.editMessage("추가 됨!").queue()
                     }
 
@@ -81,9 +102,13 @@ object Box : ListenerAdapter() {
     private fun listBox(event: MessageReceivedEvent) {
         val listTemp: StringBuffer = StringBuffer()
         var userBoxs = SpuppyDBController.fromUserBox(event.author.idLong)
+
+        if (userBoxs.isEmpty()) {
+            event.channel.sendMessage("뭔가 엄청난 걸 보여주려고했지만 박스에 아무 것도 없네요.").queue()
+        }
         for (x in 1..userBoxs.size) {
-            val userBox = userBoxs.stream().filter { it.number == x }.findAny().get()
-            listTemp.append("${userBox.number}. ${userBox.name}\n\n")
+            val userBox = userBoxs.stream().filter { it.order == x }.findAny().get()
+            listTemp.append("${userBox.order}. ${userBox.info.title}\n\n")
 
         }
 
@@ -106,12 +131,37 @@ object Box : ListenerAdapter() {
 
         SpuppyDBController.delUserBox(event.author.idLong, args)
         //재정렬
-        SpuppyDBController.connection.createStatement().execute("update user_box set number = number - 1 where id = ${event.author.idLong} and number > $args")
+        SpuppyDBController.connection.createStatement().execute("update user_box set `order` = `order` - 1 where id = ${event.author.idLong} and order > $args")
         event.channel.sendMessage("삭제완료").queue()
     }
 
     private fun removeAllBox(event: MessageReceivedEvent) {
         SpuppyDBController.delAllUserBox(event.author.idLong)
         event.channel.sendMessage("모두 삭제했습니다.").queue()
+    }
+
+    private fun copyAllBox(event: MessageReceivedEvent) {
+        if (GuildManager.playerControls[event.guild.idLong] == null) {
+            event.channel.sendMessage("오류 발생").queue()
+        }
+
+        SpuppyDBController.fromUserBox(event.author.idLong).forEach {
+            playerManager.loadItem(it.info.url, object : AudioLoadResultHandler {
+                override fun loadFailed(exception: FriendlyException) {
+                    event.channel.sendMessage("오류 발생").queue()
+                }
+
+                override fun trackLoaded(track: AudioTrack) {
+                    track.userData = event.author
+                    GuildManager.playerControls[event.guild.idLong]?.playOrAdd(track)
+                }
+
+                override fun noMatches() {
+                    event.channel.sendMessage("오류 발생").queue()
+                }
+
+                override fun playlistLoaded(playlist: AudioPlaylist) {}
+            })
+        }
     }
 }

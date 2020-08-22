@@ -57,7 +57,7 @@ fun main(args: Array<String>) {
 
     JDABuilder
             .createDefault(TOKEN)
-            .setAudioSendFactory(NativeAudioSendFactory())
+    //        .setAudioSendFactory(NativeAudioSendFactory())
             .addEventListeners(
                     commandClient,
                     waiter,

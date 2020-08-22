@@ -1,7 +1,10 @@
 package com.github.yeoj34760.spuppybot.sql
 
 import com.github.yeoj34760.spuppybot.Settings
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.sql.DriverManager
+import java.util.*
 
 object SpuppyDBController {
     val connection =
@@ -42,15 +45,19 @@ object SpuppyDBController {
      * */
     fun checkGuild(id: Long): Boolean = check(id, "guild")
 
-    fun addUserBox(id: Long, name: String, url: String) = connection.createStatement().execute("insert into user_box (id, url, name, number) values ($id, '$url', '$name', ${fromMaxNumber(id) + 1})")
+    fun addUserBox(id: Long, info: String) = connection.createStatement().execute("insert into user_box values ($id, '$info', ${fromMaxNumber(id) + 1})")
     fun delAllUserBox(id: Long) = del(id, "user_box")
-    fun delUserBox(id: Long, number: Int) = connection.createStatement().execute("delete from user_box where id = $id and number = $number")
+    fun delUserBox(id: Long, order: Int) = connection.createStatement().execute("delete from user_box where id = $id and `order` = $order")
     fun checkUserBox(id: Long): Boolean = check(id, "user_box")
     fun fromUserBox(id: Long): List<UserBox> {
         val tempBox = arrayListOf<UserBox>()
-        val t = connection.createStatement().executeQuery("select url, name, number from user_box where id = $id")
-        while (t.next())
-            tempBox.add(UserBox(t.getString(1), t.getString(2), t.getInt(3)))
+        val t = connection.createStatement().executeQuery("select info, `order` from user_box where id = $id")
+        while (t.next()) {
+            val json = Base64.getDecoder().decode(t.getString(1))
+            val info = Json.decodeFromString<UserBoxInfo>(String(json))
+            val order: Int = t.getString(2).toInt()
+            tempBox.add(UserBox(info, order))
+        }
 
         return tempBox
     }
@@ -60,7 +67,7 @@ object SpuppyDBController {
      * 찾을 수 없을 경우 0로 반환합니다.
      */
     fun fromMaxNumber(id: Long): Int {
-        val t = connection.createStatement().executeQuery("select max(number) from user_box where id = $id")
+        val t = connection.createStatement().executeQuery("select max(`order`) from user_box where id = $id")
         if (t.next()) return t.getInt(1)
         return 0
     }
