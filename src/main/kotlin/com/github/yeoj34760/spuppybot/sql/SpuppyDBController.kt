@@ -47,11 +47,17 @@ object SpuppyDBController {
 
     fun addUserBox(id: Long, info: String) = connection.createStatement().execute("insert into user_box values ($id, '$info', ${fromMaxNumber(id) + 1})")
     fun delAllUserBox(id: Long) = del(id, "user_box")
-    fun delUserBox(id: Long, order: Int) = connection.createStatement().execute("delete from user_box where id = $id and `order` = $order")
+    fun delUserBox(id: Long, order: Int) {
+        val statement = connection.createStatement()
+        statement.execute("delete from user_box where id = $id and `order` = $order")
+        //재정렬
+        statement.execute("update user_box set `order` = `order` - 1 where id = $id and `order` > $order")
+    }
+
     fun checkUserBox(id: Long): Boolean = check(id, "user_box")
     fun fromUserBox(id: Long): List<UserBox> {
         val tempBox = arrayListOf<UserBox>()
-        val t = connection.createStatement().executeQuery("select info, `order` from user_box where id = $id")
+        val t = connection.createStatement().executeQuery("select info, `order` from user_box where id = $id order by `order`")
         while (t.next()) {
             val json = Base64.getDecoder().decode(t.getString(1))
             val info = Json.decodeFromString<UserBoxInfo>(String(json))
@@ -62,6 +68,14 @@ object SpuppyDBController {
         return tempBox
     }
 
+    /**
+     * 순서를 서로 바꿉니다.
+     */
+    fun moveBox(id: Long, num1: Int, num2: Int) {
+        val statement = connection.createStatement()
+        //dog same
+        statement.execute("update user_box a inner join user_box b on a.`order` <> b.`order` set a.`order` = b.`order` where a.`order` in ($num1,$num2) and b.`order` in ($num1,$num2)")
+    }
     /**
      * 해당 유저박스에서 몇 개 있는지 반환합니다.
      * 찾을 수 없을 경우 0로 반환합니다.
@@ -88,8 +102,8 @@ object SpuppyDBController {
             val name = t.getString(1)
             val command = t.getString(2)
 
-           if (!temp.containsKey(name))
-               temp[name] = arrayListOf()
+            if (!temp.containsKey(name))
+                temp[name] = arrayListOf()
 
             temp[name]!!.add(command)
         }
@@ -103,3 +117,5 @@ object SpuppyDBController {
         return t.next() && t.getInt(1) >= 1
     }
 }
+
+

@@ -7,4 +7,5 @@ object Commands {
     const val REMOVE_BOX = "removebox"
     const val REMOVE_ALL_BOX = "removeallbox"
     const val COPY_ALL_BOX = "copyallbox"
+    const val MOVE_BOX = "movebox"
 }

@@ -45,7 +45,6 @@ fun main(args: Array<String>) {
                     Info,
                     Remove,
                     Loop,
-                    Help,
                     Test,
                     Agree,
                     Cancel

@@ -8,11 +8,9 @@ import com.github.yeoj34760.spuppybot.sql.Commands
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.github.yeoj34760.spuppybot.sql.UserBoxInfo
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.dv8tion.jda.api.EmbedBuilder
@@ -36,21 +34,27 @@ object Box : ListenerAdapter() {
 
             val args: String? = fromArgs(event, commands)
             when (key) {
-                Commands.ADD_BOX -> addBox(event, args!!)
+                Commands.ADD_BOX -> addBox(event, args)
                 Commands.LIST_BOX -> listBox(event)
                 Commands.REMOVE_ALL_BOX -> removeAllBox(event)
-                Commands.REMOVE_BOX -> removeBox(event, args!!.toInt())
+                Commands.REMOVE_BOX -> removeBox(event, args?.toIntOrNull())
                 Commands.COPY_ALL_BOX -> copyAllBox(event)
+                Commands.MOVE_BOX -> moveBox(event, args)
 
             }
         }
     }
 
     private fun fromArgs(event: MessageReceivedEvent, commands: List<String>): String? {
-        commands.forEach {
-            if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
-                return event.message.contentRaw.substring(Settings.PREFIX.length + it.length).replace(" ", "")
+        try {
+            commands.forEach {
+                if (event.message.contentRaw.startsWith(Settings.PREFIX + it)) {
+                    return event.message.contentRaw.substring(Settings.PREFIX.length + it.length+1)
+                }
             }
+        }
+        catch (e: Exception) {
+            return null
         }
         return null
     }
@@ -65,7 +69,16 @@ object Box : ListenerAdapter() {
     }
 
 
-    private fun addBox(event: MessageReceivedEvent, args: String) {
+    /**
+     * url이용하여 관련 정보를 얻어서 직렬화로 작업 한 뒤에 base64로 인코딩하여 데이터베이스에 저장합니다.
+     * 트랙 정보(UserBoxInfo) -> json(직렬화) -> Base64(인코딩)
+     * 데이터베이스에서 트랙 정보얻을 때 반대 반향으로 진행함.
+     */
+    private fun addBox(event: MessageReceivedEvent, args: String?) {
+        if (args == null) {
+            event.channel.sendMessage("명령어를 제대로 적어주세요.\n예시: `${Settings.PREFIX}box add https://youtu.be/HZo539SVHJ4`").queue()
+            return
+        }
         event.channel.sendMessage("검색 중...").queue {
             if (Util.checkURL(args)) {
                 playerManager.loadItem(args, object : AudioLoadResultHandler {
@@ -74,15 +87,7 @@ object Box : ListenerAdapter() {
                     }
 
                     override fun trackLoaded(track: AudioTrack) {
-                        val info = UserBoxInfo(
-                                track.info.title,
-                                track.info.length,
-                                track.info.uri,
-                                event.author.name,
-                                track.info.author
-                        )
-                     val infoBase64 =   Base64.getEncoder().encodeToString(Json.encodeToString(info).toByteArray())
-                        SpuppyDBController.addUserBox(event.author.idLong, infoBase64)
+                        sendBox(event, track)
                         it.editMessage("추가 됨!").queue()
                     }
 
@@ -91,12 +96,30 @@ object Box : ListenerAdapter() {
                     }
 
                     override fun playlistLoaded(playlist: AudioPlaylist) {
-                        it.editMessage("test").queue()
+                        playlist.tracks.forEach { track ->
+                            sendBox(event, track)
+                        }
                     }
 
                 })
             }
+            else {
+            val s =    Util.youtubeSearch(args, it)
+                s
+            }
         }
+    }
+
+    private fun sendBox(event: MessageReceivedEvent, track: AudioTrack) {
+        val info = UserBoxInfo(
+                track.info.title,
+                track.info.length,
+                track.info.uri,
+                event.author.name,
+                track.info.author
+        )
+        val infoBase64 = Base64.getEncoder().encodeToString(Json.encodeToString(info).toByteArray())
+        SpuppyDBController.addUserBox(event.author.idLong, infoBase64)
     }
 
     private fun listBox(event: MessageReceivedEvent) {
@@ -109,7 +132,6 @@ object Box : ListenerAdapter() {
         for (x in 1..userBoxs.size) {
             val userBox = userBoxs.stream().filter { it.order == x }.findAny().get()
             listTemp.append("${userBox.order}. ${userBox.info.title}\n\n")
-
         }
 
         val embed = EmbedBuilder()
@@ -120,7 +142,11 @@ object Box : ListenerAdapter() {
         event.channel.sendMessage(embed).queue()
     }
 
-    private fun removeBox(event: MessageReceivedEvent, args: Int) {
+    private fun removeBox(event: MessageReceivedEvent, args: Int?) {
+        if (args == null) {
+            event.channel.sendMessage("명령어를 제대로 써주세요.\n예시: `${Settings.PREFIX}box remove 1`").queue()
+            return
+        }
         val max = SpuppyDBController.fromMaxNumber(event.author.idLong)
 
         when (args) {
@@ -130,8 +156,6 @@ object Box : ListenerAdapter() {
         }
 
         SpuppyDBController.delUserBox(event.author.idLong, args)
-        //재정렬
-        SpuppyDBController.connection.createStatement().execute("update user_box set `order` = `order` - 1 where id = ${event.author.idLong} and order > $args")
         event.channel.sendMessage("삭제완료").queue()
     }
 
@@ -141,8 +165,15 @@ object Box : ListenerAdapter() {
     }
 
     private fun copyAllBox(event: MessageReceivedEvent) {
-        if (GuildManager.playerControls[event.guild.idLong] == null) {
-            event.channel.sendMessage("오류 발생").queue()
+        //유저가 음성 방에 안 들어와 있을 경우
+        if (!event.member!!.voiceState!!.inVoiceChannel()) {
+            event.channel.sendMessage("음성 방에 들어와 주세요.").queue()
+            return
+        }
+
+        if (GuildManager.playerControls[event.guild.idLong] == null || !event.guild.audioManager.isConnected) {
+            GuildManager.check(event.guild.audioManager, event.guild.idLong)
+            event.guild.audioManager.openAudioConnection(event.member!!.voiceState!!.channel)
         }
 
         SpuppyDBController.fromUserBox(event.author.idLong).forEach {
@@ -160,8 +191,26 @@ object Box : ListenerAdapter() {
                     event.channel.sendMessage("오류 발생").queue()
                 }
 
-                override fun playlistLoaded(playlist: AudioPlaylist) {}
+                override fun playlistLoaded(playlist: AudioPlaylist) {/*정상적으로 데이터를 받았다면 이 함수가 쓸 일이 없음*/
+                }
             })
         }
+    }
+
+    private fun moveBox(event: MessageReceivedEvent, args: String?) {
+        if (args == null) {
+            event.channel.sendMessage("명령어를 올 바르게 해주세요.\n예시: `${Settings.PREFIX}box move 1 2`")
+            return
+        }
+        val order1: Int? = args.split(" ")[0].toIntOrNull()
+        val order2: Int? = args.split(" ")[1].toIntOrNull()
+        val max = SpuppyDBController.fromMaxNumber(event.author.idLong)
+        if (order1 == null || order2 == null || order1 > max || order1 < 0 || order2 > max || order2 < 0)
+        {
+            event.channel.sendMessage("올바르게 숫자를 입력해주세요.").queue()
+            return
+        }
+        SpuppyDBController.moveBox(event.guild.idLong, order1, order2)
+        event.channel.sendMessage("성공!").queue()
     }
 }

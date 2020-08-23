@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppybot.commands
 
 
+import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.Settings.VERSION
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.jagrosh.jdautilities.command.Command
@@ -10,7 +11,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 object Info : Command() {
     init {
         name = "info"
-        aliases = arrayOf("info", "ㅑㅜ래", "ㅑㅜ")
+        aliases = arrayOf("help","헬프","도움말","info", "ㅑㅜ래", "ㅑㅜ")
     }
 
     override fun execute(event: CommandEvent) {
@@ -22,9 +23,10 @@ object Info : Command() {
                 .addField("open source", "[GITHUB](https://github.com/yeoj34760/SpuppyBot)", true)
                 .addField("commands", "[CLICK](https://github.com/yeoj34760/SpuppyBot#%EB%AA%85%EB%A0%B9%EC%96%B4)", true)
                 .addField("version", VERSION, true)
-                .addField("developer", "ImperskyPenguin#1090", true)
+                .addField("developer", event.jda.getUserById(Settings.OWNER_ID)!!.asTag, true)
                 .setColor(DiscordColor.BLUE)
                 .build()
+
 
         event.reply(embed)
     }
