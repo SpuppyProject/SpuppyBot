@@ -43,14 +43,35 @@ class PlayerControl(private val audioPlayer: AudioPlayer, private val audioManag
      * 음악을 시작하거나 추가합니다.
      */
     fun playOrAdd(audioTrack: AudioTrack) {
-        println(audioPlayer.playingTrack)
         if (trackQueue.isEmpty() && !isPlayed()) {
-            println("음악 시작됨")
             audioPlayer.playTrack(audioTrack)
             return
         }
-        println("추가됨")
+
         trackQueue.add(audioTrack)
+    }
+
+    fun PlayOrAdd(audioTrack: AudioTrack, num: Int) {
+        if (trackQueue.isEmpty() && !isPlayed()) {
+            audioPlayer.playTrack(audioTrack)
+            return
+        }
+
+        trackQueue.add(audioTrack, num)
+    }
+
+    /**
+     * 특정 번호에 저장합니다.
+     * [1,2,3,4,5,6], 9 -> [1,2,3,9,4,5,6]
+     */
+    private fun Queue<AudioTrack>.add(track: AudioTrack, num: Int) {
+        for (x in 1 until num)
+            this.add(this.poll())
+
+        this.add(track)
+
+        for (x in num until this.size)
+            this.add(this.poll())
     }
 
     /**

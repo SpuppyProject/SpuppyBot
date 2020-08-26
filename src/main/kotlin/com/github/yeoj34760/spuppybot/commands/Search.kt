@@ -37,7 +37,7 @@ object Search : Command() {
                 return@reply
             }
 
-            //audioList에 있는 트랙들에 데이터를 이용해 result에 추가함
+            //audioList에 있는 트랙들의 데이터를 이용해 result에 추가함
             audioList.tracks.forEach {
                 if (i - 1 == 5)
                     return@forEach
@@ -63,7 +63,7 @@ object Search : Command() {
                             //1 ~ 5 사이에 맞지 않을 경우 넘어갑니다.
                             if (number != null && number in 1..5) {
                                 event.channel.deleteMessageById(embedId!!).queue()
-                                Util.youtubePlay(event, it, audioList.tracks[number - 1].identifier)
+                                Util.youtubePlay(event, it, audioList.tracks[number - 1].identifier, null)
                             } else {
                                 it.editMessage("취소됨").queue()
                                 event.channel.deleteMessageById(embedId!!).queue()
@@ -75,7 +75,7 @@ object Search : Command() {
         }
     }
 
-    fun createEmbed(args: String, result: String): MessageEmbed = EmbedBuilder()
+  private  fun createEmbed(args: String, result: String): MessageEmbed = EmbedBuilder()
             .setTitle("SpuppyBot")
             .setDescription(result)
             .setFooter("입력받은 값 : $args")

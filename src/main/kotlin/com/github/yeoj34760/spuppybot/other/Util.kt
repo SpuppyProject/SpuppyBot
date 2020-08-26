@@ -25,14 +25,17 @@ object Util {
     /**
      * 유튜브통해 음악을 재생합니다.
      */
-    fun youtubePlay(event: CommandEvent, message: Message, url: String) {
+    fun youtubePlay(event: CommandEvent, message: Message, url: String, num: Int?) {
         event.member.voiceState!!.channel?.let {
             val id = event.guild.idLong
             val audioManager = event.guild.audioManager
+
             GuildManager.check(audioManager, id)
+
             if (!audioManager.isConnected)
                 audioManager.openAudioConnection(it)
-            playerManager.loadItem(url, AudioStartHandler(event, message, playerControls[id]!!))
+
+            playerManager.loadItem(url, AudioStartHandler(event, message, playerControls[id]!!, num))
         }
     }
 
