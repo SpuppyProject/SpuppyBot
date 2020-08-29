@@ -1,12 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
-
-import com.github.yeoj34760.spuppybot.music.GuildManager
-import com.github.yeoj34760.spuppybot.other.DiscordColor
-import com.github.yeoj34760.spuppybot.other.Util
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
-import net.dv8tion.jda.api.EmbedBuilder
-import net.dv8tion.jda.api.entities.User
+package com.github.yeoj34760.spuppybot.commands.music
 
 object NowPlay : Command() {
     init {

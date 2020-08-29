@@ -1,7 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
-
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
+package com.github.yeoj34760.spuppybot.commands.music
 
 object Disconnect : Command() {
     init {

@@ -4,9 +4,8 @@ import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.playerManager
-import com.github.yeoj34760.spuppybot.sql.Commands
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
-import com.github.yeoj34760.spuppybot.sql.UserBoxInfo
+import com.github.yeoj34760.spuppybot.sql.userbox.UserBoxInfo
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
@@ -20,29 +19,26 @@ import java.util.*
 
 
 object Box : ListenerAdapter() {
-
-
     override fun onMessageReceived(event: MessageReceivedEvent) {
 
-        val boxCommands = SpuppyDBController.fromGroup("box")
-
-
-        boxCommands.keys.forEach { key ->
-            val commands = boxCommands[key]!!
-            if (!commandCheck(event, commands))
-                return@forEach
-
-            val args: String? = fromArgs(event, commands)
-            when (key) {
-                Commands.ADD_BOX -> addBox(event, args)
-                Commands.LIST_BOX -> listBox(event)
-                Commands.REMOVE_ALL_BOX -> removeAllBox(event)
-                Commands.REMOVE_BOX -> removeBox(event, args?.toIntOrNull())
-                Commands.COPY_ALL_BOX -> copyAllBox(event)
-                Commands.MOVE_BOX -> moveBox(event, args)
-
-            }
-        }
+//        val boxCommands = SpuppyDBController.fromGroup("box")
+//
+//
+//        boxCommands.keys.forEach { key ->
+//            val commands = boxCommands[key]!!
+//            if (!commandCheck(event, commands))
+//                return@forEach
+//
+//            val args: String? = fromArgs(event, commands)
+//            when (key) {
+//                CommandNames.ADD_BOX -> addBox(event, args)
+//                CommandNames.LIST_BOX -> listBox(event)
+//                CommandNames.REMOVE_ALL_BOX -> removeAllBox(event)
+//                CommandNames.REMOVE_BOX -> removeBox(event, args?.toIntOrNull())
+//                CommandNames.COPY_ALL_BOX -> copyAllBox(event)
+//                CommandNames.MOVE_BOX -> moveBox(event, args)
+//            }
+//        }
     }
 
     private fun fromArgs(event: MessageReceivedEvent, commands: List<String>): String? {
@@ -100,12 +96,10 @@ object Box : ListenerAdapter() {
                             sendBox(event, track)
                         }
                     }
-
                 })
             }
             else {
-            val s =    Util.youtubeSearch(args, it)
-                s
+            Util.youtubeSearch(args, it)
             }
         }
     }

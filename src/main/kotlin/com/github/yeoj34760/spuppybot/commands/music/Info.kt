@@ -1,12 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
-
-
-import com.github.yeoj34760.spuppybot.Settings
-import com.github.yeoj34760.spuppybot.Settings.VERSION
-import com.github.yeoj34760.spuppybot.other.DiscordColor
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
-import net.dv8tion.jda.api.EmbedBuilder
+package com.github.yeoj34760.spuppybot.commands.music
 
 object Info : Command() {
     init {

@@ -1,13 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
-
-import com.github.yeoj34760.spuppybot.music.GuildManager
-import com.github.yeoj34760.spuppybot.other.Util
-import com.github.yeoj34760.spuppybot.other.Util.checkURL
-import com.github.yeoj34760.spuppybot.other.Util.youtubeSearch
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
-
+package com.github.yeoj34760.spuppybot.commands.music
 
 /**
  * 플레이관련 클래스입니다

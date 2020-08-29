@@ -10,5 +10,7 @@ object Test : Command() {
     }
 
     override fun execute(event: CommandEvent) {
+        event.reply("Hello")
+        super.aliases = arrayOf("t", "tt")
     }
 }

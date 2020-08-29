@@ -1,10 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
-
-import com.github.yeoj34760.spuppybot.music.GuildManager
-import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
+package com.github.yeoj34760.spuppybot.commands.music
 
 /**
  * 볼륨 기능을 제공하기 위한 오브젝트입니다.

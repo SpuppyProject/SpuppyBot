@@ -1,6 +1,9 @@
 package com.github.yeoj34760.spuppybot.sql
 
 import com.github.yeoj34760.spuppybot.Settings
+import com.github.yeoj34760.spuppybot.command.CommandInfo
+import com.github.yeoj34760.spuppybot.sql.userbox.UserBox
+import com.github.yeoj34760.spuppybot.sql.userbox.UserBoxInfo
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.sql.DriverManager
@@ -91,21 +94,13 @@ object SpuppyDBController {
     fun checkUser(id: Long): Boolean = check(id, "user")
 
 
-    /**
-     * Map<name, List<command>>
-     */
-    fun fromGroup(group: String): Map<String, List<String>> {
-        val temp: MutableMap<String, MutableList<String>> = mutableMapOf()
-        val t = connection.createStatement().executeQuery("select name, command from command where _group = '$group'")
-        while (t.next()) next@
+    fun fromCommands(): MutableList<CommandInfo> {
+        val temp: MutableList<CommandInfo> = mutableListOf()
+        val t = connection.createStatement().executeQuery("select name, command, _group from command")
+        while (t.next())
         {
-            val name = t.getString(1)
-            val command = t.getString(2)
-
-            if (!temp.containsKey(name))
-                temp[name] = arrayListOf()
-
-            temp[name]!!.add(command)
+            val tempCommand = CommandInfo(t.getString(1), t.getString(2), t.getString(3))//name, command, group
+            temp.add(tempCommand)
         }
         return temp
     }

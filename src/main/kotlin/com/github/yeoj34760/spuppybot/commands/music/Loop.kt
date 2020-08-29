@@ -1,8 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
-
-import com.github.yeoj34760.spuppybot.music.GuildManager
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
+package com.github.yeoj34760.spuppybot.commands.music
 
 object Loop : Command() {
     init {

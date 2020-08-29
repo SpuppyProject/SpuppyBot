@@ -1,16 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
-
-import com.github.yeoj34760.spuppybot.music.GuildManager
-import com.github.yeoj34760.spuppybot.music.PlayerControl
-import com.github.yeoj34760.spuppybot.waiter
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
-import net.dv8tion.jda.api.EmbedBuilder
-import net.dv8tion.jda.api.Permission
-import net.dv8tion.jda.api.entities.PermissionOverride
-import net.dv8tion.jda.api.entities.VoiceChannel
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import java.util.concurrent.TimeUnit
+package com.github.yeoj34760.spuppybot.commands.music
 
 object Connect : Command() {
     init {

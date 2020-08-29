@@ -1,9 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
-
-import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
-
+package com.github.yeoj34760.spuppybot.commands.music
 
 /**
  * 스피드를 조절해줍니다.

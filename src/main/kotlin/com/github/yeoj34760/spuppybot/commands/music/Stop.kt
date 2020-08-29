@@ -1,8 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
-
-import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandEvent
+package com.github.yeoj34760.spuppybot.commands.music
 
 /**
  * 음악을 멈출 때 쓰입니다.

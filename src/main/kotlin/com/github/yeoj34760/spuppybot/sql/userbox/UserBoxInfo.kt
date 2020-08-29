@@ -1,7 +1,6 @@
-package com.github.yeoj34760.spuppybot.sql
+package com.github.yeoj34760.spuppybot.sql.userbox
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
 
 @Serializable
 data class UserBoxInfo(
