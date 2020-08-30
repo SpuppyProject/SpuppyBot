@@ -1,5 +1,7 @@
 package com.github.yeoj34760.spuppybot.command
 
+import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.music.PlayerControl
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -8,10 +10,14 @@ class CommandEvent(private val messageReceivedEvent: MessageReceivedEvent, prefi
     val args: List<String>
 
     init {
-        val command = messageReceivedEvent.message.contentRaw.substring(prefix.count())
-        val _args = mutableListOf<String>()
-        "(\".+?\"|[^ ]+)".toRegex().findAll(command).iterator().forEach { _args.add(it.value) }
-        args = _args
+        args = if (messageReceivedEvent.message.contentRaw.count() <= prefix.count())
+            listOf()
+        else {
+            val command = messageReceivedEvent.message.contentRaw.substring(prefix.count())
+            val _args = mutableListOf<String>()
+            "(\".+?\"|[^ ]+)".toRegex().findAll(command).iterator().forEach { _args.add(it.value) }
+            _args
+        }
     }
 
 
@@ -20,6 +26,8 @@ class CommandEvent(private val messageReceivedEvent: MessageReceivedEvent, prefi
         args.forEach { temp.append(it) }
         return temp.toString()
     }
+
+    val playerControl: PlayerControl? = GuildManager.playerControls[messageReceivedEvent.guild.idLong]
 
     val channel: MessageChannel = messageReceivedEvent.channel
 
@@ -56,4 +64,6 @@ class CommandEvent(private val messageReceivedEvent: MessageReceivedEvent, prefi
     val webhookMessage: Boolean = messageReceivedEvent.isWebhookMessage
 
     val jda: JDA = messageReceivedEvent.jda
+
+    val guildIdLong: Long = messageReceivedEvent.guild.idLong
 }

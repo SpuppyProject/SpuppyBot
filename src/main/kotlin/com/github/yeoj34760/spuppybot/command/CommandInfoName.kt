@@ -21,7 +21,8 @@ enum class CommandInfoName {
     SKIP,
     SPEED,
     STOP,
-    VOLUME;
+    VOLUME,
+    SHUFFLE;
     fun fromString() : String {
         return when(this) {
             BOX -> "box"
@@ -45,6 +46,7 @@ enum class CommandInfoName {
             SPEED -> "speed"
             STOP -> "stop"
             VOLUME -> "volume"
+            SHUFFLE -> "shuffle"
         }
     }
 }
