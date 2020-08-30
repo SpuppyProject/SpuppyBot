@@ -51,6 +51,8 @@ object AddBox : Command(CommandInfoName.ADD_BOX){
                 })
             }
             else {
+                TODO("비 url 입력 받을 시 대응 기능 추가")
+                it.editMessage("url내놔").queue()
                 Util.youtubeSearch(event.argsToString(), it)
             }
         }

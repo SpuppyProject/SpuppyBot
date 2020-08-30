@@ -1,6 +1,9 @@
 package com.github.yeoj34760.spuppybot.commands.box
 
 import com.github.yeoj34760.spuppybot.Settings
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.playerManager
@@ -18,6 +21,9 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 import java.util.*
 
 
-object Box {
+object Box : Command(CommandInfoName.BOX) {
+    override fun execute(event: CommandEvent) {
+        TODO("BOX 구현")
+    }
 
 }

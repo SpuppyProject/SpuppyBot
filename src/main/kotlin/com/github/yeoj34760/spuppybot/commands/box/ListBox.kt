@@ -6,7 +6,7 @@ import com.github.yeoj34760.spuppybot.command.CommandInfoName
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import net.dv8tion.jda.api.EmbedBuilder
 
-object ListBox : Command(CommandInfoName.LIST) {
+object ListBox : Command(CommandInfoName.LIST_BOX) {
     override fun execute(event: CommandEvent) {
         val listTemp: StringBuffer = StringBuffer()
         var userBoxs = SpuppyDBController.fromUserBox(event.author.idLong)

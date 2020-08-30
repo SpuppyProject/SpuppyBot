@@ -4,15 +4,14 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
-class CommandEvent(private val messageReceivedEvent: MessageReceivedEvent) {
+class CommandEvent(private val messageReceivedEvent: MessageReceivedEvent, prefix: String) {
     val args: List<String>
 
     init {
+        val command = messageReceivedEvent.message.contentRaw.substring(prefix.count())
         val _args = mutableListOf<String>()
-        "(\".+?\"|[^ ]+)".toRegex().findAll(messageReceivedEvent.message.contentRaw).iterator().forEach { _args.add(it.value) }
-        println(_args)
-        //prefix 제외
-        args = _args.drop(1)
+        "(\".+?\"|[^ ]+)".toRegex().findAll(command).iterator().forEach { _args.add(it.value) }
+        args = _args
     }
 
 
@@ -21,13 +20,6 @@ class CommandEvent(private val messageReceivedEvent: MessageReceivedEvent) {
         args.forEach { temp.append(it) }
         return temp.toString()
     }
-//    private fun check(value: String): Boolean {
-//        Commands().forEach {
-//            if (it.command == value)
-//                return true
-//        }
-//        return false
-//    }
 
     val channel: MessageChannel = messageReceivedEvent.channel
 

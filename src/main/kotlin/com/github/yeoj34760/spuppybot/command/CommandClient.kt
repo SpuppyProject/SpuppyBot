@@ -20,11 +20,16 @@ object CommandClient : ListenerAdapter() {
 
         val message = event.message.contentRaw
 
-        Commands().forEach {
-            if (message.startsWith(Settings.PREFIX + it.command)) {
-                val commandEvent: CommandEvent = CommandEvent(event)
-                commands[check(it.name)]!!.execute(commandEvent)
-            }
+//        Commands().forEach {
+//            if (message.startsWith(Settings.PREFIX + it.command+ " ")) {
+//                val commandEvent: CommandEvent = CommandEvent(event, Settings.PREFIX + it.command+ " ")
+//                commands[check(it.name)]!!.execute(commandEvent)
+//            }
+//        }
+        val commandInfo = Commands[message]
+        if (commandInfo != null) {
+            val commandEvent: CommandEvent = CommandEvent(event, Settings.PREFIX + commandInfo.command + " ")
+            commands[check(commandInfo.name)]!!.execute(commandEvent)
         }
 
     }

@@ -41,7 +41,8 @@ fun main(args: Array<String>) {
             ListBox,
             MoveBox,
             RemoveAllBox,
-            RemoveBox)
+            RemoveBox,
+    Box)
     JDABuilder
             .createDefault(TOKEN)
             //        .setAudioSendFactory(NativeAudioSendFactory())
@@ -49,8 +50,7 @@ fun main(args: Array<String>) {
                     CommandClient,
                     waiter,
                     LeaveAutoListener,
-                    GuildAutoDeleteListener,
-                    Box
+                    GuildAutoDeleteListener
             )
             .build()
 }

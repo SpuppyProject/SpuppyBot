@@ -45,7 +45,6 @@ object Play : Command(CommandInfoName.PLAY) {
     }
 
     private fun search(event: CommandEvent) {
-        println(event.argsToString())
         event.channel.sendMessage("검색 중..").queue {
             if (checkURL(event.argsToString()))
                 Util.youtubePlay(event, it, event.argsToString())
