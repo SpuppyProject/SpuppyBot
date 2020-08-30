@@ -1,21 +1,17 @@
 package com.github.yeoj34760.spuppybot
 
-import com.github.yeoj34760.spuppybot.Settings.OWNER_ID
-import com.github.yeoj34760.spuppybot.Settings.PREFIX
 import com.github.yeoj34760.spuppybot.Settings.TOKEN
-import com.github.yeoj34760.spuppybot.commands.*
-import com.github.yeoj34760.spuppybot.commands.List
-import com.github.yeoj34760.spuppybot.commands.box.Box
+import com.github.yeoj34760.spuppybot.command.CommandClient
+import com.github.yeoj34760.spuppybot.commands.box.*
+import com.github.yeoj34760.spuppybot.commands.music.*
+import com.github.yeoj34760.spuppybot.commands.music.List
 import com.github.yeoj34760.spuppybot.music.LeaveAutoListener
 import com.github.yeoj34760.spuppybot.other.GuildAutoDeleteListener
-import com.jagrosh.jdautilities.command.CommandClientBuilder
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter
-import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.entities.Activity
 
 
 val playerManager = DefaultAudioPlayerManager()
@@ -26,38 +22,31 @@ fun main(args: Array<String>) {
     //플레이어매니저 설정
     playerManager.registerSourceManager(YoutubeAudioSourceManager())
     AudioSourceManagers.registerRemoteSources(playerManager)
-    val commandClient = CommandClientBuilder()
-            .setPrefix(PREFIX)
-            .addCommands(
-                    Ping,
-                    Play,
-                    Stop,
-                    Pause,
-                    Skip,
-                    Volume,
-                    List,
-                    Search,
-                    Connect,
-                    Speed,
-                    Disconnect,
-                    NowPlay,
-                    Info,
-                    Remove,
-                    Loop,
-                    Test,
-                    Agree,
-                    Cancel
-            )
-            .setOwnerId(OWNER_ID)
-            .setHelpConsumer { }
-            .setActivity(Activity.playing("?info"))
-            .build()
-
+    CommandClient.addCommands(Connect,
+            Disconnect,
+            Info,
+            List,
+            Loop,
+            NowPlay,
+            Pause,
+            Play,
+            Remove,
+            Search,
+            Skip,
+            Speed,
+            Stop,
+            Volume,
+            AddBox,
+            CopyAllBox,
+            ListBox,
+            MoveBox,
+            RemoveAllBox,
+            RemoveBox)
     JDABuilder
             .createDefault(TOKEN)
-    //        .setAudioSendFactory(NativeAudioSendFactory())
+            //        .setAudioSendFactory(NativeAudioSendFactory())
             .addEventListeners(
-                    commandClient,
+                    CommandClient,
                     waiter,
                     LeaveAutoListener,
                     GuildAutoDeleteListener,

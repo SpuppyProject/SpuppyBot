@@ -1,10 +1,10 @@
 package com.github.yeoj34760.spuppybot.other
 
+import com.github.yeoj34760.spuppybot.command.CommandEvent
 import com.github.yeoj34760.spuppybot.music.AudioStartHandler
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import com.github.yeoj34760.spuppybot.playerManager
-import com.jagrosh.jdautilities.command.CommandEvent
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider
@@ -25,8 +25,8 @@ object Util {
     /**
      * 유튜브통해 음악을 재생합니다.
      */
-    fun youtubePlay(event: CommandEvent, message: Message, url: String, num: Int?) {
-        event.member.voiceState!!.channel?.let {
+    fun youtubePlay(event: CommandEvent, message: Message, url: String) {
+        event.member?.voiceState!!.channel?.let {
             val id = event.guild.idLong
             val audioManager = event.guild.audioManager
 
@@ -35,7 +35,7 @@ object Util {
             if (!audioManager.isConnected)
                 audioManager.openAudioConnection(it)
 
-            playerManager.loadItem(url, AudioStartHandler(event, message, playerControls[id]!!, num))
+            playerManager.loadItem(url, AudioStartHandler(event, message, playerControls[id]!!))
         }
     }
 

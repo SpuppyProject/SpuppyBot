@@ -1,10 +1,14 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-object Info : Command() {
-    init {
-        name = "info"
-        aliases = arrayOf("help","헬프","도움말","info", "ㅑㅜ래", "ㅑㅜ")
-    }
+import com.github.yeoj34760.spuppybot.Settings
+import com.github.yeoj34760.spuppybot.Settings.VERSION
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.other.DiscordColor
+import net.dv8tion.jda.api.EmbedBuilder
+
+object Info : Command(CommandInfoName.INFO) {
 
     override fun execute(event: CommandEvent) {
         val embed = EmbedBuilder()
@@ -20,6 +24,6 @@ object Info : Command() {
                 .build()
 
 
-        event.reply(embed)
+        event.channel.sendMessage(embed).queue()
     }
 }

@@ -1,28 +1,29 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-object Remove : Command() {
-    init {
-        name = "remove"
-        aliases = arrayOf("remove", "삭제", "re", "ㄱㄷ", "그", "ㄱ드ㅐㅍㄷ")
-    }
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.music.GuildManager
+
+object Remove : Command(CommandInfoName.REMOVE) {
 
     override fun execute(event: CommandEvent) {
         val playerControl = GuildManager.playerControls[event.guild.idLong]
         if (playerControl == null || playerControl.trackQueue.isEmpty()) {
-            event.reply("umm.. 리스트에 음악이 없네요")
+            event.channel.sendMessage("umm.. 리스트에 음악이 없네요").queue()
             return
         }
-        if (event.args.isEmpty() || event.args.toIntOrNull() == null) {
-            event.reply("숫자를 올바르게 써주세요.")
+        if (event.args.isEmpty() || event.args[0].toIntOrNull() == null) {
+            event.channel.sendMessage("숫자를 올바르게 써주세요.").queue()
             return
         }
-        val number = event.args.toInt()
+        val number = event.args[0].toInt()
         playerControl
         when {
-            number > playerControl.trackQueue.size -> event.reply("해당 넘버에서 음악이 없네요")
-            number < 1 -> event.reply("1 미만을 입력하실 수 없습니다.")
+            number > playerControl.trackQueue.size -> event.channel.sendMessage("해당 넘버에서 음악이 없네요").queue()
+            number < 1 -> event.channel.sendMessage("1 미만을 입력하실 수 없습니다.").queue()
             else -> {
-                event.reply("`${playerControl.trackQueue.toTypedArray()[number - 1].info.title}`을(를) 삭제됨")
+                event.channel.sendMessage("`${playerControl.trackQueue.toTypedArray()[number - 1].info.title}`을(를) 삭제됨").queue()
                 playerControl.trackQueue.remove(playerControl.trackQueue.toTypedArray()[number - 1])
             }
         }

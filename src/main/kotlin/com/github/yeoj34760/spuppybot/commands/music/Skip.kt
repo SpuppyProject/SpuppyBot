@@ -1,13 +1,14 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-object Skip : Command() {
-    init {
-        super.name = "skip"
-        super.aliases = arrayOf("skip", "s", "ㄴ", "나ㅑㅔ")
-    }
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 
-    override fun execute(event: CommandEvent?) {
-        val id = event!!.guild.idLong
+object Skip : Command(CommandInfoName.SKIP) {
+
+    override fun execute(event: CommandEvent) {
+        val id = event.guild.idLong
         if (playerControls[id] == null || !playerControls[id]!!.isPlayed()) {
             event.channel.sendMessage("현재 재생되어 있지 않습니다.").queue()
             return

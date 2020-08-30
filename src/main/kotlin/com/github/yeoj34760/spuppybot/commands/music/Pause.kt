@@ -1,10 +1,11 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-object Pause : Command() {
-    init {
-        super.name = "pause"
-        super.aliases = arrayOf("pause")
-    }
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.music.GuildManager
+
+object Pause : Command(CommandInfoName.PAUSE) {
 
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
@@ -12,7 +13,6 @@ object Pause : Command() {
             event.channel.sendMessage("현재 재생되어 있지 않네요").queue()
             return
         }
-
         val trackScheduler = GuildManager.playerControls[id]!!
         if (trackScheduler.isPaused()) {
             trackScheduler.resume()

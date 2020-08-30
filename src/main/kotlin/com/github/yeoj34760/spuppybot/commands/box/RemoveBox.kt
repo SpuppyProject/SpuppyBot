@@ -1,0 +1,29 @@
+package com.github.yeoj34760.spuppybot.commands.box
+
+import com.github.yeoj34760.spuppybot.Settings
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+
+object RemoveBox : Command(CommandInfoName.REMOVE_BOX) {
+    override fun execute(event: CommandEvent) {
+        if (event.args.isEmpty()) {
+            event.channel.sendMessage("명령어를 제대로 써주세요.\n예시: `${Settings.PREFIX}box remove 1`").queue()
+            return
+        }
+        val max = SpuppyDBController.fromMaxNumber(event.author.idLong)
+
+        when (event.args[0].toIntOrNull()) {
+            !in 1..max -> {
+                event.channel.sendMessage("1 ~ $max 입력해주세요.").queue(); return
+            }
+            null -> {
+                event.channel.sendMessage("숫자 올바르게 써주세요.").queue(); return
+            }
+        }
+
+        SpuppyDBController.delUserBox(event.author.idLong, event.args[0].toInt())
+        event.channel.sendMessage("삭제완료").queue()
+    }
+}

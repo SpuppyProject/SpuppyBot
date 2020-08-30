@@ -1,36 +1,37 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
+
 /**
  * 스피드를 조절해줍니다.
  */
-object Speed : Command() {
-    init {
-        super.name = "speed"
-        super.aliases = arrayOf("speed", "스피드", "네", "sp", "넫ㄷㅇ")
-    }
+object Speed : Command(CommandInfoName.SPEED) {
 
     override fun execute(event: CommandEvent) {
         if (playerControls[event.guild.idLong] == null || !playerControls[event.guild.idLong]!!.isPlayed()) {
-            event.reply("재생 중이지 않네요")
+            event.channel.sendMessage("재생 중이지 않네요").queue()
             return
         }
 
         if (playerControls[event.guild.idLong]!!.playingTrack().info.isStream) {
-            event.reply("라이브 음악은 speed 기능을 제공하지 않습니다.")
+            event.channel.sendMessage("라이브 음악은 speed 기능을 제공하지 않습니다.").queue()
             return
         }
 
-        val number: Double? = event.args.toDoubleOrNull()
+        val number: Double? = event.args[0].toDoubleOrNull()
         when (number) {
             //제대로 된 실수를 받지 못할 경우
-            null -> event.reply("올바르지 않은 값이네요")
+            null -> event.channel.sendMessage("올바르지 않은 값이네요").queue()
             //올바르게 받을 경우
             in 0.1..5.0 -> {
                 playerControls[event.guild.idLong]!!.speed(number)
-                event.reply("`$number` 속도로 설정했습니다.")
+                event.channel.sendMessage("`$number` 속도로 설정했습니다.").queue()
             }
             //미만이거나 초과할 경우
-            else -> event.reply("값을 `0.1 ~ 5`로 지정해주세요")
+            else -> event.channel.sendMessage("값을 `0.1 ~ 5`로 지정해주세요").queue()
         }
     }
 

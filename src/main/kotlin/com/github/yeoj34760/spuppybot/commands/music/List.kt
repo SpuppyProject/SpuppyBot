@@ -1,10 +1,16 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-object List : Command() {
-    init {
-        super.name = "list"
-        super.aliases = arrayOf("list", "리스트", "ㅣㅑ", "li")
-    }
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
+import com.github.yeoj34760.spuppybot.other.DiscordColor
+import com.github.yeoj34760.spuppybot.other.MusicListBook
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.User
+
+object List : Command(CommandInfoName.LIST) {
 
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
@@ -15,7 +21,7 @@ object List : Command() {
         }
 
         //입력한 args가 없을 경우 1로 지정합니다.
-        val pageNumber = if (event.args.isEmpty()) 1 else event.args.toInt()
+        val pageNumber = if (event.args.isEmpty()) 1 else event.args[0].toInt()
         val playerControl = playerControls[id]
         val book = MusicListBook(playerControl!!.trackQueue.toTypedArray())
         val playingTrack = playerControl.playingTrack()
@@ -33,7 +39,7 @@ object List : Command() {
                 .setFooter(pageContent)
                 .setColor(DiscordColor.GREEN)
                 .build()
-        event.reply(embed)
+        event.channel.sendMessage(embed).queue()
 
 
     }

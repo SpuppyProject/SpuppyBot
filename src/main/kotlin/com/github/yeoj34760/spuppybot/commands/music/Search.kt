@@ -1,10 +1,16 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-object Search : Command() {
-    init {
-        super.name = "search"
-        super.aliases = arrayOf("search", "se", "ㄴㄷ")
-    }
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.other.Util
+import com.github.yeoj34760.spuppybot.waiter
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.MessageEmbed
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import java.util.concurrent.TimeUnit
+
+object Search : Command(CommandInfoName.SEARCH) {
 
     override fun execute(event: CommandEvent) {
 
@@ -13,19 +19,19 @@ object Search : Command() {
             return
         }
 
-        event.reply("찾는중...") {
-            val audioList = Util.youtubeSearch(event.args, it)
+        event.channel.sendMessage("찾는중...").queue() {
+            val audioList = Util.youtubeSearch(event.args[0], it)
             var result: String = ""
             var i: Int = 1
 
             //audioList 변수가 null일 경우 예외가 발생한 경우이니 리턴함
             if (audioList == null) {
-                return@reply
+                return@queue
             }
             //audioList 변수에 아무 것도 없다면 검색결과가 없다고 메세지를 보내고 리턴함.
             else if (audioList.tracks.isEmpty()) {
                 it.editMessage("검색 결과가 없습니다").queue()
-                return@reply
+                return@queue
             }
 
             //audioList에 있는 트랙들의 데이터를 이용해 result에 추가함
@@ -38,7 +44,7 @@ object Search : Command() {
             //숫자고르라고 메세지로 수정함.
             it.editMessage("아래에 있는 숫자중에 골라주세요").queue {
                 var embedId: Long? = null
-                event.channel.sendMessage(createEmbed(event.args, result)).queue {
+                event.channel.sendMessage(createEmbed(event.args[0], result)).queue {
                     embedId = it.idLong
                 }
                 waiter.waitForEvent(MessageReceivedEvent::class.java,
@@ -54,7 +60,7 @@ object Search : Command() {
                             //1 ~ 5 사이에 맞지 않을 경우 넘어갑니다.
                             if (number != null && number in 1..5) {
                                 event.channel.deleteMessageById(embedId!!).queue()
-                                Util.youtubePlay(event, it, audioList.tracks[number - 1].identifier, null)
+                                Util.youtubePlay(event, it, audioList.tracks[number - 1].identifier)
                             } else {
                                 it.editMessage("취소됨").queue()
                                 event.channel.deleteMessageById(embedId!!).queue()

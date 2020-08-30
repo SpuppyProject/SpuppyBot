@@ -1,14 +1,22 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-object Connect : Command() {
-    init {
-        super.name = "connect"
-        super.aliases = arrayOf("connect", "연결", "c", "ㅊ")
-    }
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.music.PlayerControl
+import com.github.yeoj34760.spuppybot.waiter
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.Permission
+import net.dv8tion.jda.api.entities.PermissionOverride
+import net.dv8tion.jda.api.entities.VoiceChannel
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import java.util.concurrent.TimeUnit
 
+object Connect : Command(CommandInfoName.CONNECT) {
     override fun execute(event: CommandEvent) {
-        if (event.args.isEmpty() && !event.member.voiceState!!.inVoiceChannel()) {
-            event.reply("음성 방에 들어오시거나 방 이름을 적어주세요. \n")
+        if (event.args.isEmpty() && !event.member?.voiceState!!.inVoiceChannel()) {
+            event.channel.sendMessage("음성 방에 들어오시거나 방 이름을 적어주세요. \n").queue()
         }
 
         //입력한 이름하고 동일한 채널이 있으면 channels에 추가합니다.
@@ -16,18 +24,18 @@ object Connect : Command() {
         var playerControl: PlayerControl? = GuildManager.playerControls[event.guild.idLong]
 
         if (channels.isEmpty()) {
-            event.reply("해당 이름을 가진 사용가능한 음성 채널을 못 찾았습니다.")
+            event.channel.sendMessage("해당 이름을 가진 사용가능한 음성 채널을 못 찾았습니다.").queue()
             return
         }
 
         if (channels.size == 1) {
             if (!checkPermission(channels[0].permissionOverrides.toTypedArray())) {
-                event.reply("해당 음성 채널에 들어가려했으나 권한이 없네요.")
+                event.channel.sendMessage("해당 음성 채널에 들어가려했으나 권한이 없네요.").queue()
                 return
             }
             event.guild.audioManager.openAudioConnection(channels[0])
             checkPause(playerControl)
-            event.reply("들어왔습니다.")
+            event.channel.sendMessage("들어왔습니다.").queue()
             return
         }
 
@@ -58,16 +66,16 @@ object Connect : Command() {
                         //1 ~ channels 최대 사이에 맞지 않을 경우 넘어갑니다.
                         if (number != null && number in 1..channels.size) {
                             if (!checkPermission(channels[number - 1].permissionOverrides.toTypedArray())) {
-                                event.reply("해당 음성 채널에 들어가려했으나 권한이 없네요.")
+                                event.channel.sendMessage("해당 음성 채널에 들어가려했으나 권한이 없네요.").queue()
                                 return@waitForEvent
                             }
                             checkPause(playerControl)
                             event.guild.audioManager.openAudioConnection(channels[number - 1])
-                            event.reply("들어왔어요.")
+                            event.channel.sendMessage("들어왔어요.").queue()
                             return@waitForEvent
                         }
 
-                    }, 1, TimeUnit.MINUTES) { event.reply("시간 초과됨") }
+                    }, 1, TimeUnit.MINUTES) { event.channel.sendMessage("시간 초과됨").queue() }
         }
     }
 
@@ -78,7 +86,7 @@ object Connect : Command() {
         val temp: ArrayList<VoiceChannel> = ArrayList()
 
         for (v in event.guild.voiceChannels)
-            if (event.args == v.name)
+            if (event.argsToString() == v.name)
                 temp.add(v)
 
         return temp

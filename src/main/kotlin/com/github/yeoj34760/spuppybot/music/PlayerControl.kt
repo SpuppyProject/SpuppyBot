@@ -51,7 +51,7 @@ class PlayerControl(private val audioPlayer: AudioPlayer, private val audioManag
         trackQueue.add(audioTrack)
     }
 
-    fun PlayOrAdd(audioTrack: AudioTrack, num: Int) {
+    fun playOrAdd(audioTrack: AudioTrack, num: Int) {
         if (trackQueue.isEmpty() && !isPlayed()) {
             audioPlayer.playTrack(audioTrack)
             return

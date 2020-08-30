@@ -1,14 +1,19 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-object NowPlay : Command() {
-    init {
-        name = "NowPlay"
-        aliases = arrayOf("now", "nowplay", "np", "ㅞ", "ㅜㅐㅈ")
-    }
+import com.github.yeoj34760.spuppybot.command.Command
+import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.other.DiscordColor
+import com.github.yeoj34760.spuppybot.other.Util
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.User
+
+object NowPlay : Command(CommandInfoName.NOWPLAY) {
 
     override fun execute(event: CommandEvent) {
         if (GuildManager.playerControls[event.guild.idLong] == null || !GuildManager.playerControls[event.guild.idLong]!!.isPlayed()) {
-            event.reply("현재 재생중인 음악이 없네요.")
+            event.channel.sendMessage("현재 재생중인 음악이 없네요.").queue()
             return
         }
 
@@ -35,6 +40,6 @@ object NowPlay : Command() {
                 .addField("무한 루프 여부", playerControl.isLooped.toString(), true)
                 .setColor(DiscordColor.BLUE)
                 .build()
-        event.reply(embed)
+        event.channel.sendMessage(embed).queue()
     }
 }
