@@ -2,6 +2,7 @@ package com.github.yeoj34760.spuppybot.command
 
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.music.PlayerControl
+import com.github.yeoj34760.spuppybot.other.Util
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -14,9 +15,7 @@ class CommandEvent(private val messageReceivedEvent: MessageReceivedEvent, prefi
             listOf()
         else {
             val command = messageReceivedEvent.message.contentRaw.substring(prefix.count())
-            val _args = mutableListOf<String>()
-            "(\".+?\"|[^ ]+)".toRegex().findAll(command).iterator().forEach { _args.add(it.value) }
-            _args
+            Util.stringToArgs(command)
         }
     }
 

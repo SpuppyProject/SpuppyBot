@@ -14,6 +14,14 @@ import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
 object Util {
+
+    val argsRegex = "(\".+?\"|[^ ]+)".toRegex()
+
+    fun stringToArgs(string: String) : List<String> {
+        val temp = mutableListOf<String>()
+       argsRegex.findAll(string).iterator().forEach { temp.add(it.value) }
+        return temp
+    }
     /**
      * 식별자 이용해 썸네일 링크를 반환합니다.
      */
@@ -27,18 +35,21 @@ object Util {
      */
     fun youtubePlay(event: CommandEvent, message: Message, url: String) {
         event.member?.voiceState!!.channel?.let {
+            autoConnect(event)
+            playerManager.loadItem(url, AudioStartHandler(event, message, playerControls[event.guildIdLong]!!))
+        }
+    }
+
+
+    fun autoConnect(event: CommandEvent) {
             val id = event.guild.idLong
             val audioManager = event.guild.audioManager
 
             GuildManager.check(audioManager, id)
 
             if (!audioManager.isConnected)
-                audioManager.openAudioConnection(it)
-
-            playerManager.loadItem(url, AudioStartHandler(event, message, playerControls[id]!!))
-        }
+                audioManager.openAudioConnection(event.member!!.voiceState!!.channel)
     }
-
     /**
      * URL인지 검사합니다. true일 경우 url
      */

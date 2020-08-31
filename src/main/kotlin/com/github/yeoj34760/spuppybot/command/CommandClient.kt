@@ -28,7 +28,7 @@ object CommandClient : ListenerAdapter() {
 //        }
         val commandInfo = Commands[message]
         if (commandInfo != null) {
-            val commandEvent: CommandEvent = CommandEvent(event, Settings.PREFIX + commandInfo.command + " ")
+            val commandEvent: CommandEvent = CommandEvent(event, Settings.PREFIX + commandInfo.command)
             commands[check(commandInfo.name)]!!.execute(commandEvent)
         }
 

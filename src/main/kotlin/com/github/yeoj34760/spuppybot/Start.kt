@@ -43,7 +43,8 @@ fun main(args: Array<String>) {
             RemoveAllBox,
             RemoveBox,
     Box,
-    Shuffle)
+    Shuffle,
+    CopyBox)
     JDABuilder
             .createDefault(TOKEN)
             //        .setAudioSendFactory(NativeAudioSendFactory())

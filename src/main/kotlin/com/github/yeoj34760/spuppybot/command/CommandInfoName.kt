@@ -22,7 +22,8 @@ enum class CommandInfoName(val string: String) {
     SPEED("speed"),
     STOP("stop"),
     VOLUME("volume"),
-    SHUFFLE("shuffle");
+    SHUFFLE("shuffle"),
+    COPY_BOX("copybox");
 //    fun fromString() : String {
 //        return when(this) {
 //            BOX -> "box"
