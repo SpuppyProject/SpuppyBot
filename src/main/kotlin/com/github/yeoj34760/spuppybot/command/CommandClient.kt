@@ -36,7 +36,7 @@ object CommandClient : ListenerAdapter() {
 
     private fun check(name: String): CommandInfoName {
         CommandInfoName.values().forEach {
-            if (name == it.fromString())
+            if (name == it.string)
                 return it
         }
         return throw Exception("알 수 없는 에러")
