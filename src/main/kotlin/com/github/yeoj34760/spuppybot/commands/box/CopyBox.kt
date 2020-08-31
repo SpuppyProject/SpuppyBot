@@ -31,15 +31,15 @@ object CopyBox : Command(CommandInfoName.COPY_BOX) {
             override fun trackLoaded(track: AudioTrack) {
                 Util.autoConnect(event)
                 GuildManager.playerControls[event.guildIdLong]!!.playOrAdd(track)
-                event.channel.sendMessage("`플레이리스트에 ${track.info.title}을(를) 추가했습니다!`").queue()
+                event.channel.sendMessage("플레이리스트에 `${track.info.title}`을(를) 추가했습니다!").queue()
             }
 
             override fun noMatches() {
-
+                event.channel.sendMessage("오 이런, 검색이 안 되네요. 해당 영상이 비공개 처리되었는지 확인해보세요.").queue()
             }
 
             override fun playlistLoaded(playlist: AudioPlaylist) {
-
+                event.channel.sendMessage("오 이런! 어쨰서인지 플레이리스트 링크로 검색했네요.\n 이 에러가 계속 뜰 경우 개발자한테 문의해 주시 길 바랍니다.").queue()
             }
         })
     }

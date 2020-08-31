@@ -4,6 +4,7 @@ import com.github.yeoj34760.spuppybot.command.Command
 import com.github.yeoj34760.spuppybot.command.CommandEvent
 import com.github.yeoj34760.spuppybot.command.CommandInfoName
 import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.playerManager
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
@@ -19,10 +20,7 @@ object CopyAllBox : Command(CommandInfoName.COPY_ALL_BOX) {
             return
         }
 
-        if (GuildManager.playerControls[event.guild.idLong] == null || !event.guild.audioManager.isConnected) {
-            GuildManager.check(event.guild.audioManager, event.guild.idLong)
-            event.guild.audioManager.openAudioConnection(event.member!!.voiceState!!.channel)
-        }
+        Util.autoConnect(event)
 
         SpuppyDBController.fromUserBox(event.author.idLong).forEach {
             playerManager.loadItem(it.info.url, object : AudioLoadResultHandler {

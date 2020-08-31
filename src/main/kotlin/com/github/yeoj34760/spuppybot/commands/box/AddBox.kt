@@ -14,6 +14,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.util.*
 /**
@@ -29,35 +30,41 @@ object AddBox : Command(CommandInfoName.ADD_BOX){
         }
         event.channel.sendMessage("검색 중...").queue {
             if (Util.checkURL(event.argsToString())) {
-                playerManager.loadItem(event.argsToString(), object : AudioLoadResultHandler {
-                    override fun loadFailed(exception: FriendlyException) {
-                        it.editMessage("umm... 불행하게도 로드 실패했어요.").queue()
-                    }
-
-                    override fun trackLoaded(track: AudioTrack) {
-                        sendBox(event, track)
-                        it.editMessage("추가 됨!").queue()
-                    }
-
-                    override fun noMatches() {
-                        it.editMessage("umm... 유감스럽게도 매치가 읎어요").queue()
-                    }
-
-                    override fun playlistLoaded(playlist: AudioPlaylist) {
-                        playlist.tracks.forEach { track ->
-                            sendBox(event, track)
-                        }
-                    }
-                })
+                searchToUserBox(event.argsToString(), event, it)
             }
             else {
-                TODO("비 url 입력 받을 시 대응 기능 추가")
-                it.editMessage("url내놔").queue()
-                Util.youtubeSearch(event.argsToString(), it)
+                val search = Util.youtubeSearch(event.argsToString(), it) ?: return@queue
+                if ( search.tracks!!.isEmpty()) {
+                   event.channel.sendMessage("이런 검색결과가 없네요").queue()
+                }
+                sendBox(event, search.tracks[0])
             }
         }
     }
 
+
+    private fun searchToUserBox(search: String,event: CommandEvent, mesage: Message) {
+        playerManager.loadItem(event.argsToString(), object : AudioLoadResultHandler {
+            override fun loadFailed(exception: FriendlyException) {
+                mesage.editMessage("umm... 불행하게도 로드 실패했어요.").queue()
+            }
+
+            override fun trackLoaded(track: AudioTrack) {
+                sendBox(event, track)
+                mesage.editMessage("추가 됨!").queue()
+            }
+
+            override fun noMatches() {
+                mesage.editMessage("umm... 유감스럽게도 매치가 읎어요").queue()
+            }
+
+            override fun playlistLoaded(playlist: AudioPlaylist) {
+                playlist.tracks.forEach { track ->
+                    sendBox(event, track)
+                }
+            }
+        })
+    }
     private fun sendBox(event: CommandEvent, track: AudioTrack) {
         val info = UserBoxInfo(
                 track.info.title,
