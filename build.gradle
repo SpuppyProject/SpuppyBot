@@ -1,10 +1,11 @@
-
 plugins {
     id('org.jetbrains.kotlin.jvm') version '1.4.0'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.0'
     id "com.github.johnrengelman.shadow" version "6.0.0"
+    id 'application'
 }
 
+mainClassName = 'com.github.yeoj34760.spuppybot.StartKt'
 repositories {
     jcenter()
 }
@@ -20,7 +21,7 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-bom'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC'
-
+    implementation fileTree(dir: '/libs', includes: ['*.jar'])
 }
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin/'

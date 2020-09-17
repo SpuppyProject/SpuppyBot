@@ -1,12 +1,14 @@
 package com.github.yeoj34760.spuppybot.commands.box
 
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.Settings
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
+
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 
-object RemoveBox : Command(CommandInfoName.REMOVE_BOX) {
+@CommandSettings(name = "removebox")
+object RemoveBox : Command() {
     override fun execute(event: CommandEvent) {
         if (event.args.isEmpty()) {
             event.channel.sendMessage("명령어를 제대로 써주세요.\n예시: `${Settings.PREFIX}box remove 1`").queue()

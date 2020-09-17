@@ -1,8 +1,9 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
+
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.waiter
 import net.dv8tion.jda.api.EmbedBuilder
@@ -10,7 +11,9 @@ import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.util.concurrent.TimeUnit
 
-object Search : Command(CommandInfoName.SEARCH) {
+
+@CommandSettings(name = "search")
+object Search : Command() {
 
     override fun execute(event: CommandEvent) {
 
@@ -19,10 +22,10 @@ object Search : Command(CommandInfoName.SEARCH) {
             return
         }
 
-        event.channel.sendMessage("찾는중...").queue() {
+        event.channel.sendMessage("찾는중...").queue {
             val audioList = Util.youtubeSearch(event.args[0], it)
-            var result: String = ""
-            var i: Int = 1
+            var result = ""
+            var i = 1
 
             //audioList 변수가 null일 경우 예외가 발생한 경우이니 리턴함
             if (audioList == null) {
@@ -35,28 +38,28 @@ object Search : Command(CommandInfoName.SEARCH) {
             }
 
             //audioList에 있는 트랙들의 데이터를 이용해 result에 추가함
-            audioList.tracks.forEach {
+            audioList.tracks.forEach { audioTrack ->
                 if (i - 1 == 5)
                     return@forEach
-                result += "${i++}. [${it.info.title}](${it.info.uri})\n\n"
+                result += "${i++}. [${audioTrack.info.title}](${audioTrack.info.uri})\n\n"
             }
 
             //숫자고르라고 메세지로 수정함.
             it.editMessage("아래에 있는 숫자중에 골라주세요").queue {
                 var embedId: Long? = null
-                event.channel.sendMessage(createEmbed(event.args[0], result)).queue {
-                    embedId = it.idLong
+                event.channel.sendMessage(createEmbed(event.args[0], result)).queue { message ->
+                    embedId = message.idLong
                 }
                 waiter.waitForEvent(MessageReceivedEvent::class.java,
                         { e ->
-                            e.author.equals(event.author)
-                                    && e.channel.equals(event.channel)
-                                    && !e.message.equals(event.message)
+                            e.author == event.author
+                                    && e.channel == event.channel
+                                    && e.message != event.message
                         },
 
                         { e ->
                             //숫자아닐 경우 리턴합니다.
-                            var number: Int? = e.message.contentRaw.toIntOrNull()
+                            val number: Int? = e.message.contentRaw.toIntOrNull()
                             //1 ~ 5 사이에 맞지 않을 경우 넘어갑니다.
                             if (number != null && number in 1..5) {
                                 event.channel.deleteMessageById(embedId!!).queue()
@@ -72,7 +75,7 @@ object Search : Command(CommandInfoName.SEARCH) {
         }
     }
 
-  private  fun createEmbed(args: String, result: String): MessageEmbed = EmbedBuilder()
+    private fun createEmbed(args: String, result: String): MessageEmbed = EmbedBuilder()
             .setTitle("SpuppyBot")
             .setDescription(result)
             .setFooter("입력받은 값 : $args")

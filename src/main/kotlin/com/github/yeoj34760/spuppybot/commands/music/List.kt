@@ -1,21 +1,23 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
-import com.github.yeoj34760.spuppybot.music.GuildManager
+
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.other.MusicListBook
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.User
 
-object List : Command(CommandInfoName.LIST) {
+
+@CommandSettings(name = "list")
+object List : Command() {
 
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
 
-        if (GuildManager.playerControls[id] == null || !GuildManager.playerControls[id]!!.isPlayed()) {
+        if (playerControls[id] == null || !playerControls[id]!!.isPlayed()) {
             event.channel.sendMessage("뭔가 엄청난 걸 보여드리고 싶었지만 아쉽게도 아무 음악이 없네요").queue()
             return
         }

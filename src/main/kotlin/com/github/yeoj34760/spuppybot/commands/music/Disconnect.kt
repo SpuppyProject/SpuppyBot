@@ -1,10 +1,11 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 
-object Disconnect : Command(CommandInfoName.DISCONNECT) {
+@CommandSettings(name = "disconnect")
+object Disconnect : Command() {
 
     override fun execute(event: CommandEvent) {
         if (event.guild.audioManager.isConnected) {

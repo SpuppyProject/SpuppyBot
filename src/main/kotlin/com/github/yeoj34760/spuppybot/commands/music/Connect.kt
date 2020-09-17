@@ -1,8 +1,9 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
+
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.music.PlayerControl
 import com.github.yeoj34760.spuppybot.waiter
@@ -13,7 +14,9 @@ import net.dv8tion.jda.api.entities.VoiceChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.util.concurrent.TimeUnit
 
-object Connect : Command(CommandInfoName.CONNECT) {
+
+@CommandSettings(name = "connect")
+object Connect : Command() {
     override fun execute(event: CommandEvent) {
         if (event.args.isEmpty() && !event.member?.voiceState!!.inVoiceChannel()) {
             event.channel.sendMessage("음성 방에 들어오시거나 방 이름을 적어주세요. \n").queue()
@@ -86,11 +89,10 @@ object Connect : Command(CommandInfoName.CONNECT) {
         val temp: ArrayList<VoiceChannel> = ArrayList()
 
         for (v in event.guild.voiceChannels)
-            if (event.argsToString() == v.name)
+            if (event.content == v.name)
                 temp.add(v)
 
         return temp
-
     }
 
 

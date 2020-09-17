@@ -1,11 +1,14 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
+
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 
-object Skip : Command(CommandInfoName.SKIP) {
+
+@CommandSettings(name = "skip")
+object Skip : Command() {
 
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong

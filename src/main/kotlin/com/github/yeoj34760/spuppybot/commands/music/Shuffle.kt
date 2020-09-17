@@ -1,12 +1,13 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
-import com.github.yeoj34760.spuppybot.music.GuildManager
-import com.github.yeoj34760.spuppybot.music.PlayerControl
 
-object Shuffle : Command(CommandInfoName.SHUFFLE) {
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
+import com.github.yeoj34760.spuppybot.music.GuildManager
+
+@CommandSettings(name = "shuffle")
+object Shuffle : Command() {
     override fun execute(event: CommandEvent) {
         if (GuildManager.playerControls[event.guildIdLong] == null &&
                 GuildManager.playerControls[event.guildIdLong]!!.count() < 2) {
@@ -14,7 +15,7 @@ object Shuffle : Command(CommandInfoName.SHUFFLE) {
             return
         }
 
-        event.playerControl?.shuffled()
+        GuildManager.playerControls[event.guildIdLong]!!.shuffled()
         event.channel.sendMessage("섞였습니다").queue()
     }
 }

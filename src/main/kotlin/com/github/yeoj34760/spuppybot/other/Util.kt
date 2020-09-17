@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppybot.other
 
-import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandEvent
+
 import com.github.yeoj34760.spuppybot.music.AudioStartHandler
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
@@ -17,11 +18,12 @@ object Util {
 
     val argsRegex = "(\".+?\"|[^ ]+)".toRegex()
 
-    fun stringToArgs(string: String) : List<String> {
+    fun stringToArgs(string: String): List<String> {
         val temp = mutableListOf<String>()
-       argsRegex.findAll(string).iterator().forEach { temp.add(it.value) }
+        argsRegex.findAll(string).iterator().forEach { temp.add(it.value) }
         return temp
     }
+
     /**
      * 식별자 이용해 썸네일 링크를 반환합니다.
      */
@@ -42,14 +44,15 @@ object Util {
 
 
     fun autoConnect(event: CommandEvent) {
-            val id = event.guild.idLong
-            val audioManager = event.guild.audioManager
+        val id = event.guild.idLong
+        val audioManager = event.guild.audioManager
 
-            GuildManager.check(audioManager, id)
+        GuildManager.check(audioManager, id)
 
-            if (!audioManager.isConnected)
-                audioManager.openAudioConnection(event.member!!.voiceState!!.channel)
+        if (!audioManager.isConnected)
+            audioManager.openAudioConnection(event.member!!.voiceState!!.channel)
     }
+
     /**
      * URL인지 검사합니다. true일 경우 url
      */

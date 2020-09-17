@@ -1,6 +1,6 @@
 package com.github.yeoj34760.spuppybot.music
 
-import com.github.yeoj34760.spuppybot.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist

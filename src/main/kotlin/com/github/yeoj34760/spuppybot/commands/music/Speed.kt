@@ -1,14 +1,16 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
+
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 
 /**
  * 스피드를 조절해줍니다.
  */
-object Speed : Command(CommandInfoName.SPEED) {
+@CommandSettings(name = "speed")
+object Speed : Command() {
 
     override fun execute(event: CommandEvent) {
         if (playerControls[event.guild.idLong] == null || !playerControls[event.guild.idLong]!!.isPlayed()) {
@@ -21,8 +23,7 @@ object Speed : Command(CommandInfoName.SPEED) {
             return
         }
 
-        val number: Double? = event.args[0].toDoubleOrNull()
-        when (number) {
+        when (val number: Double? = event.args[0].toDoubleOrNull()) {
             //제대로 된 실수를 받지 못할 경우
             null -> event.channel.sendMessage("올바르지 않은 값이네요").queue()
             //올바르게 받을 경우

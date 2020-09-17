@@ -1,15 +1,18 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
+
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.other.Util
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.User
 
-object NowPlay : Command(CommandInfoName.NOWPLAY) {
+
+@CommandSettings(name = "nowplay")
+object NowPlay : Command() {
 
     override fun execute(event: CommandEvent) {
         if (GuildManager.playerControls[event.guild.idLong] == null || !GuildManager.playerControls[event.guild.idLong]!!.isPlayed()) {
@@ -17,8 +20,8 @@ object NowPlay : Command(CommandInfoName.NOWPLAY) {
             return
         }
 
-        var playerControl = GuildManager.playerControls[event.guild.idLong]
-        var playingTrack = playerControl!!.playingTrack()
+        val playerControl = GuildManager.playerControls[event.guild.idLong]
+        val playingTrack = playerControl!!.playingTrack()
         val timeMax: String
         val timeRemain: String
         if (playingTrack.info.isStream) {

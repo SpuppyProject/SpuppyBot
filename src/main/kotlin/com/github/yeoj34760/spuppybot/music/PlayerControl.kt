@@ -133,8 +133,9 @@ class PlayerControl(private val audioPlayer: AudioPlayer, private val audioManag
      * 순서를 뒤섞입니다.
      */
     fun shuffled() {
-    trackQueue = LinkedList<AudioTrack>(trackQueue.shuffled())
+        trackQueue = LinkedList<AudioTrack>(trackQueue.shuffled())
     }
+
     /**
      * 음악이 끝났을 경우
      */

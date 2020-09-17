@@ -1,11 +1,14 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
+
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.music.GuildManager
 
-object Loop : Command(CommandInfoName.LOOP) {
+
+@CommandSettings(name = "loop")
+object Loop : Command() {
 
     override fun execute(event: CommandEvent) {
         val playerControl = GuildManager.playerControls[event.guild.idLong]

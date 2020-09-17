@@ -1,14 +1,16 @@
 package com.github.yeoj34760.spuppybot.commands.music
 
-import com.github.yeoj34760.spuppybot.command.Command
-import com.github.yeoj34760.spuppybot.command.CommandEvent
-import com.github.yeoj34760.spuppybot.command.CommandInfoName
+
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 
 /**
  * 음악을 멈출 때 쓰입니다.
  */
-object Stop : Command(CommandInfoName.STOP) {
+@CommandSettings(name = "stop")
+object Stop : Command() {
     override fun execute(event: CommandEvent) {
         val id = event.guild.idLong
 

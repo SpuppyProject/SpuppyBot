@@ -1,11 +1,12 @@
 package com.github.yeoj34760.spuppybot.sql
 
+import com.github.yeoj34760.spuppy.command.Commands
 import com.github.yeoj34760.spuppybot.Settings
-import com.github.yeoj34760.spuppybot.command.CommandInfo
+import com.github.yeoj34760.spuppybot.playerManager
 import com.github.yeoj34760.spuppybot.sql.userbox.UserBox
-import com.github.yeoj34760.spuppybot.sql.userbox.UserBoxInfo
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
+import com.sedmelluq.discord.lavaplayer.tools.io.MessageInput
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack
+import java.io.ByteArrayInputStream
 import java.sql.DriverManager
 import java.util.*
 
@@ -48,7 +49,7 @@ object SpuppyDBController {
      * */
     fun checkGuild(id: Long): Boolean = check(id, "guild")
 
-    fun addUserBox(id: Long, info: String) = connection.createStatement().execute("insert into user_box values ($id, '$info', ${fromMaxNumber(id) + 1})")
+    fun addUserBox(id: Long, track: String) = connection.createStatement().execute("insert into user_box values ($id, '$track', ${fromMaxNumber(id) + 1})")
     fun delAllUserBox(id: Long) = del(id, "user_box")
     fun delUserBox(id: Long, order: Int) {
         val statement = connection.createStatement()
@@ -60,15 +61,50 @@ object SpuppyDBController {
     fun checkUserBox(id: Long): Boolean = check(id, "user_box")
     fun fromUserBox(id: Long): List<UserBox> {
         val tempBox = arrayListOf<UserBox>()
-        val t = connection.createStatement().executeQuery("select info, `order` from user_box where id = $id order by `order`")
+        val t = connection.createStatement().executeQuery("select track, `order` from user_box where id = $id order by `order`")
         while (t.next()) {
-            val json = Base64.getDecoder().decode(t.getString(1))
-            val info = Json.decodeFromString<UserBoxInfo>(String(json))
+            val decode = Base64.getDecoder().decode(t.getString(1))
+            var inputStream = ByteArrayInputStream(decode)
+            val track: AudioTrack = playerManager.decodeTrack(MessageInput(inputStream)).decodedTrack
             val order: Int = t.getString(2).toInt()
-            tempBox.add(UserBox(info, order))
+            tempBox.add(UserBox(id, track, order))
         }
 
         return tempBox
+    }
+
+    fun fromCommands(): List<Commands> {
+        var temp = mutableListOf<Commands>()
+        val t = connection.createStatement().executeQuery("select name, command from command")
+        while (t.next()) {
+            if (checkCommands(temp, t.getString(1)))
+                fromCommands(temp, t.getString(1))!!.aliases!!.add(t.getString(2))
+            else {
+                var tempCommands = Commands(t.getString(1))
+                tempCommands.aliases.add(t.getString(2))
+                temp.add(tempCommands)
+            }
+        }
+
+        return temp;
+    }
+
+    private fun checkCommands(commandsList: List<Commands>, name: String): Boolean {
+        for (commands in commandsList) {
+            if (commands.name == name)
+                return true
+        }
+
+        return false
+    }
+
+    private fun fromCommands(commandsList: List<Commands>, name: String): Commands? {
+        for (commands in commandsList) {
+            if (commands.name == name)
+                return commands
+        }
+
+        return null
     }
 
     /**
@@ -79,6 +115,7 @@ object SpuppyDBController {
         //dog same
         statement.execute("update user_box a inner join user_box b on a.`order` <> b.`order` set a.`order` = b.`order` where a.`order` in ($num1,$num2) and b.`order` in ($num1,$num2)")
     }
+
     /**
      * 해당 유저박스에서 몇 개 있는지 반환합니다.
      * 찾을 수 없을 경우 0로 반환합니다.
@@ -92,18 +129,6 @@ object SpuppyDBController {
     fun addUser(id: Long) = add(id, "user")
     fun delUser(id: Long) = del(id, "user")
     fun checkUser(id: Long): Boolean = check(id, "user")
-
-
-    fun fromCommands(): MutableList<CommandInfo> {
-        val temp: MutableList<CommandInfo> = mutableListOf()
-        val t = connection.createStatement().executeQuery("select name, command, _group from command")
-        while (t.next())
-        {
-            val tempCommand = CommandInfo(t.getString(1), t.getString(2), t.getString(3))//name, command, group
-            temp.add(tempCommand)
-        }
-        return temp
-    }
 
     private fun add(id: Long, table: String) = connection.createStatement().execute("insert into $table (id) values ($id)")
     private fun del(id: Long, table: String) = connection.createStatement().execute("delete from $table where id = $id")
