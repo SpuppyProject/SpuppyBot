@@ -19,7 +19,7 @@ object Info : Command() {
                 .addField("서버 수", event.jda.guilds.size.toString(), true)
                 .addField("라이센스", "[GPLv3](https://github.com/yeoj34760/SpuppyBot/blob/master/LICENSE)", true)
                 .addField("오픈소스", "[GITHUB](https://github.com/yeoj34760/SpuppyBot)", true)
-                .addField("명령어", "[CLICK](http://spuppy.ml/spuppybot/command.html)", true)
+                .addField("명령어", "[CLICK](http://spuppy.ml/spuppybot/help/)", true)
                 .addField("버전", VERSION, true)
                 .addField("개발자", event.jda.getUserById(Settings.OWNER_ID)!!.asTag, true)
                 .setColor(DiscordColor.BLUE)
