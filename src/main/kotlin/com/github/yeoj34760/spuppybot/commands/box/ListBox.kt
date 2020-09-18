@@ -4,6 +4,7 @@ package com.github.yeoj34760.spuppybot.commands.box
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
+import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import net.dv8tion.jda.api.EmbedBuilder
 
@@ -23,6 +24,7 @@ object ListBox : Command() {
         }
 
         val embed = EmbedBuilder()
+                .setColor(DiscordColor.GREEN)
                 .setAuthor(event.author.name, null, event.author.avatarUrl)
                 .setTitle("`${event.author.name}`의 박스")
                 .setDescription(listTemp.toString())
