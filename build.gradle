@@ -21,7 +21,7 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-bom'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC'
-    implementation fileTree(dir: '/libs', includes: ['*.jar'])
+    implementation fileTree(dir: './libs', includes: ['*.jar'])
 }
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin/'
