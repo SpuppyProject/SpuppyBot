@@ -9,7 +9,7 @@ import com.github.yeoj34760.spuppybot.music.GuildManager
 @CommandSettings(name = "shuffle")
 object Shuffle : Command() {
     override fun execute(event: CommandEvent) {
-        if (GuildManager.playerControls[event.guildIdLong] == null &&
+        if (GuildManager.playerControls[event.guildIdLong] == null ||
                 GuildManager.playerControls[event.guildIdLong]!!.count() < 2) {
             event.channel.sendMessage("최소 음악리스트에 2개이상 있어야합니다.").queue()
             return
