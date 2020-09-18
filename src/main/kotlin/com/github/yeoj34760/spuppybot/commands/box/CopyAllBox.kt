@@ -19,25 +19,17 @@ object CopyAllBox : Command() {
 
         Util.autoConnect(event)
 
+        val userBox = SpuppyDBController.fromUserBox(event.author.idLong)
+
+        if (userBox.isEmpty()) {
+            event.channel.sendMessage("흠.. 추가하려고 했으나 박스에 아무 것도 없네요.").queue()
+            return
+        }
+
         SpuppyDBController.fromUserBox(event.author.idLong).forEach {
             GuildManager.playerControls[event.guildIdLong]!!.playOrAdd(it.audioTrack)
-//            playerManager.loadItem(it.info.url, object : AudioLoadResultHandler {
-//                override fun loadFailed(exception: FriendlyException) {
-//                    event.channel.sendMessage("오류 발생").queue()
-//                }
-//
-//                override fun trackLoaded(track: AudioTrack) {
-//                    track.userData = event.author
-//                    GuildManager.playerControls[event.guild.idLong]?.playOrAdd(track)
-//                }
-//
-//                override fun noMatches() {
-//                    event.channel.sendMessage("오류 발생").queue()
-//                }
-//
-//                override fun playlistLoaded(playlist: AudioPlaylist) {/*정상적으로 데이터를 받았다면 이 함수가 쓸 일이 없음*/
-//                }
-//            })
         }
+
+        event.channel.sendMessage("약 `${userBox.size}`개 음악을 추가했어요!").queue()
     }
 }

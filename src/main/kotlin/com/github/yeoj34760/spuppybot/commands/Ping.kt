@@ -1,13 +1,13 @@
 package com.github.yeoj34760.spuppybot.commands
 
-//object Ping : Command() {
-//    init {
-//        super.name = "ping"
-//        super.help = "핑!"
-//        super.aliases = arrayOf("ping")
-//    }
-//
-//    override fun execute( event: CommandEvent) {
-//        event.channel.sendMessage(event.args).queue()
-//    }
-//}
+import com.github.yeoj34760.spuppy.command.Command
+import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.github.yeoj34760.spuppy.command.CommandSettings
+
+
+@CommandSettings(name="ping", aliases = ["ping", "핑"])
+object Ping : Command() {
+    override fun execute(event: CommandEvent) {
+     event.channel.sendMessage("Pong!\n${event.jda.gatewayPing}ms").queue()
+    }
+}

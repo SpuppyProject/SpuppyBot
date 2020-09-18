@@ -19,7 +19,7 @@ object Agree : Command() {
             return
         }
 
-        var embed = EmbedBuilder().setAuthor("SpuppyBot").setDescription("가입하시기 전에 아래에 있는 \n이용약관, 개인정보처리방침을 읽어주시고\n동의하신다면 `${Settings.PREFIX}동의` 입력해주세요.")
+        val embed = EmbedBuilder().setAuthor("SpuppyBot").setDescription("가입하시기 전에 아래에 있는 \n이용약관, 개인정보처리방침을 읽어주시고\n동의하신다면 `${Settings.PREFIX}동의` 입력해주세요.")
                 .setColor(DiscordColor.YELLOW)
                 .addField("이용약관", "[확인](http://spuppy.ml/tos/)", true)
                 .addField("개인정보처리방침", "[확인](http://spuppy.ml/privacy_policy/)", true)

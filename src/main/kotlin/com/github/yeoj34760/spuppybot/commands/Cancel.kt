@@ -12,21 +12,4 @@ object Cancel : Command() {
         SpuppyDBController.delUser(event.author.idLong)
         event.channel.sendMessage("탈퇴 됨").queue()
     }
-
 }
-//object Cancel : Command() {
-//    init {
-//        name = "cancel"
-//        aliases = arrayOf("탈퇴", "취소", "cencel")
-//    }
-//
-//    override fun execute( event: CommandEvent) {
-//        if (!SpuppyDBController.checkUser(event.author.idLong)) {
-//            event.reply("가입안되어 있네요")
-//            return
-//        }
-//        SpuppyDBController.delAllUserBox(event.author.idLong)
-//        SpuppyDBController.delUser(event.author.idLong)
-//        event.reply("탈퇴 됨")
-//    }
-//}

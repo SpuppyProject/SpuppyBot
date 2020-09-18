@@ -7,6 +7,7 @@ import com.github.yeoj34760.spuppybot.Settings.TOKEN
 import com.github.yeoj34760.spuppybot.commands.Agree
 import com.github.yeoj34760.spuppybot.commands.Cancel
 import com.github.yeoj34760.spuppybot.commands.Info
+import com.github.yeoj34760.spuppybot.commands.Ping
 import com.github.yeoj34760.spuppybot.commands.box.*
 import com.github.yeoj34760.spuppybot.commands.music.*
 import com.github.yeoj34760.spuppybot.commands.music.List
@@ -60,7 +61,8 @@ fun main(args: Array<String>) {
                     RemoveBox,
                     CopyBox,
                     Agree,
-                    Cancel
+                    Cancel,
+                    Ping
             ).build()
     JDABuilder
             .createDefault(TOKEN)
