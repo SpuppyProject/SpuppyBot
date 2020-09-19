@@ -27,6 +27,7 @@ object CopyAllBox : Command() {
         }
 
         SpuppyDBController.fromUserBox(event.author.idLong).forEach {
+            it.audioTrack.userData = event.jda.retrieveUserById(event.author.idLong).complete()
             GuildManager.playerControls[event.guildIdLong]!!.playOrAdd(it.audioTrack)
         }
 

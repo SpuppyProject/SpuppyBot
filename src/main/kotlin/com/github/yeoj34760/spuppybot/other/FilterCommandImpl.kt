@@ -7,12 +7,6 @@ import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 
 object FilterCommandImpl : FilterCommand {
     override fun execute(event: CommandEvent): Boolean {
-
-        //예외 명령어
-        if (event.message.contentRaw == "${Settings.PREFIX}가입" ||
-                event.message.contentRaw == "${Settings.PREFIX}동의")
-            return true
-
         return if (SpuppyDBController.checkUser(event.author.idLong))
             true
         else {

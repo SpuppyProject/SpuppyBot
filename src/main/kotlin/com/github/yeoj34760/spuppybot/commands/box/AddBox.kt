@@ -75,10 +75,6 @@ object AddBox : Command() {
     }
 
     private fun sendBox(event: CommandEvent, track: AudioTrack) {
-
-        val stream = ByteArrayOutputStream()
-        playerManager.encodeTrack(MessageOutput(stream), track)
-        val encoded = Base64.getEncoder().encode(stream.toByteArray())
-        SpuppyDBController.addUserBox(event.author.idLong, String(encoded))
+        SpuppyDBController.addUserBox(event.author.idLong, Util.trackToBase64(track))
     }
 }

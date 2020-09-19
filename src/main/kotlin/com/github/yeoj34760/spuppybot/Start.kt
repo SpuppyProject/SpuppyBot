@@ -35,7 +35,7 @@ fun main(args: Array<String>) {
     var commandDatabase: CommandDatabase = CommandDatabase(ArrayList(SpuppyDBController.fromCommands()))
     var commandClient: CommandClient = CommandClientBuilder().setPrefix(Settings.PREFIX)
             .setCommandDatabase(commandDatabase)
-            .setFilterCommand(FilterCommandImpl)
+            .addFilterCommand(FilterCommandImpl, "agree", "cancel", "info", "ping")
             .addCommands(
                     Connect,
                     Disconnect,

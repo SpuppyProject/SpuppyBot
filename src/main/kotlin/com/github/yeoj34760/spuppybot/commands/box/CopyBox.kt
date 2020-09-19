@@ -19,7 +19,7 @@ object CopyBox : Command() {
             event.channel.sendMessage("음성 방에 들어와있어야 합니다. \n").queue()
         }
 
-        var userBox = SpuppyDBController.fromUserBox(event.author.idLong)
+        val userBox = SpuppyDBController.fromUserBox(event.author.idLong)
         if (userBox.isEmpty())
         {
             event.channel.sendMessage("박스에 아무 것도 없네요!").queue()
@@ -32,6 +32,9 @@ object CopyBox : Command() {
             return
         }
         Util.autoConnect(event)
-        GuildManager.playerControls[event.guildIdLong]!!.playOrAdd(SpuppyDBController.fromUserBox(event.author.idLong)[event.args[0].toInt() - 1].audioTrack)
+        
+        val track = SpuppyDBController.fromUserBox(event.author.idLong)[event.args[0].toInt() - 1].audioTrack
+        track.userData = event.jda.retrieveUserById(event.author.idLong).complete()
+        GuildManager.playerControls[event.guildIdLong]!!.playOrAdd(track)
     }
 }

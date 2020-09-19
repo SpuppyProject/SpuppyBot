@@ -2,6 +2,7 @@ package com.github.yeoj34760.spuppybot.sql
 
 import com.github.yeoj34760.spuppy.command.Commands
 import com.github.yeoj34760.spuppybot.Settings
+import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.playerManager
 import com.github.yeoj34760.spuppybot.sql.userbox.UserBox
 import com.sedmelluq.discord.lavaplayer.tools.io.MessageInput
@@ -63,11 +64,8 @@ object SpuppyDBController {
         val tempBox = arrayListOf<UserBox>()
         val t = connection.createStatement().executeQuery("select track, `order` from user_box where id = $id order by `order`")
         while (t.next()) {
-            val decode = Base64.getDecoder().decode(t.getString(1))
-            var inputStream = ByteArrayInputStream(decode)
-            val track: AudioTrack = playerManager.decodeTrack(MessageInput(inputStream)).decodedTrack
             val order: Int = t.getString(2).toInt()
-            tempBox.add(UserBox(id, track, order))
+            tempBox.add(UserBox(id, Util.base64ToTrack(t.getString(1)), order))
         }
 
         return tempBox

@@ -9,9 +9,15 @@ import com.github.yeoj34760.spuppybot.playerManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider
+import com.sedmelluq.discord.lavaplayer.tools.io.MessageInput
+import com.sedmelluq.discord.lavaplayer.tools.io.MessageOutput
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.entities.Message
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
 
 object Util {
@@ -73,5 +79,18 @@ object Util {
             errorMessage.editMessage("오류가 발생했습니다. \nlog : ${e.message}").queue()
             null
         }
+    }
+
+    fun base64ToTrack(base64 : String): AudioTrack {
+        val decode = Base64.getDecoder().decode(base64)
+        var inputStream = ByteArrayInputStream(decode)
+        return playerManager.decodeTrack(MessageInput(inputStream)).decodedTrack
+    }
+
+    fun trackToBase64(track: AudioTrack): String{
+        val stream = ByteArrayOutputStream()
+        playerManager.encodeTrack(MessageOutput(stream), track)
+        val encoded = Base64.getEncoder().encode(stream.toByteArray())
+        return String(encoded)
     }
 }
