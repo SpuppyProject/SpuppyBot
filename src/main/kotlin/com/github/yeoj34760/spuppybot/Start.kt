@@ -3,11 +3,13 @@ package com.github.yeoj34760.spuppybot
 import com.github.yeoj34760.spuppy.command.CommandClient
 import com.github.yeoj34760.spuppy.command.CommandClientBuilder
 import com.github.yeoj34760.spuppy.command.CommandDatabase
-import com.github.yeoj34760.spuppybot.commands.Agree
-import com.github.yeoj34760.spuppybot.commands.Cancel
-import com.github.yeoj34760.spuppybot.commands.Info
-import com.github.yeoj34760.spuppybot.commands.Ping
+import com.github.yeoj34760.spuppybot.commands.other.Agree
+import com.github.yeoj34760.spuppybot.commands.other.Cancel
+import com.github.yeoj34760.spuppybot.commands.other.Info
+import com.github.yeoj34760.spuppybot.commands.other.Ping
 import com.github.yeoj34760.spuppybot.commands.box.*
+import com.github.yeoj34760.spuppybot.commands.game.money.Money
+import com.github.yeoj34760.spuppybot.commands.game.money.ReceiveMoney
 import com.github.yeoj34760.spuppybot.commands.music.*
 import com.github.yeoj34760.spuppybot.commands.music.List
 import com.github.yeoj34760.spuppybot.music.LeaveAutoListener
@@ -65,7 +67,9 @@ fun main(args: Array<String>) {
                     CopyBox,
                     Agree,
                     Cancel,
-                    Ping
+                    Ping,
+                    Money,
+                    ReceiveMoney
             ).build()
     JDABuilder
             .createDefault(settings.token)

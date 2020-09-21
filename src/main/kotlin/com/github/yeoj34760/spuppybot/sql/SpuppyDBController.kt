@@ -9,7 +9,11 @@ import com.github.yeoj34760.spuppybot.sql.userbox.UserBox
 import com.sedmelluq.discord.lavaplayer.tools.io.MessageInput
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import java.io.ByteArrayInputStream
+import java.math.BigInteger
+import java.sql.Date
 import java.sql.DriverManager
+import java.sql.Time
+import java.sql.Timestamp
 import java.util.*
 
 object SpuppyDBController {
@@ -54,10 +58,17 @@ object SpuppyDBController {
     fun addUserBox(id: Long, track: String) = connection.createStatement().execute("insert into user_box values ($id, '$track', ${fromMaxNumber(id) + 1})")
     fun delAllUserBox(id: Long) = del(id, "user_box")
     fun delUserBox(id: Long, order: Int) {
-        val statement = connection.createStatement()
-        statement.execute("delete from user_box where id = $id and `order` = $order")
+        //제거
+        delUserBoxStatement("delete from user_box where id = ? and `order` = ?", id , order)
         //재정렬
-        statement.execute("update user_box set `order` = `order` - 1 where id = $id and `order` > $order")
+        delUserBoxStatement("update user_box set `order` = `order` - 1 where id = ? and `order` > ?", id , order)
+    }
+
+    private fun delUserBoxStatement(sql: String, id: Long, order: Int) {
+        val pstat = connection.prepareStatement(sql)
+        pstat.setLong(1, id)
+        pstat.setInt(2, order)
+        pstat.executeQuery()
     }
 
     fun checkUserBox(id: Long): Boolean = check(id, "user_box")
@@ -128,6 +139,54 @@ object SpuppyDBController {
     fun addUser(id: Long) = add(id, "user")
     fun delUser(id: Long) = del(id, "user")
     fun checkUser(id: Long): Boolean = check(id, "user")
+
+
+
+    fun addMoneyUser(id: Long) = add(id, "user_money")
+    fun delMoneyUser(id: Long) = del(id, "user_money")
+    fun checkMoneyUser(id: Long) = check(id, "user_money")
+    fun propertyUser(id: Long) : BigInteger {
+        val t = connection.createStatement().executeQuery("select money from user_money where id = $id")
+        if (t.next()) {
+            return BigInteger(t.getString(1))
+        }
+
+        throw Exception("오류 내용: 재산을 확인할 수 없음")
+
+    }
+
+    fun receiveMoneyUser(id: Long, money: BigInteger) : BigInteger {
+        val oldMoney = propertyUser(id)
+        val newMoney = oldMoney.add(money)
+        connection.createStatement().execute("update user_money set money=${newMoney} where id=$id")
+
+        return newMoney
+    }
+
+
+    fun receiveMoneyTimer(id: Long): Long {
+        val t = connection.createStatement().executeQuery("select timer from user_receive_money_timer where id = $id")
+        if (t.next()) {
+            return t.getTimestamp(1).time
+        }
+
+        throw Exception("돈받기 타이머 값 가져오기 실패함")
+    }
+    fun setupReceiveMoneyTimer(id: Long) {
+        val pr = connection.prepareStatement("update user_receive_money_timer set timer=? where id=?")
+        pr.setLong(2, id)
+        pr.setTimestamp(1, Timestamp(Date().time + 60000))
+        pr.executeQuery()
+    }
+
+    fun createReceiveMoneyUser(id: Long) {
+        val pr = connection.prepareStatement("insert into user_receive_money_timer (id, timer) values (?, ?)")
+        pr.setLong(1, id)
+        pr.setTimestamp(2, Timestamp(Date().time))
+        pr.executeQuery()
+    }
+
+    fun checkReceiveMoneyUser(id: Long) = check(id, "user_receive_money_timer")
 
     private fun add(id: Long, table: String) = connection.createStatement().execute("insert into $table (id) values ($id)")
     private fun del(id: Long, table: String) = connection.createStatement().execute("delete from $table where id = $id")

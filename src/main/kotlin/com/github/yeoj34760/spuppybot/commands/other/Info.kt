@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands
+package com.github.yeoj34760.spuppybot.commands.other
 
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
