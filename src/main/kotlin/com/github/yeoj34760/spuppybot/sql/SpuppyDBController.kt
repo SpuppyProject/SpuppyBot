@@ -2,6 +2,7 @@ package com.github.yeoj34760.spuppybot.sql
 
 import com.github.yeoj34760.spuppy.command.Commands
 import com.github.yeoj34760.spuppybot.Settings
+import com.github.yeoj34760.spuppybot.item.MarketItem
 import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.playerManager
 import com.github.yeoj34760.spuppybot.settings
@@ -187,6 +188,23 @@ object SpuppyDBController {
     }
 
     fun checkReceiveMoneyUser(id: Long) = check(id, "user_receive_money_timer")
+
+    fun marketItemList() : List<MarketItem> {
+     val t=   connection.createStatement().executeQuery("select * from market_item")
+        val temp = mutableListOf<MarketItem>()
+        while (t.next()) {
+            val tempItem = MarketItem(
+                    t.getString(1),
+                    t.getLong(2),
+                    t.getInt(3),
+                    t.getInt(4)
+            )
+            temp.add(tempItem)
+        }
+
+        return temp
+    }
+
 
     private fun add(id: Long, table: String) = connection.createStatement().execute("insert into $table (id) values ($id)")
     private fun del(id: Long, table: String) = connection.createStatement().execute("delete from $table where id = $id")

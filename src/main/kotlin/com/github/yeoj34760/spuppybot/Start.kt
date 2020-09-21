@@ -8,6 +8,7 @@ import com.github.yeoj34760.spuppybot.commands.other.Cancel
 import com.github.yeoj34760.spuppybot.commands.other.Info
 import com.github.yeoj34760.spuppybot.commands.other.Ping
 import com.github.yeoj34760.spuppybot.commands.box.*
+import com.github.yeoj34760.spuppybot.commands.game.market.Market
 import com.github.yeoj34760.spuppybot.commands.game.money.Money
 import com.github.yeoj34760.spuppybot.commands.game.money.ReceiveMoney
 import com.github.yeoj34760.spuppybot.commands.music.*
@@ -69,7 +70,8 @@ fun main(args: Array<String>) {
                     Cancel,
                     Ping,
                     Money,
-                    ReceiveMoney
+                    ReceiveMoney,
+                    Market
             ).build()
     JDABuilder
             .createDefault(settings.token)
