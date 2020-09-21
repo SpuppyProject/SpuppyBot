@@ -5,6 +5,7 @@ import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.other.DiscordColor
+import com.github.yeoj34760.spuppybot.settings
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.github.yeoj34760.spuppybot.waiter
 import net.dv8tion.jda.api.EmbedBuilder
@@ -19,7 +20,7 @@ object Agree : Command() {
             return
         }
 
-        val embed = EmbedBuilder().setAuthor("SpuppyBot").setDescription("가입하시기 전에 아래에 있는 \n이용약관, 개인정보처리방침을 읽어주시고\n동의하신다면 `${Settings.PREFIX}동의` 입력해주세요.")
+        val embed = EmbedBuilder().setAuthor("SpuppyBot").setDescription("가입하시기 전에 아래에 있는 \n이용약관, 개인정보처리방침을 읽어주시고\n동의하신다면 `${settings.prefix}동의` 입력해주세요.")
                 .setColor(DiscordColor.YELLOW)
                 .addField("이용약관", "[확인](http://spuppy.ml/tos/)", true)
                 .addField("개인정보처리방침", "[확인](http://spuppy.ml/privacy_policy/)", true)
@@ -32,7 +33,7 @@ object Agree : Command() {
                     && e.channel == event.channel
                     && e.message != event.message
         }, { e ->
-            if (e.message.contentRaw == "${Settings.PREFIX}동의") {
+            if (e.message.contentRaw == "${settings.prefix}동의") {
                 SpuppyDBController.addUser(e.author.idLong)
                 event.channel.sendMessage("가입완료!").queue()
             }

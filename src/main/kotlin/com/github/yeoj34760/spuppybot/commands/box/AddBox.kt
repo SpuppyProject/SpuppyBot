@@ -7,6 +7,7 @@ import com.github.yeoj34760.spuppybot.Settings
 
 import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.playerManager
+import com.github.yeoj34760.spuppybot.settings
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
@@ -27,7 +28,7 @@ import java.util.*
 object AddBox : Command() {
     override fun execute(event: CommandEvent) {
         if (event.args.isEmpty()) {
-            event.channel.sendMessage("명령어를 제대로 적어주세요.\n예시: `${Settings.PREFIX}box add https://youtu.be/HZo539SVHJ4`").queue()
+            event.channel.sendMessage("명령어를 제대로 적어주세요.\n예시: `${settings.prefix}box add https://youtu.be/HZo539SVHJ4`").queue()
             return
         }
 

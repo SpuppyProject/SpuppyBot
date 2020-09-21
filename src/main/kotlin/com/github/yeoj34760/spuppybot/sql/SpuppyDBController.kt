@@ -4,6 +4,7 @@ import com.github.yeoj34760.spuppy.command.Commands
 import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.playerManager
+import com.github.yeoj34760.spuppybot.settings
 import com.github.yeoj34760.spuppybot.sql.userbox.UserBox
 import com.sedmelluq.discord.lavaplayer.tools.io.MessageInput
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
@@ -14,9 +15,9 @@ import java.util.*
 object SpuppyDBController {
     val connection =
             DriverManager.getConnection(
-                    Settings.SPUPPYDB_URL,
-                    Settings.SPUPPYDB_USER,
-                    Settings.SPUPPYDB_PASSWORD)
+                    settings.spuppydb.url,
+                    settings.spuppydb.user,
+                    settings.spuppydb.password)
 
 
     /**

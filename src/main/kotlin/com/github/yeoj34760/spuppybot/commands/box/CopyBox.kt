@@ -6,6 +6,7 @@ import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.other.Util
+import com.github.yeoj34760.spuppybot.settings
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 
 
@@ -13,7 +14,7 @@ import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 object CopyBox : Command() {
     override fun execute(event: CommandEvent) {
         if (event.args.isEmpty() || event.args[0].toIntOrNull() == null)
-            event.channel.sendMessage("명령어를 제대로 써주세요. \n`예시: ${Settings.PREFIX}copy box 1`").queue()
+            event.channel.sendMessage("명령어를 제대로 써주세요. \n`예시: ${settings.prefix}copy box 1`").queue()
 
         if (!event.member?.voiceState!!.inVoiceChannel()) {
             event.channel.sendMessage("음성 방에 들어와있어야 합니다. \n").queue()

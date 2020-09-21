@@ -6,6 +6,7 @@ plugins {
 }
 
 mainClassName = 'com.github.yeoj34760.spuppybot.StartKt'
+
 repositories {
     jcenter()
 }
@@ -21,6 +22,7 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-bom'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation fileTree(dir: './libs', includes: ['*.jar'])
 }
 sourceSets {
@@ -30,6 +32,11 @@ jar {
     manifest {
         attributes 'Main-Class': 'com.github.yeoj34760.spuppybot.StartKt'
     }
+}
+
+shadowJar {
+    baseName("SpuppyBot")
+    classifier('')
 }
 
 compileKotlin {
