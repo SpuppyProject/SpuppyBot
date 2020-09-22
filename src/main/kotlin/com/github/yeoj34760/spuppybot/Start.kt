@@ -25,11 +25,18 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.api.JDABuilder
 import java.io.File
+import java.sql.DriverManager
 
 
 val playerManager = DefaultAudioPlayerManager()
 val waiter = EventWaiter()
 val settings: Settings = Gson().fromJson(File("settings.json").readText(), Settings::class.java)
+val spuppyDBConnection =
+        DriverManager.getConnection(
+                settings.spuppydb.url,
+                settings.spuppydb.user,
+                settings.spuppydb.password)
+
 
 fun main(args: Array<String>) {
 

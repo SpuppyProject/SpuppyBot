@@ -19,36 +19,6 @@ object SpuppyDBController {
                     settings.spuppydb.password)
 
 
-    /**
-     * 특정 길드 볼륨 값을 불러옵니다.
-     */
-    fun guildVolume(id: Long): Int {
-        val t = connection.createStatement().executeQuery("select volume from guild where id = $id")
-        if (t.next())
-            return t.getInt(1)
-        return -1
-    }
-
-    /**
-     * 특정 길드 볼륨 설정을 설정합니다.
-     */
-    fun guildVolume(id: Long, volume: Int) = connection.createStatement().execute("update guild set volume = $volume where id = $id")
-
-    /**
-     * 데이터베이스에 특정 길드를 추가합니다.
-     */
-    fun addGuild(id: Long) = add(id, "guild")
-
-    /**
-     * 데이터베이스에 있는 길드 정보를 삭제합니다.
-     */
-    fun delGuild(id: Long) = del(id, "guild")
-
-    /**
-     * 데이터베이스에 길드 정보가 있는지 확인합니다.
-     * @return 있을 경우 true, 없을 경우 false
-     * */
-    fun checkGuild(id: Long): Boolean = check(id, "guild")
 
     fun addUserBox(id: Long, track: String) = connection.createStatement().execute("insert into user_box values ($id, '$track', ${fromMaxNumber(id) + 1})")
     fun delAllUserBox(id: Long) = del(id, "user_box")
@@ -155,9 +125,9 @@ object SpuppyDBController {
     }
 
     /**
-     * 유저의 재산을 조정합니다.
+     * 유저의 재산을 추가
      */
-    fun receiveMoneyUser(id: Long, money: BigInteger) : BigInteger {
+    fun addMoneyUser(id: Long, money: BigInteger) : BigInteger {
         val oldMoney = propertyUser(id)
         val newMoney = oldMoney.add(money)
         connection.createStatement().execute("update user_money set money=${newMoney} where id=$id")
@@ -189,7 +159,7 @@ object SpuppyDBController {
     }
 
     /**
-     * 유저 재산을 생성합니다.
+     * 돈받기 타이머 생성합니다.
      */
     fun createReceiveMoneyUser(id: Long) {
         val pr = connection.prepareStatement("insert into user_receive_money_timer (id, timer) values (?, ?)")
@@ -207,7 +177,7 @@ object SpuppyDBController {
     /**
      * 유저의 재산의 수를 뺍니다.
      */
-    fun minusReceiveMoneyUser(id: Long, money: BigInteger) {
+    fun minusMoneyUser(id: Long, money: BigInteger) {
         val nowMoney = propertyUser(id)
             val ps = connection.prepareStatement("update user_money set money=? where id=?")
         nowMoney.minus(money).toString()
