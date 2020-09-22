@@ -1,19 +1,13 @@
 package com.github.yeoj34760.spuppybot.sql
 
 import com.github.yeoj34760.spuppy.command.Commands
-import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.item.MarketItem
+import com.github.yeoj34760.spuppybot.item.UserItem
 import com.github.yeoj34760.spuppybot.other.Util
-import com.github.yeoj34760.spuppybot.playerManager
 import com.github.yeoj34760.spuppybot.settings
 import com.github.yeoj34760.spuppybot.sql.userbox.UserBox
-import com.sedmelluq.discord.lavaplayer.tools.io.MessageInput
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack
-import java.io.ByteArrayInputStream
 import java.math.BigInteger
-import java.sql.Date
 import java.sql.DriverManager
-import java.sql.Time
 import java.sql.Timestamp
 import java.util.*
 
@@ -189,6 +183,15 @@ object SpuppyDBController {
 
     fun checkReceiveMoneyUser(id: Long) = check(id, "user_receive_money_timer")
 
+
+    fun minusReceiveMoneyUser(id: Long, money: BigInteger) {
+        val nowMoney = propertyUser(id)
+            val ps = connection.prepareStatement("update user_money set money=? where id=?")
+        nowMoney.minus(money).toString()
+        ps.setString(1, nowMoney.minus(money).toString())
+        ps.setLong(2, id)
+                ps.executeQuery()
+    }
     fun marketItemList() : List<MarketItem> {
      val t=   connection.createStatement().executeQuery("select * from market_item")
         val temp = mutableListOf<MarketItem>()
@@ -205,6 +208,26 @@ object SpuppyDBController {
         return temp
     }
 
+    fun minusMarketItem(name: String) {
+        val ps = connection.prepareStatement("update market_item set count=count-1 where name=?")
+        ps.setString(1, name)
+        ps.executeQuery()
+    }
+
+    fun addUserItem(id: Long, userItem: MarketItem) : Boolean {
+        return try {
+            val ps = connection.prepareStatement("insert into user_item values (?,?,?) on duplicate key update count=count+1")
+            ps.setString(1, userItem.name)
+            ps.setInt(2, 1)
+            ps.setTimestamp(3, Timestamp(Date().time))
+            ps.executeQuery()
+            true
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
 
     private fun add(id: Long, table: String) = connection.createStatement().execute("insert into $table (id) values ($id)")
     private fun del(id: Long, table: String) = connection.createStatement().execute("delete from $table where id = $id")
