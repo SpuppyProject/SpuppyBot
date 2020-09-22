@@ -20,34 +20,6 @@ object SpuppyDBController {
 
 
 
-    fun addUserBox(id: Long, track: String) = connection.createStatement().execute("insert into user_box values ($id, '$track', ${fromMaxNumber(id) + 1})")
-    fun delAllUserBox(id: Long) = del(id, "user_box")
-    fun delUserBox(id: Long, order: Int) {
-        //제거
-        delUserBoxStatement("delete from user_box where id = ? and `order` = ?", id , order)
-        //재정렬
-        delUserBoxStatement("update user_box set `order` = `order` - 1 where id = ? and `order` > ?", id , order)
-    }
-
-    private fun delUserBoxStatement(sql: String, id: Long, order: Int) {
-        val pstat = connection.prepareStatement(sql)
-        pstat.setLong(1, id)
-        pstat.setInt(2, order)
-        pstat.executeQuery()
-    }
-
-    fun checkUserBox(id: Long): Boolean = check(id, "user_box")
-    fun fromUserBox(id: Long): List<UserBox> {
-        val tempBox = arrayListOf<UserBox>()
-        val t = connection.createStatement().executeQuery("select track, `order` from user_box where id = $id order by `order`")
-        while (t.next()) {
-            val order: Int = t.getString(2).toInt()
-            tempBox.add(UserBox(id, Util.base64ToTrack(t.getString(1)), order))
-        }
-
-        return tempBox
-    }
-
     fun fromCommands(): List<Commands> {
         var temp = mutableListOf<Commands>()
         val t = connection.createStatement().executeQuery("select name, command from command")
@@ -80,25 +52,6 @@ object SpuppyDBController {
         }
 
         return null
-    }
-
-    /**
-     * 순서를 서로 바꿉니다.
-     */
-    fun moveBox(id: Long, num1: Int, num2: Int) {
-        val statement = connection.createStatement()
-        //dog same
-        statement.execute("update user_box a inner join user_box b on a.`order` <> b.`order` set a.`order` = b.`order` where a.`order` in ($num1,$num2) and b.`order` in ($num1,$num2)")
-    }
-
-    /**
-     * 해당 유저박스에서 몇 개 있는지 반환합니다.
-     * 찾을 수 없을 경우 0로 반환합니다.
-     */
-    fun fromMaxNumber(id: Long): Int {
-        val t = connection.createStatement().executeQuery("select max(`order`) from user_box where id = $id")
-        if (t.next()) return t.getInt(1)
-        return 0
     }
 
     fun addUser(id: Long) = add(id, "user")

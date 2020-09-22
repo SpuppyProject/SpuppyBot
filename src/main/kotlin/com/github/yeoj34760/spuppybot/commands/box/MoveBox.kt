@@ -7,6 +7,7 @@ import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.settings
 
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.UserBoxDBController
 
 
 @CommandSettings(name = "movebox")
@@ -18,7 +19,7 @@ object MoveBox : Command() {
         }
         val order1: Int? = event.args[0].toIntOrNull()
         val order2: Int? = event.args[1].toIntOrNull()
-        val max = SpuppyDBController.fromMaxNumber(event.author.idLong)
+        val max = UserBoxDBController.fromMaxNumber(event.author.idLong)
         if (max <= 1) {
             event.channel.sendMessage("음악 옮기려는데 하나밖에 없네요.").queue()
             return
@@ -27,7 +28,7 @@ object MoveBox : Command() {
             event.channel.sendMessage("올바르게 숫자를 입력해주세요.").queue()
             return
         }
-        SpuppyDBController.moveBox(event.guild.idLong, order1, order2)
+        UserBoxDBController.moveBox(event.guild.idLong, order1, order2)
         event.channel.sendMessage("성공!").queue()
     }
 }

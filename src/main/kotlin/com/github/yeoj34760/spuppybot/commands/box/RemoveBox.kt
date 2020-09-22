@@ -7,6 +7,7 @@ import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.settings
 
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.UserBoxDBController
 
 @CommandSettings(name = "removebox")
 object RemoveBox : Command() {
@@ -15,7 +16,7 @@ object RemoveBox : Command() {
             event.channel.sendMessage("명령어를 제대로 써주세요.\n예시: `${settings.prefix}box remove 1`").queue()
             return
         }
-        val max = SpuppyDBController.fromMaxNumber(event.author.idLong)
+        val max = UserBoxDBController.fromMaxNumber(event.author.idLong)
 
         when (event.args[0].toIntOrNull()) {
             !in 1..max -> {
@@ -26,7 +27,7 @@ object RemoveBox : Command() {
             }
         }
 
-        SpuppyDBController.delUserBox(event.author.idLong, event.args[0].toInt())
+        UserBoxDBController.delUserBox(event.author.idLong, event.args[0].toInt())
         event.channel.sendMessage("삭제완료").queue()
     }
 }

@@ -6,7 +6,7 @@ import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.other.Util
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.UserBoxDBController
 
 @CommandSettings(name = "copyallbox")
 object CopyAllBox : Command() {
@@ -19,14 +19,14 @@ object CopyAllBox : Command() {
 
         Util.autoConnect(event)
 
-        val userBox = SpuppyDBController.fromUserBox(event.author.idLong)
+        val userBox = UserBoxDBController.fromUserBox(event.author.idLong)
 
         if (userBox.isEmpty()) {
             event.channel.sendMessage("흠.. 추가하려고 했으나 박스에 아무 것도 없네요.").queue()
             return
         }
 
-        SpuppyDBController.fromUserBox(event.author.idLong).forEach {
+        UserBoxDBController.fromUserBox(event.author.idLong).forEach {
             it.audioTrack.userData = event.jda.retrieveUserById(event.author.idLong).complete()
             GuildManager.playerControls[event.guildIdLong]!!.playOrAdd(it.audioTrack)
         }
