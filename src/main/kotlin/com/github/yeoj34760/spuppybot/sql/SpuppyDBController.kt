@@ -122,7 +122,8 @@ object SpuppyDBController {
     }
 
     /**
-     * 유저 재산이 등록되어 있는지 확인합니다.
+     * 돈받기를 한번이라도 했는지 체크합니다.
+     * 안했다면 false
      */
     fun checkReceiveMoneyUser(id: Long) = check(id, "user_receive_money_timer")
 
