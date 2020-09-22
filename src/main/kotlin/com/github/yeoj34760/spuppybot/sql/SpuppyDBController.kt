@@ -140,6 +140,10 @@ object SpuppyDBController {
     fun addMoneyUser(id: Long) = add(id, "user_money")
     fun delMoneyUser(id: Long) = del(id, "user_money")
     fun checkMoneyUser(id: Long) = check(id, "user_money")
+
+    /**
+     * 유저 재산을 확인합니다.
+     */
     fun propertyUser(id: Long) : BigInteger {
         val t = connection.createStatement().executeQuery("select money from user_money where id = $id")
         if (t.next()) {
@@ -150,6 +154,9 @@ object SpuppyDBController {
 
     }
 
+    /**
+     * 유저의 재산을 조정합니다.
+     */
     fun receiveMoneyUser(id: Long, money: BigInteger) : BigInteger {
         val oldMoney = propertyUser(id)
         val newMoney = oldMoney.add(money)
@@ -159,6 +166,9 @@ object SpuppyDBController {
     }
 
 
+    /**
+     * 돈받기 타이머 값을 불러옵니다.
+     */
     fun receiveMoneyTimer(id: Long): Long {
         val t = connection.createStatement().executeQuery("select timer from user_receive_money_timer where id = $id")
         if (t.next()) {
@@ -167,6 +177,10 @@ object SpuppyDBController {
 
         throw Exception("돈받기 타이머 값 가져오기 실패함")
     }
+
+    /**
+     * 돈받기 타이머 갱신합니다.
+     */
     fun setupReceiveMoneyTimer(id: Long) {
         val pr = connection.prepareStatement("update user_receive_money_timer set timer=? where id=?")
         pr.setLong(2, id)
@@ -174,6 +188,9 @@ object SpuppyDBController {
         pr.executeQuery()
     }
 
+    /**
+     * 유저 재산을 생성합니다.
+     */
     fun createReceiveMoneyUser(id: Long) {
         val pr = connection.prepareStatement("insert into user_receive_money_timer (id, timer) values (?, ?)")
         pr.setLong(1, id)
@@ -181,9 +198,15 @@ object SpuppyDBController {
         pr.executeQuery()
     }
 
+    /**
+     * 유저 재산이 등록되어 있는지 확인합니다.
+     */
     fun checkReceiveMoneyUser(id: Long) = check(id, "user_receive_money_timer")
 
 
+    /**
+     * 유저의 재산의 수를 뺍니다.
+     */
     fun minusReceiveMoneyUser(id: Long, money: BigInteger) {
         val nowMoney = propertyUser(id)
             val ps = connection.prepareStatement("update user_money set money=? where id=?")
@@ -192,6 +215,10 @@ object SpuppyDBController {
         ps.setLong(2, id)
                 ps.executeQuery()
     }
+
+    /**
+     * 마트에 있는 아이템들을 반환합니다.
+     */
     fun marketItemList() : List<MarketItem> {
      val t=   connection.createStatement().executeQuery("select * from market_item")
         val temp = mutableListOf<MarketItem>()
@@ -208,12 +235,18 @@ object SpuppyDBController {
         return temp
     }
 
+    /**
+     * 마켓에 있는 아이템 갯수를 하나뺍니다.
+     */
     fun minusMarketItem(name: String) {
         val ps = connection.prepareStatement("update market_item set count=count-1 where name=?")
         ps.setString(1, name)
         ps.executeQuery()
     }
 
+    /**
+     * 유저의 창고에 아이템을 추가합니다
+     */
     fun addUserItem(id: Long, userItem: MarketItem) : Boolean {
         return try {
             val ps = connection.prepareStatement("insert into user_item values (?,?,?) on duplicate key update count=count+1")
