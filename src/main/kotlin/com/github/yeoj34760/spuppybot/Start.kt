@@ -8,6 +8,8 @@ import com.github.yeoj34760.spuppybot.commands.other.Cancel
 import com.github.yeoj34760.spuppybot.commands.other.Info
 import com.github.yeoj34760.spuppybot.commands.other.Ping
 import com.github.yeoj34760.spuppybot.commands.box.*
+import com.github.yeoj34760.spuppybot.commands.game.gamble.Gamble
+import com.github.yeoj34760.spuppybot.commands.game.gamble.GambleInfo
 import com.github.yeoj34760.spuppybot.commands.game.item.MyItem
 import com.github.yeoj34760.spuppybot.commands.game.market.BuyMarket
 import com.github.yeoj34760.spuppybot.commands.game.market.Market
@@ -29,6 +31,11 @@ import net.dv8tion.jda.api.JDABuilder
 import java.io.File
 import java.security.MessageDigest
 import java.sql.DriverManager
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.timer
+import kotlin.concurrent.timerTask
+import kotlin.random.Random
 
 
 val playerManager = DefaultAudioPlayerManager()
@@ -39,9 +46,18 @@ val spuppyDBConnection =
                 settings.spuppydb.url,
                 settings.spuppydb.user,
                 settings.spuppydb.password)
-
+var nowGamblingProbability: Int = 0
+var updateGamblingProbability: Date = Date()
 
 fun main() {
+
+    timer(period = 6000*10*10) {
+        nowGamblingProbability = Random.nextInt(40, 65)
+        var cal = Calendar.getInstance()
+        cal.add(Calendar.MINUTE, 10)
+        updateGamblingProbability = cal.time
+    }
+
     Class.forName("org.mariadb.jdbc.Driver")
     //플레이어매니저 설정
     playerManager.registerSourceManager(YoutubeAudioSourceManager())
@@ -83,7 +99,9 @@ fun main() {
                     ReceiveMoney,
                     Market,
                     BuyMarket,
-                    MyItem
+                    MyItem,
+                    Gamble,
+                    GambleInfo
             ).build()
     JDABuilder
             .createDefault(settings.token)
