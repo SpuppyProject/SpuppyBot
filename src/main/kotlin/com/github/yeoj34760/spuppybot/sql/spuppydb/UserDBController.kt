@@ -16,7 +16,7 @@ object UserDBController {
         ps.execute()
     }
     fun checkUser(id: Long): Boolean {
-        val ps = spuppyDBConnection.prepareStatement("select exists(select * from user where ?)")
+        val ps = spuppyDBConnection.prepareStatement("select exists(select * from user where id=?)")
         ps.setLong(1, id)
         val result = ps.executeQuery()
         if (result.next())

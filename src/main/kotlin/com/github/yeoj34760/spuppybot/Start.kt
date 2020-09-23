@@ -8,6 +8,7 @@ import com.github.yeoj34760.spuppybot.commands.other.Cancel
 import com.github.yeoj34760.spuppybot.commands.other.Info
 import com.github.yeoj34760.spuppybot.commands.other.Ping
 import com.github.yeoj34760.spuppybot.commands.box.*
+import com.github.yeoj34760.spuppybot.commands.game.item.MyItem
 import com.github.yeoj34760.spuppybot.commands.game.market.BuyMarket
 import com.github.yeoj34760.spuppybot.commands.game.market.Market
 import com.github.yeoj34760.spuppybot.commands.game.money.Money
@@ -26,6 +27,7 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.api.JDABuilder
 import java.io.File
+import java.security.MessageDigest
 import java.sql.DriverManager
 
 
@@ -40,7 +42,6 @@ val spuppyDBConnection =
 
 
 fun main() {
-
     Class.forName("org.mariadb.jdbc.Driver")
     //플레이어매니저 설정
     playerManager.registerSourceManager(YoutubeAudioSourceManager())
@@ -81,7 +82,8 @@ fun main() {
                     Money,
                     ReceiveMoney,
                     Market,
-                    BuyMarket
+                    BuyMarket,
+                    MyItem
             ).build()
     JDABuilder
             .createDefault(settings.token)
