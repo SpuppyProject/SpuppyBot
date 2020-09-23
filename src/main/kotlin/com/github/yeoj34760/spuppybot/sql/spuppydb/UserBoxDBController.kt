@@ -59,7 +59,7 @@ object UserBoxDBController {
      * 찾을 수 없을 경우 0로 반환합니다.
      */
     fun fromMaxNumber(id: Long): Int {
-        val t = SpuppyDBController.connection.createStatement().executeQuery("select max(`order`) from user_box where id = $id")
+        val t = spuppyDBConnection.createStatement().executeQuery("select max(`order`) from user_box where id = $id")
         if (t.next()) return t.getInt(1)
         return 0
     }
@@ -68,7 +68,7 @@ object UserBoxDBController {
      * 순서를 서로 바꿉니다.
      */
     fun moveBox(id: Long, num1: Int, num2: Int) {
-        val statement = SpuppyDBController.connection.createStatement()
+        val statement = spuppyDBConnection.createStatement()
         //dog same
         statement.execute("update user_box a inner join user_box b on a.`order` <> b.`order` set a.`order` = b.`order` where a.`order` in ($num1,$num2) and b.`order` in ($num1,$num2)")
     }

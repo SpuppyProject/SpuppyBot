@@ -18,6 +18,7 @@ import com.github.yeoj34760.spuppybot.music.LeaveAutoListener
 import com.github.yeoj34760.spuppybot.other.FilterCommandImpl
 import com.github.yeoj34760.spuppybot.other.GuildAutoDeleteListener
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.CommandDBController
 import com.google.gson.Gson
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
@@ -38,7 +39,7 @@ val spuppyDBConnection =
                 settings.spuppydb.password)
 
 
-fun main(args: Array<String>) {
+fun main() {
 
     Class.forName("org.mariadb.jdbc.Driver")
     //플레이어매니저 설정
@@ -46,7 +47,7 @@ fun main(args: Array<String>) {
     AudioSourceManagers.registerRemoteSources(playerManager)
 
 
-    var commandDatabase: CommandDatabase = CommandDatabase(ArrayList(SpuppyDBController.fromCommands()))
+    var commandDatabase: CommandDatabase = CommandDatabase(ArrayList(CommandDBController.fromCommands()))
     var commandClient: CommandClient = CommandClientBuilder().setPrefix(settings.prefix)
             .setCommandDatabase(commandDatabase)
             .addFilterCommand(FilterCommandImpl, "agree", "cancel", "info", "ping")

@@ -5,12 +5,14 @@ import com.github.yeoj34760.spuppy.command.FilterCommand
 import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.settings
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.UserDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
 
 object FilterCommandImpl : FilterCommand {
     override fun execute(event: CommandEvent): Boolean {
-        return if (SpuppyDBController.checkUser(event.author.idLong)) {
-            if (!SpuppyDBController.checkMoneyUser(event.author.idLong))
-                SpuppyDBController.addMoneyUser(event.author.idLong)
+        return if (UserDBController.checkUser(event.author.idLong)) {
+            if (!UserMoneyDBController.checkMoneyUser(event.author.idLong))
+                UserMoneyDBController.createMoneyUser(event.author.idLong)
             true
         }
         else {

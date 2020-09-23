@@ -2,6 +2,7 @@ package com.github.yeoj34760.spuppybot.music
 
 import com.github.yeoj34760.spuppybot.playerManager
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.GuildDBController
 import net.dv8tion.jda.api.managers.AudioManager
 
 object GuildManager {
@@ -14,7 +15,7 @@ object GuildManager {
         val playerControl: PlayerControl
         if (!playerControls.containsKey(id)) {
             val player = playerManager.createPlayer()
-            val volume = SpuppyDBController.guildVolume(id)
+            val volume = GuildDBController.guildVolume(id)
             if (volume != -1)
                 player.volume = volume
             else

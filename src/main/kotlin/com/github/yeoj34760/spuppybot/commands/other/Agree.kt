@@ -6,6 +6,7 @@ import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.settings
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.UserDBController
 import com.github.yeoj34760.spuppybot.waiter
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit
 @CommandSettings(name = "agree", aliases = ["가입"])
 object Agree : Command() {
     override fun execute(event: CommandEvent) {
-        if (SpuppyDBController.checkUser(event.author.idLong)) {
+        if (UserDBController.checkUser(event.author.idLong)) {
             event.channel.sendMessage("이미 가입되어 있네요!").queue()
             return
         }
@@ -33,7 +34,7 @@ object Agree : Command() {
                     && e.message != event.message
         }, { e ->
             if (e.message.contentRaw == "${settings.prefix}동의") {
-                SpuppyDBController.addUser(e.author.idLong)
+                UserDBController.addUser(e.author.idLong)
                 event.channel.sendMessage("가입완료!").queue()
             }
             else

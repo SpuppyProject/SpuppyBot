@@ -1,7 +1,6 @@
 package com.github.yeoj34760.spuppybot.sql.spuppydb
 
 import com.github.yeoj34760.spuppybot.spuppyDBConnection
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import java.sql.Timestamp
 import java.util.*
 
@@ -10,7 +9,9 @@ object ReceiveMoneyDBController {
      * 돈받기 타이머 값을 불러옵니다.
      */
     fun receiveMoneyTimer(id: Long): Long {
-        val t = SpuppyDBController.connection.createStatement().executeQuery("select timer from user_receive_money_timer where id = {$id}")
+        val ps = spuppyDBConnection.prepareStatement("select timer from user_receive_money_timer where id=?")
+        ps.setLong(1, id)
+        val t = ps.executeQuery()
         if (t.next()) {
             return t.getTimestamp(1).time
         }
@@ -22,7 +23,7 @@ object ReceiveMoneyDBController {
      * 돈받기 타이머 갱신합니다.
      */
     fun setupReceiveMoneyTimer(id: Long) {
-        val pr = SpuppyDBController.connection.prepareStatement("update user_receive_money_timer set timer=? where id=?")
+        val pr = spuppyDBConnection.prepareStatement("update user_receive_money_timer set timer=? where id=?")
         pr.setLong(2, id)
         pr.setTimestamp(1, Timestamp(Date().time + 60000))
         pr.execute()
@@ -32,7 +33,7 @@ object ReceiveMoneyDBController {
      * 돈받기 타이머 생성합니다.
      */
     fun createReceiveMoneyUser(id: Long) {
-        val pr = SpuppyDBController.connection.prepareStatement("insert into user_receive_money_timer (id, timer) values (?, ?)")
+        val pr = spuppyDBConnection.prepareStatement("insert into user_receive_money_timer (id, timer) values (?, ?)")
         pr.setLong(1, id)
         pr.setTimestamp(2, Timestamp(Date().time))
         pr.execute()

@@ -5,12 +5,13 @@ import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.MarketItemDBController
 import net.dv8tion.jda.api.EmbedBuilder
 
 @CommandSettings(name = "market", aliases = ["마켓"])
 object Market : Command() {
     override fun execute(event: CommandEvent) {
-        val items = SpuppyDBController.marketItemList()
+        val items = MarketItemDBController.marketItemList()
         val temp: StringBuffer = StringBuffer()
         val description: String
 

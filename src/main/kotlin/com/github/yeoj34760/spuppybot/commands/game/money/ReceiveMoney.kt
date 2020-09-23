@@ -5,6 +5,8 @@ import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.ReceiveMoneyDBController
+import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
 import net.dv8tion.jda.api.EmbedBuilder
 import java.math.BigInteger
 import java.util.*
@@ -14,10 +16,10 @@ import kotlin.random.Random
 object ReceiveMoney : Command() {
     override fun execute(event: CommandEvent) {
 
-        if(!SpuppyDBController.checkReceiveMoneyUser(event.author.idLong))
-            SpuppyDBController.createReceiveMoneyUser(event.author.idLong)
+        if(!UserMoneyDBController.checkMoneyUser(event.author.idLong))
+            UserMoneyDBController.createMoneyUser(event.author.idLong)
 
-        val timer = SpuppyDBController.receiveMoneyTimer(event.author.idLong)
+        val timer = ReceiveMoneyDBController.receiveMoneyTimer(event.author.idLong)
 
         if (Date().time < timer)
         {
@@ -25,7 +27,7 @@ object ReceiveMoney : Command() {
             return
         }
         val money = BigInteger(Random.nextInt(4000, 10000).toString())
-       val nowMoney = SpuppyDBController.receiveMoneyUser(event.author.idLong, money)
+       val nowMoney = UserMoneyDBController.addMoneyUser(event.author.idLong, money)
         val embed = EmbedBuilder().setColor(DiscordColor.ORANGE).setAuthor(event.author.asTag, null, event.author.avatarUrl ?: event.author.defaultAvatarUrl)
                 .setTitle("처리 됨!")
                 .setDescription("${money}원을 받았습니다.")
@@ -33,7 +35,7 @@ object ReceiveMoney : Command() {
                 .build()
 
         event.channel.sendMessage(embed).queue()
-        SpuppyDBController.setupReceiveMoneyTimer(event.author.idLong)
+        ReceiveMoneyDBController.setupReceiveMoneyTimer(event.author.idLong)
     }
 
 }
