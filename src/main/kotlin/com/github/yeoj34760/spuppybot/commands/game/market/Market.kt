@@ -7,17 +7,44 @@ import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.github.yeoj34760.spuppybot.sql.spuppydb.MarketItemDBController
 import net.dv8tion.jda.api.EmbedBuilder
+import kotlin.math.ceil
 
-@CommandSettings(name = "market", aliases = ["마켓"])
+@CommandSettings(name = "market")
 object Market : Command() {
     override fun execute(event: CommandEvent) {
         val items = MarketItemDBController.marketItemList()
         val temp: StringBuffer = StringBuffer()
         val description: String
 
-        items.forEach { item ->
-            temp.append("`${item.name}`\n(${item.price}원)[${item.count}개 남음]\n\n")
+//        val num = event.args[0].toIntOrNull() ?: 1
+
+        val num = if (event.args.isEmpty()) 1 else event.args[0].toIntOrNull() ?: 1
+
+
+        if (num > ceil(items.size / 5f))
+        {
+            event.channel.sendMessage("숫자를 ${ceil(items.size / 5f).toInt()} 이하로 지정해주세요!").queue()
+            return
         }
+        else if (num <= 0) {
+            event.channel.sendMessage("1이상 지정해주세요!").queue()
+            return
+        }
+
+        for (i in ((num-1)*5) until ((num)*5)) {
+            if (items.size <= i)
+                break
+//            temp.append("${i+1}. `${items[i].name}`\n(${items[i].price}원)[${items[i].count}개 남음]\n\n")
+            temp.append("${i+1}. `${items[i].name}`\n")
+            temp.append("(${items[i].price}원)")
+            if (items[i].count <= 0)
+                temp.append("**[재고 소진]**\n\n")
+            else
+                temp.append("[${items[i].count}개 남음]\n\n")
+        }
+//        items.forEach { item ->
+//            temp.append("`${item.name}`\n(${item.price}원)[${item.count}개 남음]\n\n")
+//        }
 
         description = temp.toString()
 

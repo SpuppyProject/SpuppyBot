@@ -12,12 +12,16 @@ import java.math.BigInteger
 import java.util.*
 import kotlin.random.Random
 
-@CommandSettings(name="receivemoney", aliases = ["돈받기"])
+@CommandSettings(name="receivemoney")
 object ReceiveMoney : Command() {
     override fun execute(event: CommandEvent) {
 
         if(!UserMoneyDBController.checkMoneyUser(event.author.idLong))
             UserMoneyDBController.createMoneyUser(event.author.idLong)
+
+        if (!ReceiveMoneyDBController.checkReceiveMoneyUser(event.author.idLong))
+            ReceiveMoneyDBController.createReceiveMoneyUser(event.author.idLong)
+
 
         val timer = ReceiveMoneyDBController.receiveMoneyTimer(event.author.idLong)
 

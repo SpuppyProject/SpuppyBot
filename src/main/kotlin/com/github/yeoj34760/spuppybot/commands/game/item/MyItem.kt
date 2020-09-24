@@ -11,7 +11,7 @@ import java.math.BigInteger
 import java.text.SimpleDateFormat
 import java.util.*
 
-@CommandSettings(name="내아이템", aliases = ["내아이템"])
+@CommandSettings(name="myitem")
 object MyItem : Command() {
     override fun execute(event: CommandEvent) {
         val userItemList = UserItemDBController.fromUserItemList(event.author.idLong)

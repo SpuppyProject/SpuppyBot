@@ -9,6 +9,7 @@ import com.github.yeoj34760.spuppybot.commands.other.Info
 import com.github.yeoj34760.spuppybot.commands.other.Ping
 import com.github.yeoj34760.spuppybot.commands.box.*
 import com.github.yeoj34760.spuppybot.commands.game.gamble.Gamble
+import com.github.yeoj34760.spuppybot.commands.game.gamble.GambleAll
 import com.github.yeoj34760.spuppybot.commands.game.gamble.GambleInfo
 import com.github.yeoj34760.spuppybot.commands.game.item.MyItem
 import com.github.yeoj34760.spuppybot.commands.game.market.BuyMarket
@@ -104,7 +105,8 @@ fun main() {
                     MyItem,
                     Gamble,
                     GambleInfo,
-                    RefundMarket
+                    RefundMarket,
+                    GambleAll
             ).build()
     JDABuilder
             .createDefault(settings.token)

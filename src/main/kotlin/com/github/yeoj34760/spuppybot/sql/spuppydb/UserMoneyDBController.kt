@@ -9,7 +9,10 @@ object UserMoneyDBController {
      * 유저 재산을 확인합니다.
      */
     fun propertyUser(id: Long) : BigInteger {
-        val t = spuppyDBConnection.createStatement().executeQuery("select money from user_money where id = $id")
+//        val t = spuppyDBConnection.createStatement().executeQuery("select money from user_money where id = $id")
+        val ps = spuppyDBConnection.prepareStatement("select money from user_money where id = ?")
+        ps.setLong(1, id)
+        val t= ps.executeQuery()
         if (t.next()) {
             return BigInteger(t.getString(1))
         }
@@ -52,11 +55,13 @@ object UserMoneyDBController {
         ps.execute()
     }
     fun checkMoneyUser(id: Long) : Boolean {
-        val ps = spuppyDBConnection.prepareStatement("select exists(select * from user_money where ?)")
+        val ps = spuppyDBConnection.prepareStatement("select exists(select * from user_money where id=?)")
         ps.setLong(1, id)
         val result = ps.executeQuery()
-        if (result.next())
+        if (result.next()) {
+            println(result.getInt(1))
             return result.getInt(1) == 1
+        }
 
         return false
     }

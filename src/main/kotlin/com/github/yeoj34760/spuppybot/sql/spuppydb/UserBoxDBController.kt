@@ -34,7 +34,7 @@ object UserBoxDBController {
     }
 
     fun checkUserBox(id: Long): Boolean {
-        val ps = spuppyDBConnection.prepareStatement("select exists(select * from user_box where ?)")
+        val ps = spuppyDBConnection.prepareStatement("select exists(select * from user_box where id=?)")
         ps.setLong(1, id)
         val result = ps.executeQuery()
         if (result.next())

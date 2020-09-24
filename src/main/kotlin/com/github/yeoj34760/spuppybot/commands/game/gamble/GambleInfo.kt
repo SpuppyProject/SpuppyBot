@@ -12,7 +12,7 @@ import java.util.*
 import java.util.logging.SimpleFormatter
 
 
-@CommandSettings(name="gambleinfo", aliases = ["도박 정보"])
+@CommandSettings(name="gambleinfo")
 object GambleInfo : Command() {
     override fun execute(event: CommandEvent) {
      val embed = EmbedBuilder().setColor(DiscordColor.GREEN)
@@ -20,6 +20,6 @@ object GambleInfo : Command() {
              .addField("확률 갱신까지", SimpleDateFormat("mm분 ss초").format(Date(updateGamblingProbability.time - Date().time)), true)
              .build()
 
-        event.channel.sendMessage(embed).queue();
+        event.channel.sendMessage(embed).queue()
     }
 }

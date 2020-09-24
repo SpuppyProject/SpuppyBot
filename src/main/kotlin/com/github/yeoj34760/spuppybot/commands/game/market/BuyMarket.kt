@@ -11,7 +11,7 @@ import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
 import java.math.BigInteger
 
 
-@CommandSettings(name = "buymarket", aliases = ["마켓 구매"])
+@CommandSettings(name = "buymarket")
 object BuyMarket : Command() {
     override fun execute(event: CommandEvent) {
         var item: MarketItem? = MarketItemList[event.content]

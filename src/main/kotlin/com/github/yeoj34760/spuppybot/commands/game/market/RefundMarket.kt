@@ -10,7 +10,7 @@ import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
 import net.dv8tion.jda.api.EmbedBuilder
 import java.math.BigDecimal
 
-@CommandSettings(name = "refundmarket", aliases = ["환불"])
+@CommandSettings(name = "refundmarket")
 object RefundMarket : Command() {
     override fun execute(event: CommandEvent) {
         if (event.args.isEmpty()) {

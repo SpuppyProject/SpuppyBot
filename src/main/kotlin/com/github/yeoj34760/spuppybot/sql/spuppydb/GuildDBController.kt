@@ -48,7 +48,7 @@ object GuildDBController {
      * @return 있을 경우 true, 없을 경우 false
      * */
     fun checkGuild(guildId: Long): Boolean {
-        val ps = spuppyDBConnection.prepareStatement("select exists(select * from guild where ?)")
+        val ps = spuppyDBConnection.prepareStatement("select exists(select * from guild where id=?)")
         ps.setLong(1, guildId)
         val result = ps.executeQuery()
         if (result.next())

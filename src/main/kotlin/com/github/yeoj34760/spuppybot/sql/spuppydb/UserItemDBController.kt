@@ -48,8 +48,6 @@ object UserItemDBController {
             if (!checkUserItem(id, marketItem.name))
                 return false
 
-
-
             if (get(id, marketItem.name)!!.count <= 1 || get(id, marketItem.name)!!.count <= minusNum)
                 minusUserItemDelete(id, marketItem)
             else

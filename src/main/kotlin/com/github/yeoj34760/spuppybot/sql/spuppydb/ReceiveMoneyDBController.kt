@@ -44,7 +44,7 @@ object ReceiveMoneyDBController {
      * 안했다면 false
      */
     fun checkReceiveMoneyUser(id: Long) : Boolean {
-        val ps = spuppyDBConnection.prepareStatement("select exists(select * from user_receive_money_timer where ?)")
+        val ps = spuppyDBConnection.prepareStatement("select exists(select * from user_receive_money_timer where id=?)")
         ps.setLong(1, id)
         val result = ps.executeQuery()
         if (result.next())

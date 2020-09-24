@@ -13,6 +13,7 @@ object FilterCommandImpl : FilterCommand {
         return if (UserDBController.checkUser(event.author.idLong)) {
             if (!UserMoneyDBController.checkMoneyUser(event.author.idLong))
                 UserMoneyDBController.createMoneyUser(event.author.idLong)
+
             true
         }
         else {

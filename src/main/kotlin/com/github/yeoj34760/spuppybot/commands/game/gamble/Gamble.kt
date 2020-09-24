@@ -8,7 +8,7 @@ import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
 import java.math.BigInteger
 import kotlin.random.Random
 
-@CommandSettings(name="gamble", aliases = ["도박"])
+@CommandSettings(name="gamble")
 object Gamble : Command() {
     override fun execute(event: CommandEvent) {
         if (event.args.isEmpty()) {
@@ -25,15 +25,20 @@ object Gamble : Command() {
             event.channel.sendMessage("제대로 입력해 주세요").queue()
             return
         }
+        if (BigInteger(tempStringBuffer.toString()).compareTo(BigInteger("1000")) == -1) {
+            event.channel.sendMessage("1000원이상 입력하셔야 돼요!").queue()
+            return
+        }
+
 
         if (UserMoneyDBController.propertyUser(event.author.idLong).compareTo(BigInteger(tempStringBuffer.toString())) == -1) {
             event.channel.sendMessage("현재 돈보다 많은 돈을 지불할 수가 없어요").queue()
             return
         }
 
-        val random = Random.nextInt(0, nowGamblingProbability)
+        val random = Random.nextInt(100)
 
-        if (random <= 40) {
+        if (random < nowGamblingProbability) {
             event.channel.sendMessage("와 ${tempStringBuffer}원을 벌었어요! 축하드려요").queue()
             UserMoneyDBController.addMoneyUser(event.author.idLong, BigInteger(tempStringBuffer.toString()))
             return
