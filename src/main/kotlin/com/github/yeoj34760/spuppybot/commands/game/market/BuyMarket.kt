@@ -14,8 +14,6 @@ import java.math.BigInteger
 @CommandSettings(name = "buymarket", aliases = ["마켓 구매"])
 object BuyMarket : Command() {
     override fun execute(event: CommandEvent) {
-//        val itemList = MarketItemDBController.marketItemList()
-
         var item: MarketItem? = MarketItemList[event.content]
 
         if (item == null) {
@@ -23,7 +21,10 @@ object BuyMarket : Command() {
             return
         }
 
-//        val item = itemList.stream().filter { it.name == event.content }.findFirst().get()
+        if (item.count <= 0) {
+            event.channel.sendMessage("해당 아이템은 재고가 없네요.").queue()
+            return
+        }
 
         if (UserMoneyDBController.propertyUser(event.author.idLong).compareTo(BigInteger(item.price.toString())) == -1) {
             event.channel.sendMessage("현재 돈으로 해당 아이템을 살 수가 없어요!").queue()

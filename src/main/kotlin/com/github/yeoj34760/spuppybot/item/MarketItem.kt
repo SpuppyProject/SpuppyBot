@@ -18,4 +18,15 @@ data class MarketItem(
      MarketItemDBController.addMarketItem(name)
         return MarketItem(name, price, ++count_, defaultCount)
     }
+
+    fun add(count: Int) {
+        MarketItemDBController.addMarketItem(name, count)
+    }
+
+    fun minus(count: Int) {
+        if (this.count <= count)
+            MarketItemDBController.minusMarketItem(name, this.count)
+        else
+            MarketItemDBController.minusMarketItem(name, count)
+    }
 }

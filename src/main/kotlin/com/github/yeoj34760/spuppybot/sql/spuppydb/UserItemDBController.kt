@@ -43,15 +43,17 @@ object UserItemDBController {
     }
 
 
-    fun minusUserItem(id: Long, marketItem: MarketItem): Boolean {
+    fun minusUserItem(id: Long, marketItem: MarketItem, minusNum: Int = 1): Boolean {
         return try {
             if (!checkUserItem(id, marketItem.name))
                 return false
 
-            if (get(id, marketItem.name)!!.count == 0)
+
+
+            if (get(id, marketItem.name)!!.count <= 1 || get(id, marketItem.name)!!.count <= minusNum)
                 minusUserItemDelete(id, marketItem)
             else
-                minusUserItemUpdate(id, marketItem)
+                minusUserItemUpdate(id, marketItem, minusNum)
 
             true
         } catch (e: Exception) {
@@ -67,11 +69,12 @@ object UserItemDBController {
         ps.execute()
     }
 
-    private fun minusUserItemUpdate(id: Long, marketItem: MarketItem) {
-        val ps: PreparedStatement = spuppyDBConnection.prepareStatement("update user_item set count=count-1, timestamp=? where id=? and name=?")
-        ps.setTimestamp(1, Timestamp(Date().time))
-        ps.setLong(2, id)
-        ps.setString(3, marketItem.name)
+    private fun minusUserItemUpdate(id: Long, marketItem: MarketItem, minusNum: Int) {
+        val ps: PreparedStatement = spuppyDBConnection.prepareStatement("update user_item set count=count-?, timestamp=? where id=? and name=?")
+        ps.setInt(1, minusNum)
+        ps.setTimestamp(2, Timestamp(Date().time))
+        ps.setLong(3, id)
+        ps.setString(4, marketItem.name)
         ps.execute()
     }
 

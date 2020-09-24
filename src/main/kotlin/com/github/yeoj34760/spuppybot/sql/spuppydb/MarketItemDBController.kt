@@ -28,18 +28,22 @@ object MarketItemDBController {
     /**
      * 마켓에 있는 아이템 갯수를 하나뺍니다.
      */
-    fun minusMarketItem(name: String) {
-        val ps = spuppyDBConnection.prepareStatement("update market_item set count=count-1 where name=?")
-        ps.setString(1, name)
-        ps.executeQuery()
+    fun minusMarketItem(name: String, count: Int = 1) {
+        val ps = spuppyDBConnection.prepareStatement("update market_item set count=count-? where name=?")
+        ps.setInt(1, count)
+        ps.setString(2, name)
+
+        ps.execute()
     }
 
     /**
      * 마켓에 있는 아이템 갯수를 하나 추가합니다.
      */
-    fun addMarketItem(name: String) {
-        val ps = spuppyDBConnection.prepareStatement("update market_item set count=count+1 where name=?")
-        ps.setString(1, name)
-        ps.executeQuery()
+    fun addMarketItem(name: String, count: Int = 1) {
+        val ps = spuppyDBConnection.prepareStatement("update market_item set count=count+? where name=?")
+        ps.setInt(1, count)
+        ps.setString(2, name)
+
+        ps.execute()
     }
 }
