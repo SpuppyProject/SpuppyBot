@@ -13,6 +13,7 @@ import com.github.yeoj34760.spuppybot.commands.game.gamble.GambleInfo
 import com.github.yeoj34760.spuppybot.commands.game.item.MyItem
 import com.github.yeoj34760.spuppybot.commands.game.market.BuyMarket
 import com.github.yeoj34760.spuppybot.commands.game.market.Market
+import com.github.yeoj34760.spuppybot.commands.game.market.RefundMarket
 import com.github.yeoj34760.spuppybot.commands.game.money.Money
 import com.github.yeoj34760.spuppybot.commands.game.money.ReceiveMoney
 import com.github.yeoj34760.spuppybot.commands.music.*
@@ -49,12 +50,13 @@ val spuppyDBConnection =
 var nowGamblingProbability: Int = 0
 var updateGamblingProbability: Date = Date()
 
+const val TIMER = 5
 fun main() {
 
-    timer(period = 6000*10*10) {
+    timer(period = 60*TIMER.toLong()*1000) {
         nowGamblingProbability = Random.nextInt(40, 65)
-        var cal = Calendar.getInstance()
-        cal.add(Calendar.MINUTE, 10)
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.MINUTE, TIMER)
         updateGamblingProbability = cal.time
     }
 
@@ -101,7 +103,8 @@ fun main() {
                     BuyMarket,
                     MyItem,
                     Gamble,
-                    GambleInfo
+                    GambleInfo,
+                    RefundMarket
             ).build()
     JDABuilder
             .createDefault(settings.token)

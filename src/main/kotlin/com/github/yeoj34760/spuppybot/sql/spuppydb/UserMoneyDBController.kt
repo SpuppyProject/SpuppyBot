@@ -14,7 +14,7 @@ object UserMoneyDBController {
             return BigInteger(t.getString(1))
         }
 
-        throw Exception("오류 내용: 재산을 확인할 수 없음")
+        throw Exception("재산을 확인할 수 없음")
 
     }
 
@@ -42,7 +42,7 @@ object UserMoneyDBController {
     }
 
     fun createMoneyUser(id: Long) {
-        val ps = spuppyDBConnection.prepareStatement("insert into user_money values (?)")
+        val ps = spuppyDBConnection.prepareStatement("insert into user_money values (?, 50000)")
         ps.setLong(1, id)
         ps.execute()
     }
