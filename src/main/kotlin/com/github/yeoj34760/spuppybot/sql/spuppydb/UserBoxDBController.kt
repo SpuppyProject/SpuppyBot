@@ -1,20 +1,20 @@
 package com.github.yeoj34760.spuppybot.sql.spuppydb
 
 import com.github.yeoj34760.spuppybot.other.Util
-import com.github.yeoj34760.spuppybot.spuppyDBConnection
+import com.github.yeoj34760.spuppybot.SpuppyDBConnection
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.github.yeoj34760.spuppybot.sql.userbox.UserBox
 
 object UserBoxDBController {
     fun addUserBox(id: Long, track: String) {
-   val ps = spuppyDBConnection.prepareStatement("insert into user_box values (?,?,?)")
+   val ps = SpuppyDBConnection().prepareStatement("insert into user_box values (?,?,?)")
         ps.setLong(1, id)
         ps.setString(2, track)
         ps.setInt(3, fromMaxNumber(id)+1)
         ps.execute()
     }
     fun delAllUserBox(id: Long) {
-        val ps = spuppyDBConnection.prepareStatement("delete from user_box where id=?")
+        val ps = SpuppyDBConnection().prepareStatement("delete from user_box where id=?")
         ps.setLong(1, id)
         ps.execute()
     }
@@ -27,14 +27,14 @@ object UserBoxDBController {
     }
 
     private fun delUserBoxStatement(sql: String, id: Long, order: Int) {
-        val pstat = spuppyDBConnection.prepareStatement(sql)
+        val pstat = SpuppyDBConnection().prepareStatement(sql)
         pstat.setLong(1, id)
         pstat.setInt(2, order)
         pstat.executeQuery()
     }
 
     fun checkUserBox(id: Long): Boolean {
-        val ps = spuppyDBConnection.prepareStatement("select exists(select * from user_box where id=?)")
+        val ps = SpuppyDBConnection().prepareStatement("select exists(select * from user_box where id=?)")
         ps.setLong(1, id)
         val result = ps.executeQuery()
         if (result.next())
@@ -45,7 +45,7 @@ object UserBoxDBController {
 
     fun fromUserBox(id: Long): List<UserBox> {
         val tempBox = arrayListOf<UserBox>()
-        val t = spuppyDBConnection.createStatement().executeQuery("select track, `order` from user_box where id = $id order by `order`")
+        val t = SpuppyDBConnection().createStatement().executeQuery("select track, `order` from user_box where id = $id order by `order`")
         while (t.next()) {
             val order: Int = t.getString(2).toInt()
             tempBox.add(UserBox(id, Util.base64ToTrack(t.getString(1)), order))
@@ -59,7 +59,7 @@ object UserBoxDBController {
      * 찾을 수 없을 경우 0로 반환합니다.
      */
     fun fromMaxNumber(id: Long): Int {
-        val t = spuppyDBConnection.createStatement().executeQuery("select max(`order`) from user_box where id = $id")
+        val t = SpuppyDBConnection().createStatement().executeQuery("select max(`order`) from user_box where id = $id")
         if (t.next()) return t.getInt(1)
         return 0
     }
@@ -68,7 +68,7 @@ object UserBoxDBController {
      * 순서를 서로 바꿉니다.
      */
     fun moveBox(id: Long, num1: Int, num2: Int) {
-        val statement = spuppyDBConnection.createStatement()
+        val statement = SpuppyDBConnection().createStatement()
         //dog same
         statement.execute("update user_box a inner join user_box b on a.`order` <> b.`order` set a.`order` = b.`order` where a.`order` in ($num1,$num2) and b.`order` in ($num1,$num2)")
     }

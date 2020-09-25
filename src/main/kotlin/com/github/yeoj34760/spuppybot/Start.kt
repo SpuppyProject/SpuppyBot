@@ -32,6 +32,7 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.api.JDABuilder
 import java.io.File
 import java.security.MessageDigest
+import java.sql.Connection
 import java.sql.DriverManager
 import java.util.*
 import kotlin.collections.ArrayList
@@ -43,7 +44,7 @@ import kotlin.random.Random
 val playerManager = DefaultAudioPlayerManager()
 val waiter = EventWaiter()
 val settings: Settings = Gson().fromJson(File("settings.json").readText(), Settings::class.java)
-val spuppyDBConnection =
+private var spuppyDBConnection =
         DriverManager.getConnection(
                 settings.spuppydb.url,
                 settings.spuppydb.user,
@@ -52,8 +53,18 @@ var nowGamblingProbability: Int = 0
 var updateGamblingProbability: Date = Date()
 
 const val TIMER = 5
-fun main() {
 
+fun SpuppyDBConnection(): Connection {
+    if (spuppyDBConnection.isClosed)
+        spuppyDBConnection =
+                DriverManager.getConnection(
+                        settings.spuppydb.url,
+                        settings.spuppydb.user,
+                        settings.spuppydb.password)
+
+    return spuppyDBConnection
+}
+fun main() {
     timer(period = 60*TIMER.toLong()*1000) {
         nowGamblingProbability = Random.nextInt(40, 65)
         val cal = Calendar.getInstance()

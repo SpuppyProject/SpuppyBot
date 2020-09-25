@@ -7,16 +7,15 @@ import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.github.yeoj34760.spuppybot.sql.spuppydb.MarketItemDBController
 import net.dv8tion.jda.api.EmbedBuilder
+import java.util.logging.Logger
 import kotlin.math.ceil
 
 @CommandSettings(name = "market")
 object Market : Command() {
     override fun execute(event: CommandEvent) {
         val items = MarketItemDBController.marketItemList()
-        val temp: StringBuffer = StringBuffer()
+        val temp = StringBuffer()
         val description: String
-
-//        val num = event.args[0].toIntOrNull() ?: 1
 
         val num = if (event.args.isEmpty()) 1 else event.args[0].toIntOrNull() ?: 1
 
@@ -34,7 +33,6 @@ object Market : Command() {
         for (i in ((num-1)*5) until ((num)*5)) {
             if (items.size <= i)
                 break
-//            temp.append("${i+1}. `${items[i].name}`\n(${items[i].price}원)[${items[i].count}개 남음]\n\n")
             temp.append("${i+1}. `${items[i].name}`\n")
             temp.append("(${items[i].price}원)")
             if (items[i].count <= 0)
@@ -42,10 +40,6 @@ object Market : Command() {
             else
                 temp.append("[${items[i].count}개 남음]\n\n")
         }
-//        items.forEach { item ->
-//            temp.append("`${item.name}`\n(${item.price}원)[${item.count}개 남음]\n\n")
-//        }
-
         description = temp.toString()
 
 

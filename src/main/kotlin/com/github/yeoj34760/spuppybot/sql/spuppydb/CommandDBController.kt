@@ -1,18 +1,20 @@
 package com.github.yeoj34760.spuppybot.sql.spuppydb
 
 import com.github.yeoj34760.spuppy.command.Commands
-import com.github.yeoj34760.spuppybot.spuppyDBConnection
+import com.github.yeoj34760.spuppybot.SpuppyDBConnection
 import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 object CommandDBController {
     fun fromCommands(): List<Commands> {
         var temp = mutableListOf<Commands>()
-        val t = spuppyDBConnection.createStatement().executeQuery("select name, command from command")
+        val t = SpuppyDBConnection().createStatement().executeQuery("select name, command from command")
         while (t.next()) {
             if (checkCommands(temp, t.getString(1)))
                 fromCommands(temp, t.getString(1))!!.aliases!!.add(t.getString(2))
             else {
-                var tempCommands = Commands(t.getString(1))
+                val tempCommands = Commands(t.getString(1))
                 tempCommands.aliases.add(t.getString(2))
                 temp.add(tempCommands)
             }
