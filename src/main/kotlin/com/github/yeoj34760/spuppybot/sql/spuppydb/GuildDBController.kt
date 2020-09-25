@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory
 
 object GuildDBController {
     private val logger: Logger = LoggerFactory.getLogger("GuildDB")
+
     /**
      * 특정 길드 볼륨 값을 불러옵니다.
      */

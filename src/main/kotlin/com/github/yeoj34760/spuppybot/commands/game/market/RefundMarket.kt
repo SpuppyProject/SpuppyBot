@@ -32,15 +32,14 @@ object RefundMarket : Command() {
             event.channel.sendMessage("해당 이름을 가진 아이템을 찾을 수 없어요").queue()
             return
         }
-        
+
         val myItem = UserItemDBController[event.author.idLong, temp]
-        
+
         if (myItem == null) {
             logger.info("[${event.author.idLong}] 유저가 해당 아이템을 가지고 있지 않음")
             event.channel.sendMessage("해당 아이템을 가지고 있지 않아요!").queue()
             return
-        }
-        else {
+        } else {
             if (myItem.count < count) {
                 logger.info("[${event.author.idLong}] 유저가 가지고 있는 아이템 갯수보다 높은 값을 입력함")
                 event.channel.sendMessage("자신이 가지고 있는 아이템 수보다 많이 팔 수 없어요").queue()
@@ -65,6 +64,6 @@ object RefundMarket : Command() {
                 .setFooter("반품하면 원가의 70%정도 돈을 돌려받습니다.")
                 .build()
 
-                event.channel.sendMessage(embed).queue()
+        event.channel.sendMessage(embed).queue()
     }
 }

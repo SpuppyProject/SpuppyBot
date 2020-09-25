@@ -43,7 +43,7 @@ object ReceiveMoneyDBController {
      * 돈받기를 한번이라도 했는지 체크합니다.
      * 안했다면 false
      */
-    fun checkReceiveMoneyUser(id: Long) : Boolean {
+    fun checkReceiveMoneyUser(id: Long): Boolean {
         val ps = SpuppyDBConnection().prepareStatement("select exists(select * from user_receive_money_timer where id=?)")
         ps.setLong(1, id)
         val result = ps.executeQuery()

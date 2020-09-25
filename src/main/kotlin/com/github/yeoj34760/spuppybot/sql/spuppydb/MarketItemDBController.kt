@@ -1,16 +1,14 @@
 package com.github.yeoj34760.spuppybot.sql.spuppydb
 
-import com.github.yeoj34760.spuppybot.item.MarketItem
-import com.github.yeoj34760.spuppybot.market.MarketItemList
 import com.github.yeoj34760.spuppybot.SpuppyDBConnection
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.item.MarketItem
 
 object MarketItemDBController {
     /**
      * 마트에 있는 아이템들을 반환합니다.
      */
-    fun marketItemList() : List<MarketItem> {
-        val t=   SpuppyDBConnection().createStatement().executeQuery("select * from market_item")
+    fun marketItemList(): List<MarketItem> {
+        val t = SpuppyDBConnection().createStatement().executeQuery("select * from market_item")
         val temp = mutableListOf<MarketItem>()
         while (t.next()) {
             val tempItem = MarketItem(

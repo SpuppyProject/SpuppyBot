@@ -11,7 +11,7 @@ import java.math.BigInteger
 import java.text.SimpleDateFormat
 import java.util.*
 
-@CommandSettings(name="myitem")
+@CommandSettings(name = "myitem")
 object MyItem : Command() {
     override fun execute(event: CommandEvent) {
         val userItemList = UserItemDBController.fromUserItemList(event.author.idLong)
@@ -28,7 +28,7 @@ object MyItem : Command() {
                 tempString.append("갯수: `${userItem.count}개`\n")
             val format = SimpleDateFormat("yyyy-MM-dd")
             tempString.append("마지막으로 산 날짜: `${format.format(Date(userItem.timestamp.time).time)}`\n\n")
-           sobeMoney = sobeMoney.add(BigInteger("${marketList.stream().filter { it.name == userItem.name }.findFirst().get().price * userItem.count}"))
+            sobeMoney = sobeMoney.add(BigInteger("${marketList.stream().filter { it.name == userItem.name }.findFirst().get().price * userItem.count}"))
         }
 
         val embed = EmbedBuilder().setColor(DiscordColor.ORANGE)

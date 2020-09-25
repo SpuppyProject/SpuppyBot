@@ -5,7 +5,6 @@ import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.item.MarketItem
 import com.github.yeoj34760.spuppybot.market.MarketItemList
-import com.github.yeoj34760.spuppybot.sql.spuppydb.MarketItemDBController
 import com.github.yeoj34760.spuppybot.sql.spuppydb.UserItemDBController
 import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
 import org.slf4j.Logger
@@ -37,13 +36,12 @@ object BuyMarket : Command() {
             return
         }
 
-        if(UserItemDBController.addUserItem(event.author.idLong, item)) {
+        if (UserItemDBController.addUserItem(event.author.idLong, item)) {
             UserMoneyDBController.minusMoneyUser(event.author.idLong, itemPrice)
             logger.info("[${event.author.idLong}] 지갑에서 ${item.price}원을 빼고 창고에 ${item.name}을(를) 추가함")
             event.channel.sendMessage("구매완료!").queue()
             --item
-        }
-        else
+        } else
             event.channel.sendMessage("처리하는데에 오류가 발생했어요!").queue()
 
     }

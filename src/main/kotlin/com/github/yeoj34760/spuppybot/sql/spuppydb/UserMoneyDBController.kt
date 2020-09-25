@@ -1,7 +1,6 @@
 package com.github.yeoj34760.spuppybot.sql.spuppydb
 
 import com.github.yeoj34760.spuppybot.SpuppyDBConnection
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.math.BigInteger
@@ -11,10 +10,10 @@ object UserMoneyDBController {
      * 유저 재산을 확인합니다.
      */
     private val logger: Logger = LoggerFactory.getLogger("UserMoneyDB")
-    fun propertyUser(id: Long) : BigInteger {
+    fun propertyUser(id: Long): BigInteger {
         val ps = SpuppyDBConnection().prepareStatement("select money from user_money where id = ?")
         ps.setLong(1, id)
-        val t= ps.executeQuery()
+        val t = ps.executeQuery()
         if (t.next()) {
             logger.info("[${id}] 재산 확인됨")
             return BigInteger(t.getString(1))
@@ -27,11 +26,11 @@ object UserMoneyDBController {
     /**
      * 유저의 재산을 추가
      */
-    fun addMoneyUser(id: Long, money: BigInteger) : BigInteger {
+    fun addMoneyUser(id: Long, money: BigInteger): BigInteger {
         val oldMoney = propertyUser(id)
         val newMoney = oldMoney.add(money)
         SpuppyDBConnection().createStatement().execute("update user_money set money=${newMoney} where id=$id")
-logger.info("[${id}] 유저 지갑에 ${money}원을 추가함")
+        logger.info("[${id}] 유저 지갑에 ${money}원을 추가함")
         return newMoney
     }
 
@@ -54,13 +53,15 @@ logger.info("[${id}] 유저 지갑에 ${money}원을 추가함")
         logger.info("[${id}] 돈시스템에 유저 아이디 생성함")
         ps.execute()
     }
+
     fun delMoneyUser(id: Long) {
         val ps = SpuppyDBConnection().prepareStatement("delete from user_money where id=?")
         ps.setLong(1, id)
         logger.info("[${id}] 돈시스템에 유저 아이디 삭제함")
         ps.execute()
     }
-    fun checkMoneyUser(id: Long) : Boolean {
+
+    fun checkMoneyUser(id: Long): Boolean {
         val ps = SpuppyDBConnection().prepareStatement("select exists(select * from user_money where id=?)")
         ps.setLong(1, id)
         val result = ps.executeQuery()

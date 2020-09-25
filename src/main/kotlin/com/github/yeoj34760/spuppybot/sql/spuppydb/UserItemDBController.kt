@@ -1,8 +1,8 @@
 package com.github.yeoj34760.spuppybot.sql.spuppydb
 
+import com.github.yeoj34760.spuppybot.SpuppyDBConnection
 import com.github.yeoj34760.spuppybot.item.MarketItem
 import com.github.yeoj34760.spuppybot.item.UserItem
-import com.github.yeoj34760.spuppybot.SpuppyDBConnection
 import java.sql.PreparedStatement
 import java.sql.Timestamp
 import java.util.*
@@ -99,15 +99,15 @@ object UserItemDBController {
         return false
     }
 
-    operator fun get(id: Long, name: String) : UserItem? {
-     val ps = SpuppyDBConnection().prepareStatement("select name, count, timestamp from user_item where id=? and name=?")
+    operator fun get(id: Long, name: String): UserItem? {
+        val ps = SpuppyDBConnection().prepareStatement("select name, count, timestamp from user_item where id=? and name=?")
         ps.setLong(1, id)
         ps.setString(2, name)
         val result = ps.executeQuery()
         if (result.next())
             return UserItem(result.getString(1),
-            result.getInt(2),
-            result.getTimestamp(3))
+                    result.getInt(2),
+                    result.getTimestamp(3))
 
         return null
     }

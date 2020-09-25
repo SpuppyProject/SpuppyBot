@@ -3,10 +3,6 @@ package com.github.yeoj34760.spuppybot
 import com.github.yeoj34760.spuppy.command.CommandClient
 import com.github.yeoj34760.spuppy.command.CommandClientBuilder
 import com.github.yeoj34760.spuppy.command.CommandDatabase
-import com.github.yeoj34760.spuppybot.commands.other.Agree
-import com.github.yeoj34760.spuppybot.commands.other.Cancel
-import com.github.yeoj34760.spuppybot.commands.other.Info
-import com.github.yeoj34760.spuppybot.commands.other.Ping
 import com.github.yeoj34760.spuppybot.commands.box.*
 import com.github.yeoj34760.spuppybot.commands.game.gamble.Gamble
 import com.github.yeoj34760.spuppybot.commands.game.gamble.GambleAll
@@ -19,10 +15,13 @@ import com.github.yeoj34760.spuppybot.commands.game.money.Money
 import com.github.yeoj34760.spuppybot.commands.game.money.ReceiveMoney
 import com.github.yeoj34760.spuppybot.commands.music.*
 import com.github.yeoj34760.spuppybot.commands.music.List
+import com.github.yeoj34760.spuppybot.commands.other.Agree
+import com.github.yeoj34760.spuppybot.commands.other.Cancel
+import com.github.yeoj34760.spuppybot.commands.other.Info
+import com.github.yeoj34760.spuppybot.commands.other.Ping
 import com.github.yeoj34760.spuppybot.music.LeaveAutoListener
 import com.github.yeoj34760.spuppybot.other.FilterCommandImpl
 import com.github.yeoj34760.spuppybot.other.GuildAutoDeleteListener
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.github.yeoj34760.spuppybot.sql.spuppydb.CommandDBController
 import com.google.gson.Gson
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter
@@ -31,13 +30,11 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.api.JDABuilder
 import java.io.File
-import java.security.MessageDigest
 import java.sql.Connection
 import java.sql.DriverManager
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.timer
-import kotlin.concurrent.timerTask
 import kotlin.random.Random
 
 
@@ -64,8 +61,9 @@ fun SpuppyDBConnection(): Connection {
 
     return spuppyDBConnection
 }
+
 fun main() {
-    timer(period = 60*TIMER.toLong()*1000) {
+    timer(period = 60 * TIMER.toLong() * 1000) {
         nowGamblingProbability = Random.nextInt(40, 65)
         val cal = Calendar.getInstance()
         cal.add(Calendar.MINUTE, TIMER)

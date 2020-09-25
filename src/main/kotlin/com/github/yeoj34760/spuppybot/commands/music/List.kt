@@ -27,13 +27,10 @@ object List : Command() {
         //입력한 args가 없을 경우 1로 지정합니다.
         val number = if (event.args.isEmpty()) 1 else event.args[0].toIntOrNull() ?: 1
 
-        if (number > ceil(playerControl!!.trackQueue.size / 5f))
-        {
+        if (number > ceil(playerControl!!.trackQueue.size / 5f)) {
             event.channel.sendMessage("숫자를 ${ceil(playerControl.trackQueue.size / 5f).toInt()} 이하로 지정해주세요!").queue()
             return
-        }
-
-        else if (number <= 0) {
+        } else if (number <= 0) {
             event.channel.sendMessage("1이상 지정해주세요!").queue()
             return
         }
@@ -62,11 +59,11 @@ object List : Command() {
     private fun listToString(playerControl: PlayerControl, num: Int): String {
         val temp: StringBuffer = StringBuffer()
         val list = playerControl.trackQueue.toList()
-        for (i in (num-1)*5 until num*5) {
-            if (list.size <=i)
+        for (i in (num - 1) * 5 until num * 5) {
+            if (list.size <= i)
                 break
 
-            temp.append("**${i+1}.** [${list[i].info.title ?: "제목 알 수 없음!"}](${list[i].info.uri}) 신청자: `${(list[i].userData as User).name}`\n\n")
+            temp.append("**${i + 1}.** [${list[i].info.title ?: "제목 알 수 없음!"}](${list[i].info.uri}) 신청자: `${(list[i].userData as User).name}`\n\n")
         }
 
         return temp.toString()

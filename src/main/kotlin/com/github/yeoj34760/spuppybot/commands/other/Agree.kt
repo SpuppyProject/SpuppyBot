@@ -5,7 +5,6 @@ import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.settings
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.github.yeoj34760.spuppybot.sql.spuppydb.UserDBController
 import com.github.yeoj34760.spuppybot.waiter
 import net.dv8tion.jda.api.EmbedBuilder
@@ -36,8 +35,7 @@ object Agree : Command() {
             if (e.message.contentRaw == "${settings.prefix}동의") {
                 UserDBController.addUser(e.author.idLong)
                 event.channel.sendMessage("가입완료!").queue()
-            }
-            else
+            } else
                 return@waitForEvent
         }, 1, TimeUnit.MINUTES) {
             event.channel.sendMessage("시간 초과됨").queue()

@@ -8,7 +8,7 @@ import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
 import java.math.BigInteger
 import kotlin.random.Random
 
-@CommandSettings(name="gambleall")
+@CommandSettings(name = "gambleall")
 object GambleAll : Command() {
     override fun execute(event: CommandEvent) {
         val money = UserMoneyDBController.propertyUser(event.author.idLong)
@@ -23,8 +23,7 @@ object GambleAll : Command() {
             event.channel.sendMessage("와 ${money}원을 벌었어요! 축하드려요").queue()
             UserMoneyDBController.addMoneyUser(event.author.idLong, money)
             return
-        }
-        else {
+        } else {
             event.channel.sendMessage("아쉽게도 ${money}원이 공중분해했어요").queue()
             UserMoneyDBController.minusMoneyUser(event.author.idLong, money)
             return

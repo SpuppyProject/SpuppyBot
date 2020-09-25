@@ -2,9 +2,6 @@ package com.github.yeoj34760.spuppybot.sql.spuppydb
 
 import com.github.yeoj34760.spuppy.command.Commands
 import com.github.yeoj34760.spuppybot.SpuppyDBConnection
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 object CommandDBController {
     fun fromCommands(): List<Commands> {
@@ -20,7 +17,7 @@ object CommandDBController {
             }
         }
 
-        return temp;
+        return temp
     }
 
     private fun checkCommands(commandsList: List<Commands>, name: String): Boolean {

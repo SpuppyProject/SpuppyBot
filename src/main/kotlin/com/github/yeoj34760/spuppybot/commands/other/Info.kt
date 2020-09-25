@@ -3,7 +3,6 @@ package com.github.yeoj34760.spuppybot.commands.other
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
-import com.github.yeoj34760.spuppybot.Settings
 import com.github.yeoj34760.spuppybot.other.DiscordColor
 import com.github.yeoj34760.spuppybot.settings
 import net.dv8tion.jda.api.EmbedBuilder

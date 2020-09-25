@@ -1,18 +1,18 @@
 package com.github.yeoj34760.spuppybot.sql.spuppydb
 
-import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.SpuppyDBConnection
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
+import com.github.yeoj34760.spuppybot.other.Util
 import com.github.yeoj34760.spuppybot.sql.userbox.UserBox
 
 object UserBoxDBController {
     fun addUserBox(id: Long, track: String) {
-   val ps = SpuppyDBConnection().prepareStatement("insert into user_box values (?,?,?)")
+        val ps = SpuppyDBConnection().prepareStatement("insert into user_box values (?,?,?)")
         ps.setLong(1, id)
         ps.setString(2, track)
-        ps.setInt(3, fromMaxNumber(id)+1)
+        ps.setInt(3, fromMaxNumber(id) + 1)
         ps.execute()
     }
+
     fun delAllUserBox(id: Long) {
         val ps = SpuppyDBConnection().prepareStatement("delete from user_box where id=?")
         ps.setLong(1, id)
@@ -21,9 +21,9 @@ object UserBoxDBController {
 
     fun delUserBox(id: Long, order: Int) {
         //제거
-        delUserBoxStatement("delete from user_box where id = ? and `order` = ?", id , order)
+        delUserBoxStatement("delete from user_box where id = ? and `order` = ?", id, order)
         //재정렬
-        delUserBoxStatement("update user_box set `order` = `order` - 1 where id = ? and `order` > ?", id , order)
+        delUserBoxStatement("update user_box set `order` = `order` - 1 where id = ? and `order` > ?", id, order)
     }
 
     private fun delUserBoxStatement(sql: String, id: Long, order: Int) {

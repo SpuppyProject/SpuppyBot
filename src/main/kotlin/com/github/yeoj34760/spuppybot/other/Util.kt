@@ -81,13 +81,13 @@ object Util {
         }
     }
 
-    fun base64ToTrack(base64 : String): AudioTrack {
+    fun base64ToTrack(base64: String): AudioTrack {
         val decode = Base64.getDecoder().decode(base64)
         var inputStream = ByteArrayInputStream(decode)
         return playerManager.decodeTrack(MessageInput(inputStream)).decodedTrack
     }
 
-    fun trackToBase64(track: AudioTrack): String{
+    fun trackToBase64(track: AudioTrack): String {
         val stream = ByteArrayOutputStream()
         playerManager.encodeTrack(MessageOutput(stream), track)
         val encoded = Base64.getEncoder().encode(stream.toByteArray())

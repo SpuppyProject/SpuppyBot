@@ -4,7 +4,6 @@ package com.github.yeoj34760.spuppybot.commands.box
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.github.yeoj34760.spuppybot.sql.spuppydb.UserBoxDBController
 
 @CommandSettings(name = "removeallbox")

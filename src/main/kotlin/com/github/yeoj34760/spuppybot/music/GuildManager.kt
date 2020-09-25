@@ -1,7 +1,6 @@
 package com.github.yeoj34760.spuppybot.music
 
 import com.github.yeoj34760.spuppybot.playerManager
-import com.github.yeoj34760.spuppybot.sql.SpuppyDBController
 import com.github.yeoj34760.spuppybot.sql.spuppydb.GuildDBController
 import net.dv8tion.jda.api.managers.AudioManager
 
