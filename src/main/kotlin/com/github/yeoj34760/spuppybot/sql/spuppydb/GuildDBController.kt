@@ -10,9 +10,9 @@ object GuildDBController {
      * 특정 길드 볼륨 값을 불러옵니다.
      */
     fun guildVolume(id: Long): Int {
-        logger.info("")
         val t = SpuppyDBConnection().createStatement().executeQuery("select volume from guild where id = $id")
         if (t.next()) {
+            logger.info("guildVolume 값을 발견함")
             return t.getInt(1)
         }
 
