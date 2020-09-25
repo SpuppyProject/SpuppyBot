@@ -35,7 +35,6 @@ object LeaveAutoListener : ListenerAdapter() {
         }
 
         val connectedChannel = event.guild.audioManager.connectedChannel?.idLong ?: return
-
         if (connectedChannel == event.channelLeft.idLong && event.channelLeft.members.size <= 1) {
             timerStart(event.guild)
         }
@@ -45,7 +44,6 @@ object LeaveAutoListener : ListenerAdapter() {
     override fun onGuildVoiceMove(event: GuildVoiceMoveEvent) {
         val connectedChannel = event.guild.audioManager.connectedChannel ?: return
         val timer = timers[event.guild.idLong]
-        println(event.channelJoined.members)
        if(event.channelJoined.idLong == connectedChannel.idLong && timer != null && !timer.isCancelled) {
            timer.cancel()
            timers.remove(event.guild.idLong)
@@ -75,6 +73,7 @@ object LeaveAutoListener : ListenerAdapter() {
             timers.remove(event.guild.idLong)
         }
     }
+
     private fun stopMusic(playerControl: PlayerControl?) {
         if (playerControl != null && playerControl.isPlayed()){
             playerControl.stop()
