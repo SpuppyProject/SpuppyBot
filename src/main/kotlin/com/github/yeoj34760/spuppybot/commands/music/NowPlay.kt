@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.User
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.time.Duration
 
 
 @CommandSettings(name = "nowplay")
@@ -49,11 +50,19 @@ object NowPlay : Command() {
     }
 
     private fun timeFormat(time: Long): String {
-        return if (36000 <= time / 1000)
-            SimpleDateFormat("h시 m분 s초").format(Date(time))
-        else if (60 <= time / 1000)
-            SimpleDateFormat("m분 s초").format(Date(time))
+        val secondTime = time / 1000
+        val day = secondTime / 86400
+        val hour = (secondTime % (86400)) / 3600
+        val minute = (secondTime % (3600)) / 60
+        val second = (secondTime % (60))
+
+        return if (86400 <= secondTime)
+            "${day}일 ${hour}시 ${minute}분 ${second}초"
+        else if (3600 <= secondTime)
+            "${hour}시 ${minute}분 ${second}초"
+        else if (60 <= secondTime)
+            "${minute}분 ${second}초"
         else
-            SimpleDateFormat("s초").format(Date(time))
+            "${second}초"
     }
 }
