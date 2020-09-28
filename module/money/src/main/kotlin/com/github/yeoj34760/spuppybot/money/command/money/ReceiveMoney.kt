@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppybot.commands.game.money
+package com.github.yeoj34760.spuppybot.money.command.money
 
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent

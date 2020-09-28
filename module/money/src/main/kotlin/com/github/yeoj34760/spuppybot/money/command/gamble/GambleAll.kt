@@ -1,10 +1,10 @@
-package com.github.yeoj34760.spuppybot.commands.game.gamble
+package com.github.yeoj34760.spuppybot.money.command.gamble
 
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
-import com.github.yeoj34760.spuppybot.nowGamblingProbability
 import com.github.yeoj34760.spuppybot.db.UserMoneyDBController
+import com.github.yeoj34760.spuppybot.money.GambleTimer.nowGamblingProbability
 import java.math.BigInteger
 import kotlin.random.Random
 

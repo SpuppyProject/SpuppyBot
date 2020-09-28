@@ -39,6 +39,7 @@ dependencies {
     implementation project(":settings")
     implementation project(':music')
     implementation project(':box')
+    implementation project(':money')
 }
 
 sourceSets {

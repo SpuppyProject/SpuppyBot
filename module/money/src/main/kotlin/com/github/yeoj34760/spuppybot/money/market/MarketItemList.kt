@@ -1,7 +1,7 @@
-package com.github.yeoj34760.spuppybot.market
+package com.github.yeoj34760.spuppybot.money.market
 
-import com.github.yeoj34760.spuppybot.db.`class`.MarketItem
 import com.github.yeoj34760.spuppybot.db.MarketItemDBController
+import com.github.yeoj34760.spuppybot.db.`class`.MarketItem
 
 object MarketItemList {
     private var marketItemListCache: List<MarketItem> = MarketItemDBController.marketItemList()
