@@ -3,9 +3,9 @@ package com.github.yeoj34760.spuppybot.commands.game.item
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
-import com.github.yeoj34760.spuppybot.other.DiscordColor
-import com.github.yeoj34760.spuppybot.sql.spuppydb.MarketItemDBController
-import com.github.yeoj34760.spuppybot.sql.spuppydb.UserItemDBController
+import com.github.yeoj34760.spuppybot.DiscordColor
+import com.github.yeoj34760.spuppybot.db.MarketItemDBController
+import com.github.yeoj34760.spuppybot.db.UserItemDBController
 import net.dv8tion.jda.api.EmbedBuilder
 import java.math.BigInteger
 import java.text.SimpleDateFormat

@@ -3,10 +3,10 @@ package com.github.yeoj34760.spuppybot.commands.game.market
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
-import com.github.yeoj34760.spuppybot.item.MarketItem
+import com.github.yeoj34760.spuppybot.db.`class`.MarketItem
 import com.github.yeoj34760.spuppybot.market.MarketItemList
-import com.github.yeoj34760.spuppybot.sql.spuppydb.UserItemDBController
-import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
+import com.github.yeoj34760.spuppybot.db.UserItemDBController
+import com.github.yeoj34760.spuppybot.db.UserMoneyDBController
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.math.BigInteger

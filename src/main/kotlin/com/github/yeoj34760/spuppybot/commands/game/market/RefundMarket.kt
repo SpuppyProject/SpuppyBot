@@ -4,9 +4,9 @@ import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.market.MarketItemList
-import com.github.yeoj34760.spuppybot.other.DiscordColor
-import com.github.yeoj34760.spuppybot.sql.spuppydb.UserItemDBController
-import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
+import com.github.yeoj34760.spuppybot.DiscordColor
+import com.github.yeoj34760.spuppybot.db.UserItemDBController
+import com.github.yeoj34760.spuppybot.db.UserMoneyDBController
 import net.dv8tion.jda.api.EmbedBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

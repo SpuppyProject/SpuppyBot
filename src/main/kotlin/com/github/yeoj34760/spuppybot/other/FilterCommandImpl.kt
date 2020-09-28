@@ -3,8 +3,8 @@ package com.github.yeoj34760.spuppybot.other
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.FilterCommand
 import com.github.yeoj34760.spuppybot.settings
-import com.github.yeoj34760.spuppybot.sql.spuppydb.UserDBController
-import com.github.yeoj34760.spuppybot.sql.spuppydb.UserMoneyDBController
+import com.github.yeoj34760.spuppybot.db.UserDBController
+import com.github.yeoj34760.spuppybot.db.UserMoneyDBController
 
 object FilterCommandImpl : FilterCommand {
     override fun execute(event: CommandEvent): Boolean {

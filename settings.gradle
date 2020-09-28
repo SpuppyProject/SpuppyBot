@@ -8,3 +8,14 @@
  */
 
 rootProject.name = "SpuppyBot"
+
+include ':database'
+include ':settings'
+include ':music'
+include ':box'
+
+project(':database').projectDir = new File(rootDir, "module/database")
+project(':settings').projectDir = new File(rootDir, "module/settings")
+project(':music').projectDir = new File(rootDir, "module/music")
+project(':box').projectDir = new File(rootDir, "module/box")
+

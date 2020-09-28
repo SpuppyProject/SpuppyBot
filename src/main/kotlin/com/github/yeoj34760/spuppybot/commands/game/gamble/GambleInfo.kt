@@ -4,7 +4,7 @@ import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.nowGamblingProbability
-import com.github.yeoj34760.spuppybot.other.DiscordColor
+import com.github.yeoj34760.spuppybot.DiscordColor
 import com.github.yeoj34760.spuppybot.updateGamblingProbability
 import net.dv8tion.jda.api.EmbedBuilder
 import java.text.SimpleDateFormat

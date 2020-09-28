@@ -1,9 +1,12 @@
 package com.github.yeoj34760.spuppybot
 
+import com.github.yeoj34760.spuppybot.music.LeaveAutoListener
+import com.github.yeoj34760.spuppybot.music.command.*
+import com.github.yeoj34760.spuppybot.music.command.List
 import com.github.yeoj34760.spuppy.command.CommandClient
 import com.github.yeoj34760.spuppy.command.CommandClientBuilder
 import com.github.yeoj34760.spuppy.command.CommandDatabase
-import com.github.yeoj34760.spuppybot.commands.box.*
+import com.github.yeoj34760.spuppybot.box.*
 import com.github.yeoj34760.spuppybot.commands.game.gamble.Gamble
 import com.github.yeoj34760.spuppybot.commands.game.gamble.GambleAll
 import com.github.yeoj34760.spuppybot.commands.game.gamble.GambleInfo
@@ -13,54 +16,27 @@ import com.github.yeoj34760.spuppybot.commands.game.market.Market
 import com.github.yeoj34760.spuppybot.commands.game.market.RefundMarket
 import com.github.yeoj34760.spuppybot.commands.game.money.Money
 import com.github.yeoj34760.spuppybot.commands.game.money.ReceiveMoney
-import com.github.yeoj34760.spuppybot.commands.music.*
-import com.github.yeoj34760.spuppybot.commands.music.List
 import com.github.yeoj34760.spuppybot.commands.other.Agree
 import com.github.yeoj34760.spuppybot.commands.other.Cancel
 import com.github.yeoj34760.spuppybot.commands.other.Info
 import com.github.yeoj34760.spuppybot.commands.other.Ping
-import com.github.yeoj34760.spuppybot.music.LeaveAutoListener
 import com.github.yeoj34760.spuppybot.other.FilterCommandImpl
 import com.github.yeoj34760.spuppybot.other.GuildAutoDeleteListener
-import com.github.yeoj34760.spuppybot.sql.spuppydb.CommandDBController
-import com.google.gson.Gson
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
+import com.github.yeoj34760.spuppybot.db.CommandDBController
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.api.JDABuilder
-import java.io.File
-import java.sql.Connection
-import java.sql.DriverManager
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.timer
 import kotlin.random.Random
 
 
-val playerManager = DefaultAudioPlayerManager()
-val waiter = EventWaiter()
-val settings: Settings = Gson().fromJson(File("settings.json").readText(), Settings::class.java)
-private var spuppyDBConnection =
-        DriverManager.getConnection(
-                settings.spuppydb.url,
-                settings.spuppydb.user,
-                settings.spuppydb.password)
 var nowGamblingProbability: Int = 0
 var updateGamblingProbability: Date = Date()
 
 const val TIMER = 5
 
-fun SpuppyDBConnection(): Connection {
-    if (spuppyDBConnection.isClosed)
-        spuppyDBConnection =
-                DriverManager.getConnection(
-                        settings.spuppydb.url,
-                        settings.spuppydb.user,
-                        settings.spuppydb.password)
-
-    return spuppyDBConnection
-}
 
 fun main() {
     timer(period = 60 * TIMER.toLong() * 1000) {
