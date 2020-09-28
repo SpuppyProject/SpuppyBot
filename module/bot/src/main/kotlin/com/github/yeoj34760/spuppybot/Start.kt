@@ -7,10 +7,10 @@ import com.github.yeoj34760.spuppy.command.CommandClient
 import com.github.yeoj34760.spuppy.command.CommandClientBuilder
 import com.github.yeoj34760.spuppy.command.CommandDatabase
 import com.github.yeoj34760.spuppybot.box.*
-import com.github.yeoj34760.spuppybot.commands.other.Agree
-import com.github.yeoj34760.spuppybot.commands.other.Cancel
-import com.github.yeoj34760.spuppybot.commands.other.Info
-import com.github.yeoj34760.spuppybot.commands.other.Ping
+import com.github.yeoj34760.spuppybot.command.Agree
+import com.github.yeoj34760.spuppybot.command.Cancel
+import com.github.yeoj34760.spuppybot.command.Info
+import com.github.yeoj34760.spuppybot.command.Ping
 import com.github.yeoj34760.spuppybot.other.FilterCommandImpl
 import com.github.yeoj34760.spuppybot.other.GuildAutoDeleteListener
 import com.github.yeoj34760.spuppybot.db.CommandDBController

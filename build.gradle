@@ -34,14 +34,6 @@ allprojects {
     }
 }
 
-dependencies {
-    implementation project(":database")
-    implementation project(":settings")
-    implementation project(':music')
-    implementation project(':box')
-    implementation project(':money')
-}
-
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin/'
 }
