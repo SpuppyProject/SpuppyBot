@@ -56,6 +56,7 @@ fun main() {
     var commandClient: CommandClient = CommandClientBuilder().setPrefix(settings.prefix)
             .setCommandDatabase(commandDatabase)
             .addFilterCommand(FilterCommandImpl, "agree", "cancel", "info", "ping")
+            .addFilterCommand { !it.author.isBot }
             .addCommands(
                     Connect,
                     Disconnect,
