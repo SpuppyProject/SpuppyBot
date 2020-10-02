@@ -1,9 +1,6 @@
 package com.github.yeoj34760.spuppybot
 
-import com.github.yeoj34760.rpg.command.DungeonList
-import com.github.yeoj34760.rpg.command.SelfInfo
-import com.github.yeoj34760.rpg.command.WeaponHelp
-import com.github.yeoj34760.rpg.command.WeaponList
+import com.github.yeoj34760.rpg.command.*
 import com.github.yeoj34760.spuppy.command.CommandClient
 import com.github.yeoj34760.spuppy.command.CommandClientBuilder
 import com.github.yeoj34760.spuppy.command.CommandDatabase
@@ -88,7 +85,8 @@ fun main() {
                     WeaponHelp,
                     WeaponList,
                     DungeonList,
-                    SelfInfo
+                    SelfInfo,
+                    DungeonInfo
             ).build()
     JDABuilder
             .createDefault(settings.token)
