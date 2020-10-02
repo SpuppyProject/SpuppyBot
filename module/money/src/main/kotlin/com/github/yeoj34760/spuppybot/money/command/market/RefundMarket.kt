@@ -4,9 +4,9 @@ import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.DiscordColor
-import com.github.yeoj34760.spuppybot.db.UserItemDBController
-import com.github.yeoj34760.spuppybot.db.UserMoneyDBController
-import com.github.yeoj34760.spuppybot.money.market.MarketItemList
+import com.github.yeoj34760.spuppybot.db.MarketItemDB
+import com.github.yeoj34760.spuppybot.db.UserDB
+import com.github.yeoj34760.spuppybot.db.user.info
 import net.dv8tion.jda.api.EmbedBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -25,15 +25,14 @@ object RefundMarket : Command() {
         val countFind = regex.find(event.content)
 
         val count = countFind?.value?.toInt() ?: 1
-        var item = MarketItemList[temp]
+        var item = MarketItemDB.list().filter { it.name == temp }[0]
 
         if (item == null) {
             logger.info("아이템을 발견하지 못함")
             event.channel.sendMessage("해당 이름을 가진 아이템을 찾을 수 없어요").queue()
             return
         }
-
-        val myItem = UserItemDBController[event.author.idLong, temp]
+        val myItem = event.author.info.itemList.filter { it.name == temp }[0]
 
         if (myItem == null) {
             logger.info("[${event.author.idLong}] 유저가 해당 아이템을 가지고 있지 않음")
@@ -46,15 +45,15 @@ object RefundMarket : Command() {
                 return
             }
         }
-
+        val userDB = UserDB(event.author.idLong)
         item.add(count)
         logger.info("[${event.author.idLong}] 해당 아이템 갯수 값을 뻄")
-        UserItemDBController.minusUserItem(event.author.idLong, item, count)
+        userDB.itemMinus(item.name, count)
         var money: BigDecimal = BigDecimal((item.price * count).toString())
         money = money.multiply(BigDecimal("0.7"))
 
-        UserMoneyDBController.addMoneyUser(event.author.idLong, money.toBigInteger())
-        logger.info("$[{event.author.idLong}] ${money} 원을 증가함 (현재 돈: ${UserMoneyDBController.propertyUser(event.author.idLong)})")
+        userDB.moneyUpdate(event.author.info.money.add(money.toBigInteger()))
+        logger.info("$[{event.author.idLong}] ${money} 원을 증가함 (현재 돈: ${event.author.info.money})")
 
         val embed = EmbedBuilder().setColor(DiscordColor.GREEN)
                 .setTitle("반품완료")

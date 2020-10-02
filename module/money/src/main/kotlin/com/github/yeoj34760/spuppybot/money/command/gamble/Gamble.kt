@@ -3,7 +3,8 @@ package com.github.yeoj34760.spuppybot.money.command.gamble
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
-import com.github.yeoj34760.spuppybot.db.UserMoneyDBController
+import com.github.yeoj34760.spuppybot.db.UserDB
+import com.github.yeoj34760.spuppybot.db.user.info
 import com.github.yeoj34760.spuppybot.money.GambleTimer.nowGamblingProbability
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -34,7 +35,8 @@ object Gamble : Command() {
         }
 
 
-        if (UserMoneyDBController.propertyUser(event.author.idLong).compareTo(BigInteger(tempStringBuffer.toString())) == -1) {
+        val userMoney = event.author.info.money
+        if (userMoney.compareTo(BigInteger(tempStringBuffer.toString())) == -1) {
             event.channel.sendMessage("현재 돈보다 많은 돈을 지불할 수가 없어요").queue()
             return
         }
@@ -46,12 +48,12 @@ object Gamble : Command() {
         if (random < nowGamblingProbability) {
             event.channel.sendMessage("와우! ${tempStringBuffer}원을 벌었어요! 축하드립니다.").queue()
             logger.info("[${event.author.idLong}] 도박 성공로 인해 ${money}원을 벌음")
-            UserMoneyDBController.addMoneyUser(event.author.idLong, money)
+            UserDB(event.author.idLong).moneyUpdate(userMoney.add(money))
             return
         } else {
             event.channel.sendMessage("아쉽게도 ${tempStringBuffer}원이 공중분해했어요").queue()
             logger.info("[${event.author.idLong}] 도박 실패로 인해 ${money}원을 잃음")
-            UserMoneyDBController.minusMoneyUser(event.author.idLong, money)
+            UserDB(event.author.idLong).moneyUpdate(userMoney.minus(money))
             return
         }
     }

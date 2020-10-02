@@ -1,0 +1,43 @@
+{
+  "dungeons": [
+    {
+      "name": "시공던전",
+      "monsters": [
+        "시루떡",
+        "망가진 코어",
+        "파이썬"
+      ],
+      "drop_weapons": [
+        "그래픽카드",
+        "HDD",
+        "전설적이지 않은 치킨"
+      ]
+    }
+  ],
+  "weapons": [
+    {
+      "name": "뉴비칼",
+      "type": "MELEE",
+      "level": 1,
+      "power": 10
+    },
+    {
+      "name": "그래픽카드",
+      "type": "MELEE",
+      "level": 5,
+      "power": 50
+    },
+    {
+      "name": "HDD",
+      "type": "MELEE",
+      "level": 6,
+      "power": 60
+    },
+    {
+      "name": "전설적이지 않은 치킨",
+      "type": "MELEE",
+      "level": 3,
+      "power": 56
+    }
+  ]
+}

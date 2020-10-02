@@ -1,0 +1,479 @@
+{
+  "commands": [
+    {
+      "name": "play",
+      "command": [
+        "play",
+        "p",
+        "플레이",
+        "플",
+        "시작",
+        "재생",
+        "ㅔ",
+        "ㅔㅣ묘"
+      ]
+    },
+    {
+      "name": "disconnect",
+      "command": [
+        "disconnect",
+        "disconect",
+        "discon",
+        "dc",
+        "연결끊기",
+        "끊기",
+        "채널끊어",
+        "끊어",
+        "끊는다",
+        "나가",
+        "나와"
+      ]
+    },
+    {
+      "name": "movebox",
+      "command": [
+        "box move",
+        "bm",
+        "boxm",
+        "box m",
+        "b move",
+        "박스 이동",
+        "박이",
+        "박동",
+        "박스이동"
+      ]
+    },
+    {
+      "name": "gambleall",
+      "command": [
+        "dd",
+        "ㅇㅇ",
+        "올인",
+        "도박 올인",
+        "올인 도박",
+        "ㄷㅂ ㅇㅇ",
+        "ㅇㅇ ㄷㅂ",
+        "ㅇㅇㄷㅂ",
+        "도박 전부"
+      ]
+    },
+    {
+      "name": "box",
+      "command": [
+        "box",
+        "박스",
+        "b",
+        "박"
+      ]
+    },
+    {
+      "name": "skip",
+      "command": [
+        "스킵ㅋ",
+        "스스킵",
+        "ㄴ",
+        "나ㅑㅔ",
+        "sk",
+        "skip",
+        "스",
+        "스킵"
+      ]
+    },
+    {
+      "name": "remove",
+      "command": [
+        "삭제",
+        "삭",
+        "음악삭제",
+        "뮤직삭제",
+        "삭제음악",
+        "삭제뮤직",
+        "remove",
+        "re",
+        "remov",
+        "remo",
+        "rm",
+        "그",
+        "ㄱ드ㅐㅍㄷ"
+      ]
+    },
+    {
+      "name": "speed",
+      "command": [
+        "speed",
+        "sped",
+        "spe",
+        "스피드",
+        "스피",
+        "속도",
+        "속도조절",
+        "조절속도",
+        "조절스피드",
+        "스피드조절"
+      ]
+    },
+    {
+      "name": "nowplay",
+      "command": [
+        "np",
+        "nowplay",
+        "ㅞ",
+        "ㅜㅐ제ㅣ묘",
+        "nowp",
+        "nplay"
+      ]
+    },
+    {
+      "name": "search",
+      "command": [
+        "검색",
+        "검섹",
+        "ㄱㅅ",
+        "ㄴㄷㅁㄱ초",
+        "ㄴㄷ",
+        "search",
+        "se",
+        "searc",
+        "sear"
+      ]
+    },
+    {
+      "name": "loop",
+      "command": [
+        "루프",
+        "무한루프",
+        "무루",
+        "무한루",
+        "무프",
+        "lop",
+        "loop",
+        "lp",
+        "ㅣㅐㅐㅔ",
+        "ㅣㅐㅔ"
+      ]
+    },
+    {
+      "name": "removeallbox",
+      "command": [
+        "박삭모",
+        "박마삭",
+        "boxremoveall",
+        "box remove all",
+        "bra",
+        "bar",
+        "box all remove"
+      ]
+    },
+    {
+      "name": "connect",
+      "command": [
+        "connect",
+        "con",
+        "co",
+        "conect",
+        "연결",
+        "채널연결",
+        "연결 채널",
+        "ㅇㄱ",
+        "음성연결",
+        "들어와",
+        "들어오기",
+        "컴온"
+      ]
+    },
+    {
+      "name": "info",
+      "command": [
+        "info",
+        "if",
+        "help",
+        "헬프",
+        "헬프미",
+        "도움",
+        "도움말",
+        "정보",
+        "정보들",
+        "도와줘",
+        "ㅎㅍ",
+        "ㄷㅇㅁ",
+        "ㄷ움말",
+        "ㅗ디ㅔ",
+        "about",
+        "뮤ㅐㅕㅅ"
+      ]
+    },
+    {
+      "name": "gambleinfo",
+      "command": [
+        "도박 정보",
+        "정보 도박",
+        "도움말 도박",
+        "help gamble",
+        "info gamble",
+        "도박정보",
+        "gamble help",
+        "정보도박",
+        "ㄷㅂㅈㅂ"
+      ]
+    },
+    {
+      "name": "copybox",
+      "command": [
+        "박스 복사",
+        "박스복사",
+        "복사박스",
+        "복사 박스",
+        "copybox",
+        "cb",
+        "copyb",
+        "cbox",
+        "box copy",
+        "copy box"
+      ]
+    },
+    {
+      "name": "gamble",
+      "command": [
+        "eq",
+        "ㄷㅂ",
+        "도박",
+        "ehqkr",
+        "도박하기",
+        "gamble",
+        "gb"
+      ]
+    },
+    {
+      "name": "myitem",
+      "command": [
+        "창고",
+        "내아이템",
+        "네아이템",
+        "내템",
+        "내창고",
+        "아이템들",
+        "ㄴㅇㅇㅌ",
+        "ㄴㅌ"
+      ]
+    },
+    {
+      "name": "removebox",
+      "command": [
+        "box remove",
+        "box re",
+        "br",
+        "박스 삭제",
+        "박삭",
+        "boxremove"
+      ]
+    },
+    {
+      "name": "refundmarket",
+      "command": [
+        "반품",
+        "마켓 반품",
+        "마켓반품",
+        "반품 마켓",
+        "반품마켓",
+        "쓰레기 반품",
+        "refund market",
+        "market refund",
+        "akzpt qksvna",
+        "akzptqksvna",
+        "환불",
+        "ㅎㅂ",
+        "마켓 환불",
+        "마켓환불",
+        "환불 마켓",
+        "ㅎㅂㅁㅋ",
+        "반품환불"
+      ]
+    },
+    {
+      "name": "copyallbox",
+      "command": [
+        "박스 모두복사",
+        "박스 모두 복사",
+        "박모복",
+        "박복모",
+        "box all copy",
+        "box copy all",
+        "boxallcopy",
+        "bac",
+        "bca",
+        "boxcopyall"
+      ]
+    },
+    {
+      "name": "list",
+      "command": [
+        "리스트",
+        "리스",
+        "목록",
+        "목록들",
+        "음악들",
+        "뮤직들",
+        "list",
+        "li",
+        "ㅣㅑ",
+        "ㅣㅑㄴㅅ",
+        "ㄹㅅㅌ",
+        "ㅁㄹ",
+        "ㅁㄹㄷ",
+        "ㅇㅇㄷ"
+      ]
+    },
+    {
+      "name": "pause",
+      "command": [
+        "pause",
+        "pa",
+        "ㅔㅁ",
+        "ㅔ면ㄷ",
+        "일시정지",
+        "일정",
+        "일시정",
+        "일시지",
+        "일정지",
+        "ㅔㅁㄴㄷ",
+        "ㅔㅁ"
+      ]
+    },
+    {
+      "name": "volume",
+      "command": [
+        "볼륨",
+        "ㅂㄹ",
+        "볼류",
+        "보륨",
+        "패ㅣ",
+        "패",
+        "패ㅣㅕㅡㄷ",
+        "소리크기",
+        "음악소리",
+        "뮤직소리",
+        "소리",
+        "소리음악",
+        "소리음",
+        "vol",
+        "volume",
+        "voolume",
+        "vvoluem"
+      ]
+    },
+    {
+      "name": "market",
+      "command": [
+        "마켓",
+        "ㅁㅋ",
+        "상점",
+        "ㅅㅈ",
+        "편의점",
+        "마트"
+      ]
+    },
+    {
+      "name": "stop",
+      "command": [
+        "종료",
+        "음악중지",
+        "중지",
+        "지중",
+        "종료해",
+        "종료하라고",
+        "스톱",
+        "스탑",
+        "stop",
+        "st",
+        "sto",
+        "ㄴ새ㅔ",
+        "ㄴㅅ"
+      ]
+    },
+    {
+      "name": "money",
+      "command": [
+        "money",
+        "모니",
+        "ㅡㅐㅜ됴",
+        "돈",
+        "ehs",
+        "ㄷ"
+      ]
+    },
+    {
+      "name": "listbox",
+      "command": [
+        "box list",
+        "bl",
+        "박스 리스트",
+        "박리",
+        "box li",
+        "boxli"
+      ]
+    },
+    {
+      "name": "receivemoney",
+      "command": [
+        "돈받기",
+        "ㄷㅂㄱ",
+        "receivemoney",
+        "돈줘",
+        "돈내놔"
+      ]
+    },
+    {
+      "name": "buymarket",
+      "command": [
+        "구매",
+        "구매 마켓",
+        "마켓 구매",
+        "ㄱㅁ",
+        "ㄱㅁ ㅁㅋ",
+        "ㅁㅋ ㄱㅁ",
+        "market buy",
+        "buy market",
+        "marketbuy",
+        "buymarket",
+        "market bby",
+        "akzpt rnao",
+        "akzptrnao",
+        "rnao",
+        "rnaoakzpt",
+        "rnao akzpt",
+        "tkdwja rnao"
+      ]
+    },
+    {
+      "name": "addbox",
+      "command": [
+        "박스 추가",
+        "box add",
+        "ba",
+        "boxadd",
+        "박스추가"
+      ]
+    },
+    {
+      "name": "shuffle",
+      "command": [
+        "섞기",
+        "뒤섞기",
+        "섞어봐",
+        "쒸기쒸기",
+        "섞어줘",
+        "음악랜덤",
+        "음악 랜덤",
+        "음악 섞기",
+        "섞기 음악",
+        "ㅅㄲㄱ",
+        "석기",
+        "뒤석기",
+        "ㄷㅅㄱ",
+        "shuffle",
+        "shu",
+        "shufle"
+      ]
+    }
+  ]
+}

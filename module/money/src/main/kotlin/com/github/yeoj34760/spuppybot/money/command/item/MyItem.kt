@@ -4,8 +4,8 @@ import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.DiscordColor
-import com.github.yeoj34760.spuppybot.db.MarketItemDBController
-import com.github.yeoj34760.spuppybot.db.UserItemDBController
+import com.github.yeoj34760.spuppybot.db.MarketItemDB
+import com.github.yeoj34760.spuppybot.db.user.info
 import net.dv8tion.jda.api.EmbedBuilder
 import java.math.BigInteger
 import java.text.SimpleDateFormat
@@ -14,20 +14,20 @@ import java.util.*
 @CommandSettings(name = "myitem")
 object MyItem : Command() {
     override fun execute(event: CommandEvent) {
-        val userItemList = UserItemDBController.fromUserItemList(event.author.idLong)
+        val userItemList = event.author.info.itemList
         if (userItemList.isEmpty()) {
             event.channel.sendMessage("창고에 열심히 뒤져봤지만 아무 것도 없네요").queue()
             return
         }
         val tempString: StringBuffer = StringBuffer()
         var sobeMoney: BigInteger = BigInteger.ZERO
-        val marketList = MarketItemDBController.marketItemList()
+        val marketList = MarketItemDB.list()
         userItemList.forEach { userItem ->
             tempString.append("**${userItem.name}**\n")
             if (userItem.count > 1)
                 tempString.append("갯수: `${userItem.count}개`\n")
             val format = SimpleDateFormat("yyyy-MM-dd")
-            tempString.append("마지막으로 산 날짜: `${format.format(Date(userItem.timestamp.time).time)}`\n\n")
+            tempString.append("마지막으로 산 날짜: `${format.format(userItem.timestamp)}`\n\n")
             sobeMoney = sobeMoney.add(BigInteger("${marketList.stream().filter { it.name == userItem.name }.findFirst().get().price * userItem.count}"))
         }
 

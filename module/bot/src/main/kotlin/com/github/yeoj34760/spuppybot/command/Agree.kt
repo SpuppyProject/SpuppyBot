@@ -4,7 +4,7 @@ import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.DiscordColor
-import com.github.yeoj34760.spuppybot.db.UserDBController
+import com.github.yeoj34760.spuppybot.db.UserDB
 import com.github.yeoj34760.spuppybot.waiter
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
@@ -19,7 +19,8 @@ object Agree : Command() {
     """.trimIndent()
 
     override fun execute(event: CommandEvent) {
-        if (UserDBController.checkUser(event.author.idLong)) {
+        val userDB = UserDB(event.author.idLong)
+        if (userDB.check()) {
             event.channel.sendMessage("이미 가입되어 있네요!").queue()
             return
         }
@@ -45,7 +46,7 @@ object Agree : Command() {
 
             when (it.reactionEmote.emoji) {
                 "⭕" -> {
-                    UserDBController.addUser(event.author.idLong)
+                    userDB.create()
                     event.channel.sendMessage("가입되었어요! 환영해요!").complete()
                 }
                 "❌" -> event.channel.sendMessage("취소되었어요, 만약 가입할 마음이 생긴다면 다시 불러와주세요!").complete()

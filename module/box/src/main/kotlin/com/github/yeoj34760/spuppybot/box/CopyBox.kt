@@ -3,8 +3,8 @@ package com.github.yeoj34760.spuppybot.box
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
+import com.github.yeoj34760.spuppybot.db.user.info
 import com.github.yeoj34760.spuppybot.settings
-import com.github.yeoj34760.spuppybot.db.UserBoxDBController
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.music.Util
 
@@ -19,19 +19,20 @@ object CopyBox : Command() {
             event.channel.sendMessage("음성 방에 들어와있어야 합니다. \n").queue()
         }
 
-        val userBox = UserBoxDBController.fromUserBox(event.author.idLong)
-        if (userBox.isEmpty()) {
+        val box = event.author.info.box
+        
+        if (box.isEmpty()) {
             event.channel.sendMessage("박스에 아무 것도 없네요!").queue()
             return
         }
 
-        if (userBox.size < event.args[0].toInt() - 1 || 0 >= event.args[0].toInt()) {
+        if (box.size < event.args[0].toInt() - 1 || 0 >= event.args[0].toInt()) {
             event.channel.sendMessage("숫자를 올바르게 써주세요!").queue()
             return
         }
         Util.autoConnect(event)
 
-        val track = UserBoxDBController.fromUserBox(event.author.idLong)[event.args[0].toInt() - 1].audioTrack
+        val track = box[event.args[0].toInt() - 1]
         track.userData = event.jda.retrieveUserById(event.author.idLong).complete()
         GuildManager.playerControls[event.guildIdLong]!!.playOrAdd(track)
     }

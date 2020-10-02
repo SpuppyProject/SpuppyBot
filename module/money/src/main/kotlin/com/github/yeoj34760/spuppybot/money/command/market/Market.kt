@@ -4,14 +4,14 @@ import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.DiscordColor
-import com.github.yeoj34760.spuppybot.db.MarketItemDBController
+import com.github.yeoj34760.spuppybot.db.MarketItemDB
 import net.dv8tion.jda.api.EmbedBuilder
 import kotlin.math.ceil
 
 @CommandSettings(name = "market")
 object Market : Command() {
     override fun execute(event: CommandEvent) {
-        val items = MarketItemDBController.marketItemList()
+        val items = MarketItemDB.list()
         val temp = StringBuffer()
         val description: String
 

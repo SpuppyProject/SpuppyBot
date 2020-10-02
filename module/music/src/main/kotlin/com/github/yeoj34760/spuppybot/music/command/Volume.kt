@@ -6,7 +6,7 @@ import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
-import com.github.yeoj34760.spuppybot.db.GuildDBController
+import com.github.yeoj34760.spuppybot.db.GuildDB
 
 /**
  * 볼륨 기능을 제공하기 위한 오브젝트입니다.
@@ -15,9 +15,6 @@ import com.github.yeoj34760.spuppybot.db.GuildDBController
 object Volume : Command() {
 
     override fun execute(event: CommandEvent) {
-        if (!GuildDBController.checkGuild(event.guild.idLong))
-            GuildDBController.addGuild(event.guild.idLong)
-
         val id = event.guild.idLong
         val audioManager = event.guild.audioManager
         GuildManager.check(audioManager, id)
@@ -30,7 +27,7 @@ object Volume : Command() {
 
         if (argsInt in 0..100) {
             playerControls[id]?.volume(argsInt)
-            GuildDBController.guildVolume(id, argsInt)
+            GuildDB.volume(id, argsInt)
             event.channel.sendMessage("`$argsInt`(으)로 볼륨 조정했습니다.").queue()
         } else
             event.channel.sendMessage("죄송합니다만, 숫자를 1 ~ 100으로 지정해주세요.").queue()

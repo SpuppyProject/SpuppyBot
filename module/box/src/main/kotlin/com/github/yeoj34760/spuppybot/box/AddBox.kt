@@ -4,9 +4,10 @@ import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.TrackManager.trackToBase64
+import com.github.yeoj34760.spuppybot.db.UserDB
+import com.github.yeoj34760.spuppybot.db.user.info
 import com.github.yeoj34760.spuppybot.playerManager
 import com.github.yeoj34760.spuppybot.settings
-import com.github.yeoj34760.spuppybot.db.UserBoxDBController
 import com.github.yeoj34760.spuppybot.music.Util
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
@@ -28,8 +29,8 @@ object AddBox : Command() {
             return
         }
 
-        val userBox = UserBoxDBController.fromUserBox(event.author.idLong)
-        if (userBox.size >= 10) {
+        val box = event.author.info.box
+        if (box.size >= 10) {
             event.channel.sendMessage("흠.. 추가하려고 했는데 갯수 제한이 걸렸네요\n추가하고 싶다면 박스에 있는 음악들중에 하나 제거해주세요.")
         }
 
@@ -72,6 +73,6 @@ object AddBox : Command() {
     }
 
     private fun sendBox(event: CommandEvent, track: AudioTrack) {
-        UserBoxDBController.addUserBox(event.author.idLong, trackToBase64(track))
+        UserDB(event.author.idLong).boxAdd(track)
     }
 }

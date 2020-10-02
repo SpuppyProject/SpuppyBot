@@ -4,7 +4,7 @@ package com.github.yeoj34760.spuppybot.box
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
-import com.github.yeoj34760.spuppybot.db.UserBoxDBController
+import com.github.yeoj34760.spuppybot.db.user.info
 import com.github.yeoj34760.spuppybot.music.GuildManager
 import com.github.yeoj34760.spuppybot.music.Util
 
@@ -19,18 +19,18 @@ object CopyAllBox : Command() {
 
         Util.autoConnect(event)
 
-        val userBox = UserBoxDBController.fromUserBox(event.author.idLong)
+        val box = event.author.info.box
 
-        if (userBox.isEmpty()) {
+        if (box.isEmpty()) {
             event.channel.sendMessage("흠.. 추가하려고 했으나 박스에 아무 것도 없네요.").queue()
             return
         }
 
-        UserBoxDBController.fromUserBox(event.author.idLong).forEach {
-            it.audioTrack.userData = event.jda.retrieveUserById(event.author.idLong).complete()
-            GuildManager.playerControls[event.guildIdLong]!!.playOrAdd(it.audioTrack)
+        box.forEach {
+            it.userData = event.jda.retrieveUserById(event.author.idLong).complete()
+            GuildManager.playerControls[event.guildIdLong]!!.playOrAdd(it)
         }
 
-        event.channel.sendMessage("약 `${userBox.size}`개 음악을 추가했어요!").queue()
+        event.channel.sendMessage("약 `${box.size}`개 음악을 추가했어요!").queue()
     }
 }
