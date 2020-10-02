@@ -29,7 +29,7 @@ object AddBox : Command() {
             return
         }
 
-        val box = event.author.info.box
+        val box = event.author.info().box
         if (box.size >= 10) {
             event.channel.sendMessage("흠.. 추가하려고 했는데 갯수 제한이 걸렸네요\n추가하고 싶다면 박스에 있는 음악들중에 하나 제거해주세요.")
         }

@@ -11,11 +11,11 @@ object Disconnect : Command() {
         if (event.guild.audioManager.isConnected) {
             event.guild.audioManager.closeAudioConnection()
 
-            event.channel.sendMessage("리스트에 있는 음악이 있을 경우 자동으로 초기화합니다.").queue()
+            event.channel.sendMessage("나왔어요!").queue()
             return
         }
 
 
-        event.channel.sendMessage("이미 나가있네요").queue()
+        event.channel.sendMessage("지금 바깥에 나가있어요!").queue()
     }
 }

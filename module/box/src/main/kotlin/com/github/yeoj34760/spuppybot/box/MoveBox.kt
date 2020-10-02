@@ -17,9 +17,9 @@ object MoveBox : Command() {
         }
         val order1: Int? = event.args[0].toIntOrNull()
         val order2: Int? = event.args[1].toIntOrNull()
-        val max = event.author.info.box.size
+        val max = event.author.info().box.size
         if (max <= 1) {
-            event.channel.sendMessage("음악 옮기려는데 하나밖에 없네요.").queue()
+            event.channel.sendMessage("오 이런, 음악을 옮기려는데 하나밖에 없어요.").queue()
             return
         }
         if (order1 == null || order2 == null || order1 > max || order1 < 0 || order2 > max || order2 < 0) {
@@ -28,6 +28,6 @@ object MoveBox : Command() {
         }
 
         UserDB(event.author.idLong).boxMove(order1-1, order2-1)
-        event.channel.sendMessage("성공!").queue()
+        event.channel.sendMessage("성공되었어요!").queue()
     }
 }

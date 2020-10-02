@@ -16,7 +16,7 @@ object NowPlay : Command() {
 
     override fun execute(event: CommandEvent) {
         if (GuildManager.playerControls[event.guild.idLong] == null || !GuildManager.playerControls[event.guild.idLong]!!.isPlayed()) {
-            event.channel.sendMessage("현재 재생중인 음악이 없네요.").queue()
+            event.channel.sendMessage("현재 재생중인 음악이 없어요!").queue()
             return
         }
 
@@ -39,7 +39,7 @@ object NowPlay : Command() {
                 .addField("들은 시간", timeFormat(playingTrack.position), true)
                 .addField("남은 시간", timeRemain, true)
                 .addField("만든이", playingTrack.info.author, true)
-                .addField("무한 루프 여부", playerControl.isLooped.toString(), true)
+                .addField("재생반복 여부", playerControl.isLooped.toString(), true)
                 .setFooter("신청자: ${(playingTrack.userData as User).asTag}")
                 .setColor(DiscordColor.BLUE)
                 .build()
@@ -53,13 +53,9 @@ object NowPlay : Command() {
         val minute = (secondTime % (3600)) / 60
         val second = (secondTime % (60))
 
-        return if (86400 <= secondTime)
-            "${day}일 ${hour}시 ${minute}분 ${second}초"
-        else if (3600 <= secondTime)
-            "${hour}시 ${minute}분 ${second}초"
-        else if (60 <= secondTime)
-            "${minute}분 ${second}초"
-        else
-            "${second}초"
+        return if (86400 <= secondTime) "${day}일 ${hour}시 ${minute}분 ${second}초"
+        else if (3600 <= secondTime) "${hour}시 ${minute}분 ${second}초"
+        else if (60 <= secondTime) "${minute}분 ${second}초"
+        else "${second}초"
     }
 }

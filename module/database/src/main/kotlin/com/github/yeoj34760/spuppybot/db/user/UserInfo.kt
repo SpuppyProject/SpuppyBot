@@ -14,5 +14,4 @@ data class UserInfo(
         val itemList: List<UserItem>
 )
 
-val User.info: UserInfo
-    get() = UserDB(this.idLong).invoke()
+fun User.info(): UserInfo = UserDB(this.idLong).invoke()

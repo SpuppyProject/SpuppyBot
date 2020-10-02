@@ -28,7 +28,7 @@ object BuyMarket : Command() {
             return
         }
 
-        val property = event.author.info.money
+        val property = event.author.info().money
         val itemPrice = BigInteger(item.price.toString())
         if (property.compareTo(itemPrice) == -1) {
             logger.info("[${event.author.idLong}] 현재 돈(${property})보다 아이템 가격(${itemPrice})이 더 높음")

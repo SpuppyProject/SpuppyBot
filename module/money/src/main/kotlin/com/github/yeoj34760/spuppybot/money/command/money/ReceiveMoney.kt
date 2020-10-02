@@ -14,14 +14,15 @@ import kotlin.random.Random
 @CommandSettings(name = "receivemoney")
 object ReceiveMoney : Command() {
     override fun execute(event: CommandEvent) {
-        val timer = event.author.info.receiveMoney.toDate()
+        val userInfo = event.author.info()
+        val timer = userInfo.receiveMoney.toDate()
 
         if (Date().time < timer.time) {
             event.channel.sendMessage("${(timer.time - Date().time) / 1000}초뒤에 다시시도해보세요").queue()
             return
         }
         val money = BigInteger(Random.nextInt(4000, 10000).toString())
-        val now = event.author.info.money.add(money)
+        val now = userInfo.money.add(money)
          UserDB(event.author.idLong).moneyUpdate(now)
         val embed = EmbedBuilder().setColor(DiscordColor.ORANGE).setAuthor(event.author.asTag, null, event.author.avatarUrl
                 ?: event.author.defaultAvatarUrl)

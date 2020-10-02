@@ -10,6 +10,6 @@ import com.github.yeoj34760.spuppybot.db.UserDB
 object RemoveAllBox : Command() {
     override fun execute(event: CommandEvent) {
         UserDB(event.author.idLong).boxRemoveAll()
-        event.channel.sendMessage("모두 삭제했습니다.").queue()
+        event.channel.sendMessage("모두 삭제했어요").queue()
     }
 }

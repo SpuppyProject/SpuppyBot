@@ -11,10 +11,10 @@ import com.github.yeoj34760.spuppybot.db.user.info
 object RemoveBox : Command() {
     override fun execute(event: CommandEvent) {
         if (event.args.isEmpty()) {
-            event.channel.sendMessage("명령어를 제대로 써주세요.\n예시: `${settings.prefix}box remove 1`").queue()
+            event.channel.sendMessage("명령어를 올바르게 써주세요.\n예시: `${settings.prefix}box remove 1`").queue()
             return
         }
-        val max = event.author.info.box.size
+        val max = event.author.info().box.size
 
         when (event.args[0].toIntOrNull()) {
             !in 1..max -> {
@@ -25,7 +25,7 @@ object RemoveBox : Command() {
             }
         }
 
-        UserDB(event.author.idLong).boxRemove(event.args[0].toInt())
-        event.channel.sendMessage("삭제완료").queue()
+        UserDB(event.author.idLong).boxRemove(event.args[0].toInt()-1)
+        event.channel.sendMessage("삭제되었어요!").queue()
     }
 }

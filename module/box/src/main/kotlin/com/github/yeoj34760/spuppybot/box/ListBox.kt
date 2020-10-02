@@ -12,10 +12,10 @@ import net.dv8tion.jda.api.EmbedBuilder
 object ListBox : Command() {
     override fun execute(event: CommandEvent) {
         val listTemp: StringBuffer = StringBuffer()
-        var box = event.author.info.box
+        var box = event.author.info().box
 
         if (box.isEmpty()) {
-            event.channel.sendMessage("뭔가 엄청난 걸 보여주려고했지만 박스에 아무 것도 없네요.").queue()
+            event.channel.sendMessage("뭔가 엄청난 걸 보여주려고했지만 박스에 아무 것도 없어요.").queue()
             return
         }
         var i = 1
@@ -25,7 +25,6 @@ object ListBox : Command() {
 
         val embed = EmbedBuilder()
                 .setColor(DiscordColor.GREEN)
-                .setAuthor(event.author.name, null, event.author.avatarUrl)
                 .setTitle("`${event.author.name}`의 박스")
                 .setDescription(listTemp.toString())
                 .build()

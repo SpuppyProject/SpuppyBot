@@ -25,39 +25,40 @@ object RefundMarket : Command() {
         val countFind = regex.find(event.content)
 
         val count = countFind?.value?.toInt() ?: 1
-        var item = MarketItemDB.list().filter { it.name == temp }[0]
+        var item = MarketItemDB.list().filter { it.name == temp }
 
-        if (item == null) {
+        if (item.isEmpty()) {
             logger.info("아이템을 발견하지 못함")
             event.channel.sendMessage("해당 이름을 가진 아이템을 찾을 수 없어요").queue()
             return
         }
-        val myItem = event.author.info.itemList.filter { it.name == temp }[0]
+        val userInfo = event.author.info()
+        val myItem = userInfo.itemList.filter { it.name == temp }
 
-        if (myItem == null) {
+        if (myItem.isEmpty()) {
             logger.info("[${event.author.idLong}] 유저가 해당 아이템을 가지고 있지 않음")
             event.channel.sendMessage("해당 아이템을 가지고 있지 않아요!").queue()
             return
         } else {
-            if (myItem.count < count) {
+            if (myItem[0].count < count) {
                 logger.info("[${event.author.idLong}] 유저가 가지고 있는 아이템 갯수보다 높은 값을 입력함")
                 event.channel.sendMessage("자신이 가지고 있는 아이템 수보다 많이 팔 수 없어요").queue()
                 return
             }
         }
         val userDB = UserDB(event.author.idLong)
-        item.add(count)
+        item[0].add(count)
         logger.info("[${event.author.idLong}] 해당 아이템 갯수 값을 뻄")
-        userDB.itemMinus(item.name, count)
-        var money: BigDecimal = BigDecimal((item.price * count).toString())
+        userDB.itemMinus(item[0].name, count)
+        var money: BigDecimal = BigDecimal((item[0].price * count).toString())
         money = money.multiply(BigDecimal("0.7"))
 
-        userDB.moneyUpdate(event.author.info.money.add(money.toBigInteger()))
-        logger.info("$[{event.author.idLong}] ${money} 원을 증가함 (현재 돈: ${event.author.info.money})")
+        userDB.moneyUpdate(userInfo.money.add(money.toBigInteger()))
+        logger.info("$[{event.author.idLong}] ${money} 원을 증가함 (현재 돈: ${userInfo.money})")
 
         val embed = EmbedBuilder().setColor(DiscordColor.GREEN)
                 .setTitle("반품완료")
-                .setDescription("`${item.name}`을(를) 반품했어요")
+                .setDescription("`${item[0].name}`을(를) 반품했어요")
                 .addField("반품한 갯수", count.toString(), true)
                 .addField("받은 돈", money.toBigInteger().toString(), true)
                 .setFooter("반품하면 원가의 70%정도 돈을 돌려받습니다.")

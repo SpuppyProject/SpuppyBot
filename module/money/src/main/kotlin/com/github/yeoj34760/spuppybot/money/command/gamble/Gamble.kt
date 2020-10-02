@@ -35,7 +35,7 @@ object Gamble : Command() {
         }
 
 
-        val userMoney = event.author.info.money
+        val userMoney = event.author.info().money
         if (userMoney.compareTo(BigInteger(tempStringBuffer.toString())) == -1) {
             event.channel.sendMessage("현재 돈보다 많은 돈을 지불할 수가 없어요").queue()
             return

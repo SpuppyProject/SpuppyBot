@@ -12,7 +12,7 @@ import kotlin.random.Random
 @CommandSettings(name = "gambleall")
 object GambleAll : Command() {
     override fun execute(event: CommandEvent) {
-        val money = event.author.info.money
+        val money = event.author.info().money
 
         if (money.compareTo(BigInteger("1000")) == -1) {
             event.channel.sendMessage("1000원이상 있어야 돼요!").queue()

@@ -14,7 +14,7 @@ import java.util.*
 @CommandSettings(name = "myitem")
 object MyItem : Command() {
     override fun execute(event: CommandEvent) {
-        val userItemList = event.author.info.itemList
+        val userItemList = event.author.info().itemList
         if (userItemList.isEmpty()) {
             event.channel.sendMessage("창고에 열심히 뒤져봤지만 아무 것도 없네요").queue()
             return
@@ -27,7 +27,7 @@ object MyItem : Command() {
             if (userItem.count > 1)
                 tempString.append("갯수: `${userItem.count}개`\n")
             val format = SimpleDateFormat("yyyy-MM-dd")
-            tempString.append("마지막으로 산 날짜: `${format.format(userItem.timestamp)}`\n\n")
+            tempString.append("마지막으로 산 날짜: `${format.format(userItem.timestamp.toDate())}`\n\n")
             sobeMoney = sobeMoney.add(BigInteger("${marketList.stream().filter { it.name == userItem.name }.findFirst().get().price * userItem.count}"))
         }
 

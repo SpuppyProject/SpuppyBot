@@ -18,10 +18,10 @@ object Loop : Command() {
         }
 
         if (playerControl.isLooped) {
-            event.channel.sendMessage("무한 루프를 해체했습니다.").queue()
+            event.channel.sendMessage("재생반복을 중지했어요.").queue()
             playerControl.isLooped = false
         } else {
-            event.channel.sendMessage("무한 루프를 적용했습니다.").queue()
+            event.channel.sendMessage("재생반복을 시작했어요!").queue()
             playerControl.isLooped = true
         }
     }

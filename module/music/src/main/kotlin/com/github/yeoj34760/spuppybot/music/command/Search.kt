@@ -7,6 +7,7 @@ import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.waiter
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.util.concurrent.TimeUnit
@@ -16,9 +17,18 @@ import java.util.concurrent.TimeUnit
 object Search : Command() {
 
     override fun execute(event: CommandEvent) {
+        if (!event.member?.voiceState!!.inVoiceChannel()) {
+            event.channel.sendMessage("음성 방에 들어주세요! \n").queue()
+        }
 
         if (event.args.isEmpty()) {
             event.channel.sendMessage("올바르게 써주세요 \n`예시: ?search 진진자라`").queue()
+            return
+        }
+
+        val channel = event.member!!.voiceState!!.channel!!
+        if (!event.guild.selfMember.hasPermission(channel, Permission.VOICE_CONNECT)) {
+            event.channel.sendMessage("${event.member.nickname ?: event.author.name}님이 들어와 있는 채널에 권한이 없어 들어갈 수가 없어요!").queue()
             return
         }
 

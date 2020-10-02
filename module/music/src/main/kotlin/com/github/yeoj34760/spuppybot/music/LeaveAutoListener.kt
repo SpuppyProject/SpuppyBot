@@ -6,6 +6,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent
@@ -34,7 +35,7 @@ object LeaveAutoListener : ListenerAdapter() {
         }
 
         val connectedChannel = event.guild.audioManager.connectedChannel?.idLong ?: return
-        if (connectedChannel == event.channelLeft.idLong && event.channelLeft.members.size <= 1) {
+        if (connectedChannel == event.channelLeft.idLong && notBotSize(event.channelLeft.members) <= 1) {
             timerStart(event.guild)
         }
     }
@@ -47,7 +48,7 @@ object LeaveAutoListener : ListenerAdapter() {
             timer.cancel()
             timers.remove(event.guild.idLong)
             return
-        } else if (connectedChannel.idLong != event.channelJoined.idLong && event.channelLeft.members.size <= 1) {
+        } else if (connectedChannel.idLong != event.channelJoined.idLong && notBotSize(event.channelLeft.members) <= 1) {
             timerStart(event.guild)
         }
     }
@@ -81,4 +82,7 @@ object LeaveAutoListener : ListenerAdapter() {
             playerControl.resume()
         }
     }
+
+    private fun notBotSize(members: List<Member>): Int = members.filter { !it.user.isBot }.size
+
 }

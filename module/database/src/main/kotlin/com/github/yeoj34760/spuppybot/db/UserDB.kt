@@ -21,6 +21,7 @@ import java.math.BigInteger
 import java.util.*
 
 class UserDB(private val userId: Long) {
+
     private object UserTable : Table("user") {
         val id = long("id")
         val money = text("money")
@@ -29,18 +30,33 @@ class UserDB(private val userId: Long) {
         val items = text("items")
     }
 
+    companion object {
+        val userIdList = IdList()
+        private fun IdList(): MutableList<Long> {
+            val temp = mutableListOf<Long>()
+            transaction(DB.spuppyDB) { UserTable.selectAll().forEach { temp.add(it[UserTable.id]) } }
+            return temp
+        }
+
+        fun idCheck(id: Long) : Boolean = userIdList.find { it == id } != null
+    }
+
     fun create() {
         transaction(DB.spuppyDB) {
             if (UserTable.select { UserTable.id eq userId }.firstOrNull() == null)
-                UserTable.insert { it[UserTable.id] = userId
-                it[receiveMoney] = DateTime.now()}
+                UserTable.insert {
+                    it[UserTable.id] = userId
+                    it[receiveMoney] = DateTime.now()
+                }
         }
     }
 
     fun remove() {
         transaction(DB.spuppyDB) {
-            if (UserTable.select { UserTable.id eq userId }.firstOrNull() != null)
+            if (UserTable.select { UserTable.id eq userId }.firstOrNull() != null) {
                 UserTable.deleteWhere { UserTable.id eq userId }
+                userIdList.remove(userId)
+            }
         }
     }
 
@@ -123,14 +139,15 @@ class UserDB(private val userId: Long) {
 
     fun itemMinus(name: String, count: Int = 1) {
         transaction(DB.spuppyDB) {
-            if (user() == null) throw Exception("유저 아이디 등록이 안되었음")
-            val itemList = Json.decodeFromString<List<UserItem>>(user()!![UserTable.items]).toMutableList()
+            val user = user() ?: throw Exception("유저 등록안되어 있음")
+            val itemList = Json.decodeFromString<List<UserItem>>(String(Base64.getDecoder().decode(user[UserTable.items]))).toMutableList()
             val userItem = item(name, itemList)
-            if (userItem != null)
-                if (userItem.count - count <= 0)
+            if (userItem != null) {
+                userItem.count -= count
+                if (userItem.count <= 0)
                     itemList.remove(userItem)
-                else
-                    return@transaction
+            } else
+                return@transaction
 
             itemsUpdate(String(Base64.getEncoder().encode(Json.encodeToString(itemList).toByteArray())))
         }
@@ -184,7 +201,7 @@ class UserDB(private val userId: Long) {
     }
 
     private fun user(): ResultRow? {
-    return    transaction(DB.spuppyDB) {
+        return transaction(DB.spuppyDB) {
             return@transaction UserTable.select { UserTable.id eq userId }.firstOrNull()
         }
     }

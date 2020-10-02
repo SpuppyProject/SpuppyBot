@@ -1,12 +1,12 @@
 package com.github.yeoj34760.spuppybot.music.command
 
 
-import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
-import com.github.yeoj34760.spuppybot.music.PlayerControl
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.DiscordColor
+import com.github.yeoj34760.spuppybot.music.GuildManager.playerControls
+import com.github.yeoj34760.spuppybot.music.PlayerControl
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.User
 import kotlin.math.ceil
@@ -19,7 +19,7 @@ object List : Command() {
         val id = event.guild.idLong
 
         if (playerControls[id] == null || !playerControls[id]!!.isPlayed()) {
-            event.channel.sendMessage("뭔가 엄청난 걸 보여드리고 싶었지만 아쉽게도 아무 음악이 없네요").queue()
+            event.channel.sendMessage("뭔가 엄청난 걸 보여드리고 싶었지만 아쉽게도 아무 음악이 없어요").queue()
             return
         }
         val playerControl = playerControls[id]
@@ -37,7 +37,7 @@ object List : Command() {
 
         val playingTrack = playerControl.playingTrack()
         playerControl.trackQueue.toList()
-        val nextMusic = if (playerControl.isLooped) "무한 루프" else if (playerControl.playingTrack().info.isStream) "LIVE" else "${(playingTrack.duration - playingTrack.position) / 1000}초 남음"
+        val nextMusic = if (playerControl.isLooped) "재생반복" else if (playerControl.playingTrack().info.isStream) "LIVE" else "${(playingTrack.duration - playingTrack.position) / 1000}초 남음"
         val list = if (playerControl.trackQueue.isEmpty()) "썰렁... 대기열에 아무 것도 없네요." else listToString(playerControl, number)
         val pageContent = if (playerControl.trackQueue.isEmpty()) "page : 백지" else "page : ${number}/${ceil(playerControl.trackQueue.size / 5f).toInt()}"
 
