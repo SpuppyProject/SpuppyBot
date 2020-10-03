@@ -82,12 +82,12 @@ fun main() {
                     GambleInfo,
                     RefundMarket,
                     GambleAll,
-                    WeaponHelp,
-                    WeaponList,
-                    DungeonList,
-                    SelfInfo,
-                    DungeonInfo,
-                    RpgStart
+//                    WeaponHelp,
+//                    WeaponList,
+//                    DungeonList,
+//                    SelfInfo,
+//                    DungeonInfo,
+//                    RpgStart
             ).build()
     JDABuilder
             .createDefault(settings.token)

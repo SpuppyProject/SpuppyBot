@@ -2,4 +2,5 @@
 build
 .idea
 .test
+executeJar
 settings.json

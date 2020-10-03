@@ -38,17 +38,35 @@ subprojects {
     }
 }
 
-sourceSets {
-    main.java.srcDirs += 'src/main/kotlin/'
+task copyJson(type: Copy) {
+    from 'rpg.json'
+    from 'settings.json'
+    from 'commands.json'
+    into 'executeJar'
 }
-jar {
-    manifest {
-        attributes 'Main-Class': 'com.github.yeoj34760.spuppybot.StartKt'
+
+task createJar {
+    dependsOn ':bot:shadowJar'
+    doLast {
+        println("create folder executeJar")
+        mkdir('executeJar/')
+
+        println("copy rpg.json -> executeJar/")
+        copy {from('rpg.json') into 'executeJar/'}
+
+        println("copy commands.json -> executeJar/")
+        copy {from('commands.json') into 'executeJar/'}
+
+        println("copy settings.json -> executeJar/")
+        copy {from('settings.json') into 'executeJar/'}
+
+        file("${project.rootDir}/module/bot/build/libs/SpuppyBot.jar").renameTo(file("${project.rootDir}/executeJar/SpuppyBot.jar"))
+        println("createJar done")
     }
 }
-shadowJar {
-    baseName("SpuppyBot")
-    classifier('')
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin/'
 }
 
 compileKotlin {

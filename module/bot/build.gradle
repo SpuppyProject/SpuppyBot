@@ -1,6 +1,7 @@
 plugins {
     id('org.jetbrains.kotlin.jvm')
     id 'org.jetbrains.kotlin.plugin.serialization'
+    id "com.github.johnrengelman.shadow"
 }
 
 repositories {
@@ -14,4 +15,14 @@ dependencies {
     implementation project(':box')
     implementation project(':money')
     implementation project(':rpg')
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.github.yeoj34760.spuppybot.StartKt'
+    }
+}
+shadowJar {
+    baseName("SpuppyBot")
+    classifier('')
 }
