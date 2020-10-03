@@ -1,5 +1,7 @@
 package com.github.yeoj34760.rpg.command
 
+import com.github.yeoj34760.rpg.Dungeon
+import com.github.yeoj34760.rpg.Player
 import com.github.yeoj34760.rpg.rpg
 import com.github.yeoj34760.rpg.weapon.Weapon
 import com.github.yeoj34760.spuppy.command.Command
@@ -7,7 +9,7 @@ import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.DiscordColor
 import com.github.yeoj34760.spuppybot.db.DB
-import com.github.yeoj34760.spuppybot.db.rpg.Player
+import com.github.yeoj34760.spuppybot.db.rpg.PlayerTable
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,7 +22,11 @@ import kotlin.random.Random
 @CommandSettings(name = "rpgstart", aliases = ["게임시작"])
 object RpgStart : Command() {
 
-    private data class GameInfo(var playerHP: Int = 100, var monsterHP: Int = Random.nextInt(150, 200), val monsterName: String, val weapon: Weapon)
+    private data class GameInfo(var playerHP: Int = 100,
+                                val player: Player,
+                                var monsterHP: Int,
+                                val monsterName: String,
+                                val monsterLevel: Int)
 
     val playingChannels = mutableListOf<Long>()
     override fun execute(event: CommandEvent) {
@@ -35,20 +41,20 @@ object RpgStart : Command() {
             event.channel.sendMessage("해당 이름을 가진 던전을 찾을 수 없어요!").complete();return
         }
 
-        gameStart(event)
+        gameStart(event, dungeon)
     }
 
     /**
      * 조건이 맞으면 게임 시작합니다.
      */
-    private fun gameStart(event: CommandEvent) {
+    private fun gameStart(event: CommandEvent, dungeon: Dungeon) {
         GlobalScope.launch {
             playingChannels.add(event.channel.idLong)
-            val gameInfo = createGameInfo(event)
+            val gameInfo = createGameInfo(event, dungeon)
             val findMessage = event.channel.sendMessage("`${event.content}`에서 찾는 중...").complete()
             delay(1000)
             findMessage.editMessage("`${gameInfo.monsterName}`을(를) 찾았다!\n그리고 당신은 몬스터를 때렸다!").complete()
-            var gameMessage = event.channel.sendMessage(monsterDamage(event, gameInfo)).complete()
+            val gameMessage = event.channel.sendMessage(monsterDamage(event, gameInfo)).complete()
 
             while (gameInfo.monsterHP > 0 && gameInfo.playerHP > 0) {
                 delay(1000)
@@ -60,15 +66,24 @@ object RpgStart : Command() {
 
             gameMessage.delete().complete()
             when {
-                gameInfo.playerHP >= 0 -> event.channel.sendMessage("졌다 씨발!").complete()
-                gameInfo.monsterHP >= 0 -> event.channel.sendMessage("이겼다! 씨발!").complete()
+                gameInfo.playerHP <= 0 -> event.channel.sendMessage("졌다 씨발!").complete()
+                gameInfo.monsterHP <= 0 -> gameWin(event, gameInfo, dungeon)
             }
             playingChannels.remove(event.channel.idLong)
         }
     }
 
+    private fun gameWin(event: CommandEvent, gameInfo: GameInfo, dungeon: Dungeon) {
+        event.channel.sendMessage("이겼다! 씨발!").complete()
+        val temp = dungeon.dropWeaponList.random()
+        println(temp)
+        val weapon = rpg.weaponList.first {it.name == temp }
+        gameInfo.player.addWeapon(weapon)
+        gameInfo.player.addMonsterKill()
+        event.channel.sendMessage("${weapon.name}을(를) 얻었다! 씨발!").complete()
+    }
     private fun playerDamage(event: CommandEvent, gameInfo: GameInfo): MessageEmbed {
-        val damage = Random.nextInt(3, 8)
+        val damage =  Random.nextInt(5, 8)
         gameInfo.playerHP -= damage
 
         val text = "당신은 ${gameInfo.monsterName}한테 맞아서 피가 깍였다! 아프겠다!"
@@ -76,10 +91,10 @@ object RpgStart : Command() {
     }
 
     private fun monsterDamage(event: CommandEvent, gameInfo: GameInfo): MessageEmbed {
-        val damage = Random.nextInt(6, 12)
+        val damage = gameInfo.player.weapon.power + Random.nextInt(6, 12)
         gameInfo.monsterHP -= damage
 
-        val text = "${gameInfo.weapon.content.random().replace("{monster_name}", gameInfo.monsterName)}\n ${gameInfo.monsterName} 체력이 ${damage}이나 깍였다!"
+        val text = "${gameInfo.player.weapon.content.random().replace("{monster_name}", gameInfo.monsterName)}\n ${gameInfo.monsterName} 체력이 ${damage}이나 깍였다!"
         return basicEmbed(event, gameInfo, DiscordColor.GREEN, text)
     }
 
@@ -92,12 +107,16 @@ object RpgStart : Command() {
                 .build()
     }
 
-    private fun createGameInfo(event: CommandEvent): GameInfo {
+    private fun createGameInfo(event: CommandEvent, dungeon: Dungeon): GameInfo {
         return transaction(DB.rpgDB) {
-            val weaponName = Player.select { Player.id eq event.author.idLong }.first()[Player.weapon]
-            val weapon = rpg.weaponList.first { it.name == weaponName }
-            val monsterName = rpg.dungeonList.first { it.name == event.content }.monsters.random()
-            GameInfo(monsterName = monsterName, weapon = weapon)
+            val player = Player.create(event.author.idLong)
+            val monsterName = dungeon.monsters.random()
+            var monsterLevel = dungeon.level
+            if (player.level != 1)
+                monsterLevel += Random.nextInt(-1, 1)
+
+            val monsterHP = Random.nextInt(100 + (monsterLevel * 50), 150 + (monsterLevel * 50))
+            GameInfo(monsterName = monsterName, player = player, monsterLevel = monsterLevel, monsterHP = monsterHP)
         }
     }
 }

@@ -27,7 +27,7 @@ object List : Command() {
         //입력한 args가 없을 경우 1로 지정합니다.
         val number = if (event.args.isEmpty()) 1 else event.args[0].toIntOrNull() ?: 1
 
-        if (number > ceil(playerControl!!.trackQueue.size / 5f)) {
+        if (number != 1 && number > ceil(playerControl!!.trackQueue.size / 5f)) {
             event.channel.sendMessage("숫자를 ${ceil(playerControl.trackQueue.size / 5f).toInt()} 이하로 지정해주세요!").queue()
             return
         } else if (number <= 0) {
@@ -35,7 +35,7 @@ object List : Command() {
             return
         }
 
-        val playingTrack = playerControl.playingTrack()
+        val playingTrack = playerControl!!.playingTrack()
         playerControl.trackQueue.toList()
         val nextMusic = if (playerControl.isLooped) "재생반복" else if (playerControl.playingTrack().info.isStream) "LIVE" else "${(playingTrack.duration - playingTrack.position) / 1000}초 남음"
         val list = if (playerControl.trackQueue.isEmpty()) "썰렁... 대기열에 아무 것도 없네요." else listToString(playerControl, number)

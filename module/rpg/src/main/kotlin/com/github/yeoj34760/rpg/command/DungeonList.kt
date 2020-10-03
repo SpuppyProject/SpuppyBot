@@ -13,11 +13,6 @@ object DungeonList : Command() {
     override fun execute(event: CommandEvent) {
         val stringBuffer = StringBuffer()
         rpg.dungeonList.forEach {
-//            stringBuffer.append("**${it.name}**\n")
-//            stringBuffer.append("출현몬스터: ")
-//            stringBuffer.append(it.monsters.joinToString(separator = ", "))
-//            stringBuffer.append("\n드랍되는 무기: ")
-//            stringBuffer.append(it.dropWeaponList.joinToString(separator = ", "))
             stringBuffer.append("**${it.name}**")
         }
 

@@ -2,6 +2,7 @@
   "dungeons": [
     {
       "name": "시공던전",
+      "level": 1,
       "monsters": [
         "시루떡",
         "망가진 코어",
