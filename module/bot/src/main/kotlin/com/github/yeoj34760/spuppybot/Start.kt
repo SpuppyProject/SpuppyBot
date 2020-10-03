@@ -86,7 +86,8 @@ fun main() {
                     WeaponList,
                     DungeonList,
                     SelfInfo,
-                    DungeonInfo
+                    DungeonInfo,
+                    RpgStart
             ).build()
     JDABuilder
             .createDefault(settings.token)

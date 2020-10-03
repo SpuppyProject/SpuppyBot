@@ -21,6 +21,5 @@ object DungeonInfo : Command() {
                 .build()
 
         event.channel.sendMessage(embed).complete()
-
     }
 }

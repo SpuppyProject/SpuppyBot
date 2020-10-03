@@ -9,7 +9,6 @@
       ],
       "drop_weapons": [
         "그래픽카드",
-        "HDD",
         "전설적이지 않은 치킨"
       ]
     }
@@ -19,25 +18,34 @@
       "name": "뉴비칼",
       "type": "MELEE",
       "level": 1,
-      "power": 10
+      "power": 10,
+      "content": [
+        "겁나게 약한 뉴비칼을 이용해 {monster_name}을(를) 때렸다!",
+        "유격이 있는 뉴비칼을 휘두러 {monster_name}을(를) 상처를 냈다!",
+        "방금 잃어버린 뉴비칼을 찾아서 {monster_name} 뚝배기를 때렸다!"
+      ]
     },
     {
       "name": "그래픽카드",
       "type": "MELEE",
       "level": 5,
-      "power": 50
-    },
-    {
-      "name": "HDD",
-      "type": "MELEE",
-      "level": 6,
-      "power": 60
+      "power": 50,
+      "content": [
+        "치킨을 {monster_name}한테 줘서 방심을 준 뒤 뚝배기를 깼다!",
+        "치킨을 던져서 {monster_name}가(이) 정신을 팔려서 거시기를 때렸다!",
+        "RTX ON 실행시켜 {monster_name} 눈이 정화되다가 이뜸에 눈을 때렸다!"
+      ]
     },
     {
       "name": "전설적이지 않은 치킨",
       "type": "MELEE",
       "level": 3,
-      "power": 56
+      "power": 56,
+      "content": [
+        "비싼 그래픽카드를 던져서 {monster_name}가(이) 맞았다!",
+        "구린 그래픽카드로 게임실행시켜 {monster_name} 눈이 썩었다!",
+        "RTX ON 실행시켜 {monster_name} 눈이 정화되다가 이뜸에 눈을 때렸다!"
+      ]
     }
   ]
 }

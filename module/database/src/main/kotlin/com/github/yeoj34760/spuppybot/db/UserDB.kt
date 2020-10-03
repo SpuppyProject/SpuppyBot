@@ -43,11 +43,14 @@ class UserDB(private val userId: Long) {
 
     fun create() {
         transaction(DB.spuppyDB) {
-            if (UserTable.select { UserTable.id eq userId }.firstOrNull() == null)
+            if (UserTable.select { UserTable.id eq userId }.firstOrNull() == null) {
                 UserTable.insert {
                     it[UserTable.id] = userId
                     it[receiveMoney] = DateTime.now()
                 }
+                userIdList.add(userId)
+            }
+
         }
     }
 
