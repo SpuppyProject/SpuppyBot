@@ -477,6 +477,30 @@
         "shu",
         "shufle"
       ]
+    },
+    {
+      "name": "selfweapon",
+      "command": [
+        "내무기",
+        "selfweapon",
+        "소유무기",
+        "ㄴㅁㄱ"
+      ]
+    },
+    {
+      "name": "SelfWeaponList",
+      "command": [
+        "내무기들",
+        "내무기들아",
+        "ㄴㅁㄱㄷ",
+        "myweapons"
+      ]
+    },
+    {
+      "name": "ReplaceWeapon",
+      "command": [
+        "무기교체"
+      ]
     }
   ]
 }

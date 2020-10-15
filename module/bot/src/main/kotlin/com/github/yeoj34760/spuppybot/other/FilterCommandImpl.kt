@@ -10,7 +10,7 @@ object FilterCommandImpl : FilterCommand {
         return if (UserDB.idCheck(event.author.idLong))
             true
         else {
-            event.channel.sendMessage("확인해봤는데 가입 안되어 있네요.\n가입하시려면 `${settings.prefix}가입` 명령어를 이용해주세요.").queue()
+            event.channel.sendMessage("확인해보니 가입 안 되어 있어요!\n가입하시려면 `${settings.prefix}가입` 명령어를 이용해주세요!").queue()
             false
         }
     }

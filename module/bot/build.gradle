@@ -26,3 +26,7 @@ shadowJar {
     baseName("SpuppyBot")
     classifier('')
 }
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}

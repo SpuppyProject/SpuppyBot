@@ -14,7 +14,7 @@ object WeaponList : Command() {
             stringBuffer.append("**${it.name}**\n")
             stringBuffer.append("타입: ${it.type.alias}\n")
             stringBuffer.append("레벨: ${it.level}\n")
-            stringBuffer.append("공격력: ${it.power}\n\n")
+//            stringBuffer.append("공격력: ${it.power}\n\n")
         }
 
         event.channel.sendMessage(stringBuffer.toString()).complete()

@@ -16,14 +16,15 @@ object Skip : Command() {
             return
         }
 
-        val nextTrack = playerControls[id]!!.skip()
-
-        if (nextTrack != null) {
-            event.channel.sendMessage("다음 음악인 `${nextTrack.info.title}`을(를) 재생합니다.").queue()
-        } else {
-            event.channel.sendMessage("다음 음악을 재생하려는데 남은게 없어 현재 음악을 종료해드릴게요").queue()
-            playerControls[id]!!.stop()
-            event.guild.audioManager.closeAudioConnection()
+        when (val nextTrack = playerControls[id]!!.skip()) {
+            null -> {
+                event.channel.sendMessage("흠.. 다음 음악이 없네요!").queue()
+                playerControls[id]!!.stop()
+                event.guild.audioManager.closeAudioConnection()
+            }
+            else -> {
+                event.channel.sendMessage("다음 음악인 `${nextTrack.info.title}`을(를) 재생합니다.").queue()
+            }
         }
     }
 }

@@ -6,10 +6,7 @@ import com.github.yeoj34760.spuppy.command.CommandClientBuilder
 import com.github.yeoj34760.spuppy.command.CommandDatabase
 import com.github.yeoj34760.spuppy.command.Commands
 import com.github.yeoj34760.spuppybot.box.*
-import com.github.yeoj34760.spuppybot.command.Agree
-import com.github.yeoj34760.spuppybot.command.Cancel
-import com.github.yeoj34760.spuppybot.command.Info
-import com.github.yeoj34760.spuppybot.command.Ping
+import com.github.yeoj34760.spuppybot.command.*
 import com.github.yeoj34760.spuppybot.money.GambleTimer
 import com.github.yeoj34760.spuppybot.money.command.gamble.Gamble
 import com.github.yeoj34760.spuppybot.money.command.gamble.GambleAll
@@ -28,13 +25,16 @@ import com.github.yeoj34760.spuppybot.other.GuildAutoDeleteListener
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.entities.Activity
 
 fun main() {
     GambleTimer.start()
     Class.forName("org.mariadb.jdbc.Driver")
-    //플레이어매니저 설정
+    //playerManager set up
     playerManager.registerSourceManager(YoutubeAudioSourceManager())
     AudioSourceManagers.registerRemoteSources(playerManager)
+
+
     val commands = mutableListOf<Commands>()
     cmdJson.commands.forEach {
         commands.add(Commands(it.name, ArrayList(it.command)))
@@ -82,21 +82,28 @@ fun main() {
                     GambleInfo,
                     RefundMarket,
                     GambleAll,
-//                    WeaponHelp,
-//                    WeaponList,
-//                    DungeonList,
-//                    SelfInfo,
-//                    DungeonInfo,
-//                    RpgStart
+                    WeaponHelp,
+                    WeaponList,
+                    DungeonList,
+                    SelfInfo,
+                    DungeonInfo,
+                    RpgStart,
+                    SelfWeapon,
+                    SelfWeaponList,
+                    ReplaceWeapon
             ).build()
+
     JDABuilder
             .createDefault(settings.token)
+            // this is not compatible with macOS
             //        .setAudioSendFactory(NativeAudioSendFactory())
             .addEventListeners(
                     commandClient,
                     waiter,
                     LeaveAutoListener,
-                    GuildAutoDeleteListener
+                    GuildAutoDeleteListener,
+                    AgreeMessageDelete
             )
+            .setActivity(Activity.playing("?help | 개훈련"))
             .build()
 }

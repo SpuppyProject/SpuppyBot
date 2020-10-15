@@ -16,7 +16,7 @@ object Remove : Command() {
             return
         }
         if (event.args.isEmpty() || event.args[0].toIntOrNull() == null) {
-            event.channel.sendMessage("숫자를 올바르게 써주세요.").queue()
+            event.channel.sendMessage("숫자를 올바르게 써주세요!").queue()
             return
         }
         val number = event.args[0].toInt()

@@ -6,6 +6,7 @@ import com.github.yeoj34760.spuppybot.db.rpg.PlayerTable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import net.dv8tion.jda.api.entities.User
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -13,10 +14,13 @@ import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 import java.util.*
 
+
+fun User.player(): Player = Player.create(this.idLong)
+
 data class Player(val id: Long,
-                  val weapon: Weapon,
-                  val level: Int,
-                  val monsterKill: Int,
+                  var weapon: Weapon,
+                  var level: Int,
+                  var monsterKill: Int,
                   val weaponList: MutableList<PlayerWeapon>) {
 
     fun addWeapon(weapon: Weapon) {
@@ -32,10 +36,32 @@ data class Player(val id: Long,
         }
     }
 
-    fun addMonsterKill() {
-        transaction(DB.rpgDB) { PlayerTable.update({PlayerTable.id eq this@Player.id}) { with(SqlExpressionBuilder) { it[monsterKill] = monsterKill + 1 } } }
+    fun replaceWeapon(playerWeapon: PlayerWeapon) {
+        transaction(DB.rpgDB) {
+            when (--playerWeapon.count) {
+                0 -> weaponList.remove(playerWeapon)
+            }
+
+            when (val oldWeapon = weaponList.firstOrNull { it.name == this@Player.weapon.name }) {
+                null -> weaponList.add(PlayerWeapon(weapon.name, DateTime.now(), 1))
+                else -> oldWeapon.count++
+            }
+
+
+            this@Player.weapon = rpg.weaponList.first {it.name == playerWeapon.name}
+
+
+            val encode = Base64.getEncoder().encodeToString(Json.encodeToString(weaponList).toByteArray())
+            PlayerTable.update({ PlayerTable.id eq this@Player.id }) {
+                it[weaponList] = encode
+                it[weapon] = playerWeapon.name
+            }
+        }
     }
 
+    fun addMonsterKill() {
+        transaction(DB.rpgDB) { PlayerTable.update({ PlayerTable.id eq this@Player.id }) { with(SqlExpressionBuilder) { it[monsterKill] = monsterKill + 1 } } }
+    }
 
 
     companion object {
@@ -47,7 +73,7 @@ data class Player(val id: Long,
             val weaponList = mutableListOf<PlayerWeapon>()
             if (playerTable[PlayerTable.weaponList].isNotEmpty()) {
                 val decode = String(Base64.getDecoder().decode(playerTable[PlayerTable.weaponList]))
-                Json.decodeFromString<List<PlayerWeapon>>(decode).forEach {  weaponList.add(it) }
+                Json.decodeFromString<List<PlayerWeapon>>(decode).forEach { weaponList.add(it) }
             }
             Player(id, weapon, level, monsterKill, weaponList)
         }

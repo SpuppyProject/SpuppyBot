@@ -1,12 +1,13 @@
 package com.github.yeoj34760.spuppybot.music.command
 
 
-import com.github.yeoj34760.spuppybot.music.GuildManager
-import com.github.yeoj34760.spuppybot.music.Util
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.DiscordColor
+import com.github.yeoj34760.spuppybot.music.GuildManager
+import com.github.yeoj34760.spuppybot.music.TimeFormat
+import com.github.yeoj34760.spuppybot.music.Util
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.User
 
@@ -28,34 +29,21 @@ object NowPlay : Command() {
             timeRemain = "LIVE"
             timeMax = "LIVE"
         } else {
-            timeRemain = timeFormat(playingTrack.duration - playingTrack.position)
-            timeMax = timeFormat(playingTrack.duration)
+            timeRemain = TimeFormat.hangul(playingTrack.duration - playingTrack.position)
+            timeMax = TimeFormat.simple(playingTrack.duration)
         }
         val embed = EmbedBuilder()
                 .setAuthor(event.author.name, null, event.author.avatarUrl)
-                .setDescription("[${playingTrack.info.title}](${playingTrack.info.uri})")
+                .setDescription("[${playingTrack.info.title}](${playingTrack.info.uri})\n[${TimeFormat.simple(playingTrack.position)}/${timeMax}]")
                 .setThumbnail(Util.youtubeToThumbnail(playingTrack.info.identifier))
-                .addField("최대 길이", timeMax, true)
-                .addField("들은 시간", timeFormat(playingTrack.position), true)
+//                .addField("들은 시간/음악 길이", "[${simpleTimeFormat(playingTrack.position)}/${timeMax}]", true)
                 .addField("남은 시간", timeRemain, true)
                 .addField("만든이", playingTrack.info.author, true)
-                .addField("재생반복 여부", playerControl.isLooped.toString(), true)
+                .addField("셔플 여부", playerControl.isLooped.toString(), true)
                 .setFooter("신청자: ${(playingTrack.userData as User).asTag}")
                 .setColor(DiscordColor.BLUE)
                 .build()
         event.channel.sendMessage(embed).queue()
     }
 
-    private fun timeFormat(time: Long): String {
-        val secondTime = time / 1000
-        val day = secondTime / 86400
-        val hour = (secondTime % (86400)) / 3600
-        val minute = (secondTime % (3600)) / 60
-        val second = (secondTime % (60))
-
-        return if (86400 <= secondTime) "${day}일 ${hour}시 ${minute}분 ${second}초"
-        else if (3600 <= secondTime) "${hour}시 ${minute}분 ${second}초"
-        else if (60 <= secondTime) "${minute}분 ${second}초"
-        else "${second}초"
-    }
 }

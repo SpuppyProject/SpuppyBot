@@ -104,7 +104,7 @@ class PlayerControl(private val audioPlayer: AudioPlayer, private val audioManag
      * 스피드 조절합니다.
      */
     fun speed(speed: Double) {
-        var copyTrack = audioPlayer.playingTrack.makeClone()
+        val copyTrack = audioPlayer.playingTrack.makeClone()
         copyTrack.position = audioPlayer.playingTrack.position
 
         audioPlayer.setFilterFactory { _, format, output ->
@@ -133,7 +133,7 @@ class PlayerControl(private val audioPlayer: AudioPlayer, private val audioManag
      * 순서를 뒤섞입니다.
      */
     fun shuffled() {
-        trackQueue = LinkedList<AudioTrack>(trackQueue.shuffled())
+        trackQueue = LinkedList(trackQueue.shuffled())
     }
 
     /**

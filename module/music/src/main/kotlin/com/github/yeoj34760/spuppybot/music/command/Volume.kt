@@ -28,9 +28,7 @@ object Volume : Command() {
             event.channel.sendMessage("숫자를 제대로 써주세요.").queue()
         }
 
-        val argsInt: Int = event.args[0].toInt()
-
-        when (argsInt) {
+        when (val argsInt: Int = event.args[0].toInt()) {
             in 0..100 -> {
                 playerControls[id]?.volume(argsInt)
                 GuildDB.volume(id, argsInt)

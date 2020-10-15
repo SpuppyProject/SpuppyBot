@@ -13,11 +13,13 @@ import com.github.yeoj34760.spuppy.command.CommandSettings
 object Speed : Command() {
 
     override fun execute(event: CommandEvent) {
+        //재생 중이지 않을 경우
         if (playerControls[event.guild.idLong] == null || !playerControls[event.guild.idLong]!!.isPlayed()) {
             event.channel.sendMessage("재생 중이지 않네요").queue()
             return
         }
 
+        //재생 중인 음악이 라이브로 되어 있을 경우
         if (playerControls[event.guild.idLong]!!.playingTrack().info.isStream) {
             event.channel.sendMessage("라이브 음악은 speed 기능을 제공하지 않습니다.").queue()
             return

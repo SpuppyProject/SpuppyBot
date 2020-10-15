@@ -22,7 +22,7 @@ object Search : Command() {
         }
 
         if (event.args.isEmpty()) {
-            event.channel.sendMessage("올바르게 써주세요 \n`예시: ?search 진진자라`").queue()
+            event.channel.sendMessage("올바르게 써주세요! \n`예시: ?search 진진자라`").queue()
             return
         }
 
@@ -32,7 +32,7 @@ object Search : Command() {
             return
         }
 
-        event.channel.sendMessage("찾는중...").queue {
+        event.channel.sendMessage("놀라운 기술력으로 찾는중...").queue {
             val audioList = Util.youtubeSearch(event.args[0], it)
             var result = ""
             var i = 1

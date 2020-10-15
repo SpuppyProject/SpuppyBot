@@ -3,24 +3,48 @@ package com.github.yeoj34760.rpg.command
 import com.github.yeoj34760.rpg.Dungeon
 import com.github.yeoj34760.rpg.Player
 import com.github.yeoj34760.rpg.rpg
-import com.github.yeoj34760.rpg.weapon.Weapon
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.github.yeoj34760.spuppy.command.CommandSettings
 import com.github.yeoj34760.spuppybot.DiscordColor
 import com.github.yeoj34760.spuppybot.db.DB
-import com.github.yeoj34760.spuppybot.db.rpg.PlayerTable
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
-import org.jetbrains.exposed.sql.select
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.random.Random
 
 @CommandSettings(name = "rpgstart", aliases = ["게임시작"])
 object RpgStart : Command() {
+
+
+    private class Waiter(val event: CommandEvent) : ListenerAdapter() {
+        private var isAnswer = false
+        private var answer: String = String()
+        var isTimeout: Boolean = false
+            private set
+
+        suspend fun playerSelectNumber(): Int? {
+            var timeout = 0
+            while (timeout < 600) {
+                delay(100)
+                timeout++
+                if (isAnswer)
+                    return answer.toIntOrNull()
+            }
+            isTimeout = true
+            return null
+        }
+
+        override fun onMessageReceived(waiterEvent: MessageReceivedEvent) {
+            isAnswer = (event.channel.id == waiterEvent.channel.id && event.author.id == event.author.id)
+            answer = waiterEvent.message.contentRaw
+        }
+    }
 
     private data class GameInfo(var playerHP: Int = 100,
                                 val player: Player,
@@ -54,17 +78,19 @@ object RpgStart : Command() {
             val findMessage = event.channel.sendMessage("`${event.content}`에서 찾는 중...").complete()
             delay(1000)
             findMessage.editMessage("`${gameInfo.monsterName}`을(를) 찾았다!\n그리고 당신은 몬스터를 때렸다!").complete()
-            val gameMessage = event.channel.sendMessage(monsterDamage(event, gameInfo)).complete()
+            event.channel.sendMessage(monsterDamage(event, gameInfo)).complete()
 
+            var playerTurn = false
             while (gameInfo.monsterHP > 0 && gameInfo.playerHP > 0) {
                 delay(1000)
-                when (Random.nextBoolean()) {
-                    true -> gameMessage.editMessage(playerDamage(event, gameInfo)).complete()
-                    false -> gameMessage.editMessage(monsterDamage(event, gameInfo)).complete()
+                when (playerTurn) {
+                    false -> event.channel.sendMessage(playerDamage(event, gameInfo)).complete()
+                    true -> event.channel.sendMessage(monsterDamage(event, gameInfo)).complete()
                 }
+
+                playerTurn = playerTurn.not()
             }
 
-            gameMessage.delete().complete()
             when {
                 gameInfo.playerHP <= 0 -> event.channel.sendMessage("졌다 씨발!").complete()
                 gameInfo.monsterHP <= 0 -> gameWin(event, gameInfo, dungeon)
@@ -77,28 +103,47 @@ object RpgStart : Command() {
         event.channel.sendMessage("이겼다! 씨발!").complete()
         val temp = dungeon.dropWeaponList.random()
         println(temp)
-        val weapon = rpg.weaponList.first {it.name == temp }
+        val weapon = rpg.weaponList.first { it.name == temp }
         gameInfo.player.addWeapon(weapon)
         gameInfo.player.addMonsterKill()
         event.channel.sendMessage("${weapon.name}을(를) 얻었다! 씨발!").complete()
     }
+
     private fun playerDamage(event: CommandEvent, gameInfo: GameInfo): MessageEmbed {
-        val damage =  Random.nextInt(5, 8)
+        val damage = Random.nextInt(5, 8)
         gameInfo.playerHP -= damage
 
         val text = "당신은 ${gameInfo.monsterName}한테 맞아서 피가 깍였다! 아프겠다!"
         return basicEmbed(event, gameInfo, DiscordColor.RED, text)
     }
 
-    private fun monsterDamage(event: CommandEvent, gameInfo: GameInfo): MessageEmbed {
-        val damage = gameInfo.player.weapon.power + Random.nextInt(6, 12)
+    private suspend fun monsterDamage(event: CommandEvent, gameInfo: GameInfo): MessageEmbed {
+        val embedBuilder = EmbedBuilder().setColor(DiscordColor.BLUE)
+                .setTitle("당신 차례가 왔다!")
+        var tempNum = 1
+        gameInfo.player.weapon.skills.forEach { embedBuilder.addField("${tempNum++}번", "**${it.name}**\n횟수: ${it.count}", true) }
+        val embed = embedBuilder.build()
+        event.channel.sendMessage(embed).complete()
+        val waiter = Waiter(event)
+        event.jda.addEventListener(waiter)
+        val selectNum: Int? = waiter.playerSelectNumber()
+        if (waiter.isTimeout) {
+            event.channel.sendMessage("아니 님 뭐함").complete()
+        }
+        event.jda.removeEventListener(waiter)
+
+        val skill = gameInfo.player.weapon.skills[selectNum!! - 1]
+
+        val damage = skill.power + Random.nextInt(6, 12)
         gameInfo.monsterHP -= damage
 
-        val text = "${gameInfo.player.weapon.content.random().replace("{monster_name}", gameInfo.monsterName)}\n ${gameInfo.monsterName} 체력이 ${damage}이나 깍였다!"
+        val text = "${skill.content.random().replace("{monster_name}", gameInfo.monsterName)}\n ${gameInfo.monsterName} 체력이 ${damage}이나 깍였다!"
         return basicEmbed(event, gameInfo, DiscordColor.GREEN, text)
     }
 
+
     private fun basicEmbed(event: CommandEvent, gameInfo: GameInfo, color: Int, text: String): MessageEmbed {
+        val tempMap = HashMap<String, Int>()
         return EmbedBuilder().setTitle("${event.content}에서 전투 중!")
                 .setColor(color)
                 .setDescription(text)

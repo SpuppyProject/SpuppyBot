@@ -46,12 +46,12 @@ object Gamble : Command() {
         logger.info("[${event.author.idLong}] 랜덤 값: ${random}, 현대 도박 확률값: ${nowGamblingProbability}")
 
         if (random < nowGamblingProbability) {
-            event.channel.sendMessage("와우! ${tempStringBuffer}원을 벌었어요! 축하드립니다.").queue()
+            event.channel.sendMessage("${tempStringBuffer}원을 벌었어요! 축하드려요!").queue()
             logger.info("[${event.author.idLong}] 도박 성공로 인해 ${money}원을 벌음")
             UserDB(event.author.idLong).moneyUpdate(userMoney.add(money))
             return
         } else {
-            event.channel.sendMessage("아쉽게도 ${tempStringBuffer}원이 공중분해했어요").queue()
+            event.channel.sendMessage("오 이런! ${tempStringBuffer}원이 잃어버렸어요..").queue()
             logger.info("[${event.author.idLong}] 도박 실패로 인해 ${money}원을 잃음")
             UserDB(event.author.idLong).moneyUpdate(userMoney.minus(money))
             return

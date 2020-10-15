@@ -19,33 +19,52 @@
       "name": "뉴비칼",
       "type": "MELEE",
       "level": 1,
-      "power": 10,
-      "content": [
-        "겁나게 약한 뉴비칼을 이용해 {monster_name}을(를) 때렸다!",
-        "유격이 있는 뉴비칼을 휘두러 {monster_name}을(를) 상처를 냈다!",
-        "방금 잃어버린 뉴비칼을 찾아서 {monster_name} 뚝배기를 때렸다!"
+      "skills": [
+        {
+          "name": "지르기",
+          "count": 10,
+          "power": 10
+        },
+        {
+          "name": "회전회오리",
+          "count": 6,
+          "power": 15,
+          "content": [
+            "회전회오리! {monster_name}은(는) 어이없어 눈이 썩었다!",
+            "회전회오리! {monster_name}은(는) 피하다가 넘어졌다!",
+            "회전회오리! {monster_name}은(는) 피하다가 팔이 다쳤다!"
+          ]
+        }
       ]
     },
     {
       "name": "그래픽카드",
       "type": "MELEE",
       "level": 5,
-      "power": 50,
-      "content": [
-        "치킨을 {monster_name}한테 줘서 방심을 준 뒤 뚝배기를 깼다!",
-        "치킨을 던져서 {monster_name}가(이) 정신을 팔려서 거시기를 때렸다!",
-        "RTX ON 실행시켜 {monster_name} 눈이 정화되다가 이뜸에 눈을 때렸다!"
+      "skills": [
+        {
+          "name": "눈썩기기",
+          "count": 3,
+          "power": 20,
+          "content": [
+            "구데기 그래픽카드로 쓰레기 그래픽을 보여줬더니 {monster_name}가(이) 눈이 썩었다!"
+          ]
+        }
       ]
     },
     {
       "name": "전설적이지 않은 치킨",
       "type": "MELEE",
       "level": 3,
-      "power": 56,
-      "content": [
-        "비싼 그래픽카드를 던져서 {monster_name}가(이) 맞았다!",
-        "구린 그래픽카드로 게임실행시켜 {monster_name} 눈이 썩었다!",
-        "RTX ON 실행시켜 {monster_name} 눈이 정화되다가 이뜸에 눈을 때렸다!"
+      "skills": [
+        {
+          "name": "미끼던지기",
+          "count": 5,
+          "power": 18,
+          "content": [
+            "치킨을 미끼로 던져서 {monster_name}이(가) 정신팔린사이에 당신의 손으로 마구 때렸다!"
+          ]
+        }
       ]
     }
   ]

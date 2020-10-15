@@ -35,7 +35,7 @@ object Play : Command() {
 
         //args 값이 없을 경우
         if (event.args.isEmpty()) {
-            event.channel.sendMessage("올바르게 써주세요 \n`예시: ?play 진진자라`").queue()
+            event.channel.sendMessage("올바르게 써주세요! \n`예시: ?play 진진자라`").queue()
             return
         }
 

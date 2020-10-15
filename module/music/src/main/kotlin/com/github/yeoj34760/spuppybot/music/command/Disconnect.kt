@@ -16,6 +16,6 @@ object Disconnect : Command() {
         }
 
 
-        event.channel.sendMessage("지금 바깥에 나가있어요!").queue()
+        event.channel.sendMessage("현재 바깥에 나가있어요!").queue()
     }
 }

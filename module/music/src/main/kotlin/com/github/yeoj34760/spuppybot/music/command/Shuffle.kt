@@ -16,6 +16,6 @@ object Shuffle : Command() {
         }
 
         GuildManager.playerControls[event.guildIdLong]!!.shuffled()
-        event.channel.sendMessage("섞였습니다").queue()
+        event.channel.sendMessage("섞였어요!").queue()
     }
 }

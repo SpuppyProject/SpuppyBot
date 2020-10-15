@@ -19,7 +19,7 @@ object List : Command() {
         val id = event.guild.idLong
 
         if (playerControls[id] == null || !playerControls[id]!!.isPlayed()) {
-            event.channel.sendMessage("뭔가 엄청난 걸 보여드리고 싶었지만 아쉽게도 아무 음악이 없어요").queue()
+            event.channel.sendMessage("뭔가 엄청난 걸 보여드리고 싶었지만 아쉽게도 아무 음악이 없네요..").queue()
             return
         }
         val playerControl = playerControls[id]

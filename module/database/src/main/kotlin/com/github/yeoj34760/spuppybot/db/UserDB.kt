@@ -31,24 +31,24 @@ class UserDB(private val userId: Long) {
     }
 
     companion object {
-        val userIdList = IdList()
-        private fun IdList(): MutableList<Long> {
+        val idListCache = idList()
+        private fun idList(): MutableList<Long> {
             val temp = mutableListOf<Long>()
             transaction(DB.spuppyDB) { UserTable.selectAll().forEach { temp.add(it[UserTable.id]) } }
             return temp
         }
 
-        fun idCheck(id: Long) : Boolean = userIdList.find { it == id } != null
+        fun idCheck(id: Long) : Boolean = idList().find { it == id } != null
     }
 
     fun create() {
         transaction(DB.spuppyDB) {
             if (UserTable.select { UserTable.id eq userId }.firstOrNull() == null) {
                 UserTable.insert {
-                    it[UserTable.id] = userId
+                    it[id] = userId
                     it[receiveMoney] = DateTime.now()
                 }
-                userIdList.add(userId)
+                idListCache.add(this@UserDB.userId)
             }
 
         }
@@ -58,7 +58,7 @@ class UserDB(private val userId: Long) {
         transaction(DB.spuppyDB) {
             if (UserTable.select { UserTable.id eq userId }.firstOrNull() != null) {
                 UserTable.deleteWhere { UserTable.id eq userId }
-                userIdList.remove(userId)
+                idListCache.remove(this@UserDB.userId)
             }
         }
     }

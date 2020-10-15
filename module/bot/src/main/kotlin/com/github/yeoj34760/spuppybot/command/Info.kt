@@ -26,7 +26,7 @@ object Info : Command() {
                 .addField("오픈소스", "[GITHUB](https://github.com/yeoj34760/SpuppyBot)", true)
                 .addField("명령어", "[CLICK](http://spuppy.ml/spuppybot/help/)", true)
                 .addField("버전", settings.version, true)
-                .addField("메모리 사용량", "${(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024*1024)}MB", true)
+                .addField("초대하기", "[CLICK](https://discord.com/api/oauth2/authorize?client_id=439755380785152000&permissions=0&scope=bot)", true)
                 .addField("개발자", event.jda.retrieveUserById(settings.ownerId).complete().asTag, true)
                 .setColor(DiscordColor.BLUE)
                 .build()

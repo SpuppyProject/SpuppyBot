@@ -27,7 +27,7 @@ object ReceiveMoney : Command() {
         val embed = EmbedBuilder().setColor(DiscordColor.ORANGE).setAuthor(event.author.asTag, null, event.author.avatarUrl
                 ?: event.author.defaultAvatarUrl)
                 .setTitle("처리 됨!")
-                .setDescription("${money}원을 받았습니다.")
+                .setDescription("${money}원을 받았어요!")
                 .setFooter("현재 돈 : $now")
                 .build()
 

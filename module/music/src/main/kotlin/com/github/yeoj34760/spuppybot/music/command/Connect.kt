@@ -14,6 +14,7 @@ object Connect : Command() {
             event.channel.sendMessage("음성 방에 들어주세요! \n").queue()
         }
 
+
         val channel = event.member!!.voiceState!!.channel!!
         if (!event.guild.selfMember.hasPermission(channel, Permission.VOICE_CONNECT)) {
             event.channel.sendMessage("${event.member.nickname ?: event.author.name}님이 들어와 있는 채널에 권한이 없어 들어갈 수가 없어요!").queue()

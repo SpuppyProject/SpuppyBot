@@ -15,7 +15,6 @@ object Stop : Command() {
         val id = event.guild.idLong
 
 
-        //
         if (playerControls[id] == null || playerControls[id]!!.isPlayed()) {
             event.channel.sendMessage("음악을 멈추었어요").queue()
             playerControls[id]!!.stop()
