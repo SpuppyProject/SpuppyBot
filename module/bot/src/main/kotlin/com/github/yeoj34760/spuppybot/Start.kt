@@ -1,11 +1,9 @@
 package com.github.yeoj34760.spuppybot
 
-import com.github.yeoj34760.rpg.command.*
 import com.github.yeoj34760.spuppy.command.CommandClient
 import com.github.yeoj34760.spuppy.command.CommandClientBuilder
 import com.github.yeoj34760.spuppy.command.CommandDatabase
 import com.github.yeoj34760.spuppy.command.Commands
-import com.github.yeoj34760.spuppybot.box.*
 import com.github.yeoj34760.spuppybot.command.*
 import com.github.yeoj34760.spuppybot.money.GambleTimer
 import com.github.yeoj34760.spuppybot.money.command.gamble.Gamble
@@ -34,7 +32,6 @@ fun main() {
     playerManager.registerSourceManager(YoutubeAudioSourceManager())
     AudioSourceManagers.registerRemoteSources(playerManager)
 
-
     val commands = mutableListOf<Commands>()
     cmdJson.commands.forEach {
         commands.add(Commands(it.name, ArrayList(it.command)))
@@ -62,14 +59,14 @@ fun main() {
                     Speed,
                     Stop,
                     Volume,
-                    AddBox,
-                    Box,
-                    CopyAllBox,
-                    ListBox,
-                    MoveBox,
-                    RemoveAllBox,
-                    RemoveBox,
-                    CopyBox,
+//                    AddPlaylist,
+//                    Box,
+//                    CopyAllBox,
+//                    ListBox,
+//                    MoveBox,
+//                    RemoveAllBox,
+//                    RemoveBox,
+//                    CopyBox,
                     Agree,
                     Cancel,
                     Ping,
@@ -82,15 +79,16 @@ fun main() {
                     GambleInfo,
                     RefundMarket,
                     GambleAll,
-                    WeaponHelp,
-                    WeaponList,
-                    DungeonList,
-                    SelfInfo,
-                    DungeonInfo,
-                    RpgStart,
-                    SelfWeapon,
-                    SelfWeaponList,
-                    ReplaceWeapon
+//                    WeaponHelp,
+//                    WeaponList,
+//                    DungeonList,
+//                    SelfInfo,
+//                    DungeonInfo,
+//                    RpgStart,
+//                    SelfWeapon,
+//                    SelfWeaponList,
+//                    ReplaceWeapon,
+//                    CreatePlaylist
             ).build()
 
     JDABuilder

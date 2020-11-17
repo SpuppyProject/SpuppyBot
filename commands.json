@@ -30,12 +30,12 @@
       ]
     },
     {
-      "name": "movebox",
+      "name": "moveplaylist",
       "command": [
-        "box move",
+        "playlist move",
         "bm",
-        "boxm",
-        "box m",
+        "playlistm",
+        "playlist m",
         "b move",
         "박스 이동",
         "박이",
@@ -58,9 +58,9 @@
       ]
     },
     {
-      "name": "box",
+      "name": "playlist",
       "command": [
-        "box",
+        "playlist",
         "박스",
         "b",
         "박"
@@ -153,15 +153,15 @@
       ]
     },
     {
-      "name": "removeallbox",
+      "name": "removeallplaylist",
       "command": [
         "박삭모",
         "박마삭",
-        "boxremoveall",
-        "box remove all",
+        "playlistremoveall",
+        "playlist remove all",
         "bra",
         "bar",
-        "box all remove"
+        "playlist all remove"
       ]
     },
     {
@@ -219,18 +219,18 @@
       ]
     },
     {
-      "name": "copybox",
+      "name": "copyplaylist",
       "command": [
         "박스 복사",
         "박스복사",
         "복사박스",
         "복사 박스",
-        "copybox",
+        "copyplaylist",
         "cb",
         "copyb",
-        "cbox",
-        "box copy",
-        "copy box"
+        "cplaylist",
+        "playlist copy",
+        "copy playlist"
       ]
     },
     {
@@ -259,14 +259,14 @@
       ]
     },
     {
-      "name": "removebox",
+      "name": "removeplaylist",
       "command": [
-        "box remove",
-        "box re",
+        "playlist remove",
+        "playlist re",
         "br",
         "박스 삭제",
         "박삭",
-        "boxremove"
+        "playlistremove"
       ]
     },
     {
@@ -292,18 +292,18 @@
       ]
     },
     {
-      "name": "copyallbox",
+      "name": "copyallplaylist",
       "command": [
         "박스 모두복사",
         "박스 모두 복사",
         "박모복",
         "박복모",
-        "box all copy",
-        "box copy all",
-        "boxallcopy",
+        "playlist all copy",
+        "playlist copy all",
+        "playlistallcopy",
         "bac",
         "bca",
-        "boxcopyall"
+        "playlistcopyall"
       ]
     },
     {
@@ -405,14 +405,14 @@
       ]
     },
     {
-      "name": "listbox",
+      "name": "listplaylist",
       "command": [
-        "box list",
+        "playlist list",
         "bl",
         "박스 리스트",
         "박리",
-        "box li",
-        "boxli"
+        "playlist li",
+        "playlistli"
       ]
     },
     {
@@ -448,12 +448,12 @@
       ]
     },
     {
-      "name": "addbox",
+      "name": "addplaylist",
       "command": [
         "박스 추가",
-        "box add",
+        "playlist add",
         "ba",
-        "boxadd",
+        "playlistadd",
         "박스추가"
       ]
     },
