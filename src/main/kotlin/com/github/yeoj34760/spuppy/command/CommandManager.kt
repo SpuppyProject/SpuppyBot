@@ -11,10 +11,8 @@ class CommandManager(commands: List<Command>,
 
     init {
         val tempMap = mutableMapOf<String, Command>()
-        commands.forEach { cmd ->
-            cmd.alias.forEach { alias -> tempMap[alias] = cmd }
-        }
-        aliasMap = tempMap.toSortedMap(compareBy<String> { it.length }.reversed())
+        commands.forEach { cmd -> cmd.alias.forEach { alias -> tempMap[alias] = cmd } }
+        aliasMap = tempMap.toSortedMap(compareBy<String> { it.length }.thenBy { it }.reversed())
     }
 
     override fun onMessageReceived(event: MessageReceivedEvent) = messageCheck(event)
