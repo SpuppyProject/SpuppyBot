@@ -1,5 +1,6 @@
 package com.github.yeoj34760.spuppy.command
 
+import kotlinx.coroutines.*
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
@@ -15,7 +16,10 @@ class CommandManager(commands: List<Command>,
         aliasMap = tempMap.toSortedMap(compareBy<String> { it.length }.thenBy { it }.reversed())
     }
 
-    override fun onMessageReceived(event: MessageReceivedEvent) = messageCheck(event)
+    override fun onMessageReceived(event: MessageReceivedEvent)  {
+             messageCheck(event)
+
+    }
     private fun messageCheck(event: MessageReceivedEvent) {
         aliasMap.forEach { (alias, cmd) ->
             val message = event.message.contentRaw
@@ -31,18 +35,22 @@ class CommandManager(commands: List<Command>,
         if (message.length > cmdLength && message[cmdLength] != ' ')
             return
 
-        filterCheck(event, command)
+        filterCheck(event, command, alias)
     }
 
-    private fun filterCheck(event: MessageReceivedEvent, command: Command) {
-        val commandEvent = CommandEvent(event.jda, event.responseNumber, event.message)
+    private fun filterCheck(event: MessageReceivedEvent, command: Command, alias: String) {
+        val commandEvent = CommandEvent(event.jda, event.responseNumber, event.message, alias)
         if (filterCommands.isEmpty())
-            command.execute(commandEvent)
+            runExecute(command, commandEvent)
 
         filterCommands.forEach {
             if (it.execute(commandEvent)) {
-                command.execute(commandEvent); return@forEach
+                runExecute(command, commandEvent); return@forEach
             }
         }
+    }
+
+    private fun runExecute(command: Command, commandEvent: CommandEvent) {
+        GlobalScope.launch {command.execute(commandEvent)}
     }
 }
