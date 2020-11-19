@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppy.bot
 
 import com.github.yeoj34760.spuppy.bot.commands.Ping
+import com.github.yeoj34760.spuppy.bot.commands.Test
 import com.github.yeoj34760.spuppy.bot.commands.music.Play
 import com.github.yeoj34760.spuppy.bot.language.Language
 import com.github.yeoj34760.spuppy.bot.language.Languages
@@ -45,7 +46,7 @@ object Bot {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val cmdManager = CommandManager(listOf(Ping, Play), info.prefix)
+        val cmdManager = CommandManager(listOf(Ping, Play, Test), info.prefix)
         JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
     }
 }
