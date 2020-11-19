@@ -1,5 +1,6 @@
 package com.github.yeoj34760.spuppy.command
 
+import com.github.yeoj34760.spuppy.bot.enhance.KEmbedBuilder
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
@@ -17,6 +18,10 @@ class CommandEvent(api: JDA, responseNumber: Long, message: Message, prefix: Str
     fun send(text: CharSequence): Message = channel.sendMessage(text).complete()
     fun send(msg: Message): Message = channel.sendMessage(msg).complete()
     fun send(embed: MessageEmbed): Message = channel.sendMessage(embed).complete()
+    fun send(embed: KEmbedBuilder.() -> Unit): Message  {
+    return    channel.sendMessage(KEmbedBuilder().apply(embed).build()).complete()
+    }
+
 
     fun send(text: CharSequence, success: Consumer<Message>) = channel.sendMessage(text).queue(success)
     fun send(msg: Message, success: Consumer<Message>) = channel.sendMessage(msg).queue(success)

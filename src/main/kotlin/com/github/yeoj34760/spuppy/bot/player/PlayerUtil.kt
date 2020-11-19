@@ -1,5 +1,6 @@
 package com.github.yeoj34760.spuppy.bot.player
 
+import com.github.yeoj34760.spuppy.bot.language.Language
 import com.github.yeoj34760.spuppy.command.CommandEvent
 
 object PlayerUtil {
@@ -11,5 +12,15 @@ object PlayerUtil {
         } catch (e: Exception) {
             return false
         }
+    }
+
+    fun loadPlayerControl(event: CommandEvent): PlayerControl? {
+        val control = PlayerGuildManager[event.guild]
+        if (control == null || !control.isPlayed()) {
+            event.send(Language.toText("not_play", event.author.idLong))
+            return null
+        }
+
+        return control
     }
 }

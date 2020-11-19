@@ -27,22 +27,20 @@ class PlayerControl(private val player: AudioPlayer) : AudioEventAdapter() {
     fun playingTrack(): AudioTrack? = player.playingTrack
     fun trackList(): List<AudioTrack> = trackQueue
 
-
     override fun onTrackEnd(player: AudioPlayer, track: AudioTrack, endReason: AudioTrackEndReason) {
-        println(endReason)
         when (endReason) {
             AudioTrackEndReason.STOPPED -> nextTrack()
             AudioTrackEndReason.FINISHED -> nextTrack()
         }
     }
 
-    fun nextTrack() {
+    override fun onTrackException(player: AudioPlayer, track: AudioTrack, exception: FriendlyException) {
+
+    }
+
+    private  fun nextTrack() {
         val firstTrack = trackQueue.removeFirstOrNull()
         if (firstTrack != null)
             player.playTrack(firstTrack)
-    }
-
-    override fun onTrackException(player: AudioPlayer, track: AudioTrack, exception: FriendlyException) {
-
     }
 }

@@ -14,6 +14,12 @@ object Test : Command(name = "test", alias = listOf("t")) {
             chennal: ${event.member?.voiceState?.channel}
           permissions:  ${event.member?.voiceState?.channel?.permissionOverrides}
         """.trimIndent())
+
+        event.send {
+            author { name = "hello" }
+            description = "hi"
+            color = 0x8FA8FA
+        }
     }
 
 }

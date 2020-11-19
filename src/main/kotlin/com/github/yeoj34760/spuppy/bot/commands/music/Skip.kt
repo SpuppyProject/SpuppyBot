@@ -3,16 +3,13 @@ package com.github.yeoj34760.spuppy.bot.commands.music
 import com.github.yeoj34760.spuppy.bot.Bot
 import com.github.yeoj34760.spuppy.bot.language.Language
 import com.github.yeoj34760.spuppy.bot.player.PlayerGuildManager
+import com.github.yeoj34760.spuppy.bot.player.PlayerUtil
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 
 object Skip : Command(name="skip", alias =  Bot.commands["skip"] ?: error("umm..")) {
     override suspend fun execute(event: CommandEvent) {
-        val control = PlayerGuildManager[event.guild]
-        if (control == null || !control.isPlayed()) {
-            event.send(Language.toText("not_play", event.author.idLong))
-            return
-        }
+        val control = PlayerUtil.loadPlayerControl(event) ?: return
         val firstTrack = control.trackList().firstOrNull()
         control.skip()
 
