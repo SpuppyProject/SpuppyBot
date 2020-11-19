@@ -18,6 +18,7 @@ object Play : Command(name = "play", alias = Bot.commands["play"] ?: error("umm.
 
         PlayerUtil.voiceChannelConnect(event)
         val control = PlayerGuildManager.create(event.guild)
+        callTrack.tracks!![0].userData = event.author
         control.play(callTrack.tracks!![0])
     }
 }

@@ -23,4 +23,6 @@ object PlayerUtil {
 
         return control
     }
+
+    fun youtubeToThumbnail(Identifier: String): String = "https://img.youtube.com/vi/$Identifier/mqdefault.jpg"
 }
