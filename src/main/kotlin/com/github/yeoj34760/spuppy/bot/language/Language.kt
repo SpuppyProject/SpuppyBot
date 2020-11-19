@@ -9,7 +9,7 @@ typealias Sentence = MutableMap<Languages, MutableMap<String, String>>
 object Language {
     private val sentence: Sentence = mutableMapOf()
     private val users: MutableMap<Long, Languages> = mutableMapOf()
-    val defaultLanguage = Languages.ENGLISH
+    val defaultLanguage = Languages.KOREAN
 
     init {
         Languages.values().forEach {

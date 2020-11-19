@@ -31,12 +31,15 @@ class PlayerControl(private val player: AudioPlayer) : AudioEventAdapter() {
     override fun onTrackEnd(player: AudioPlayer, track: AudioTrack, endReason: AudioTrackEndReason) {
         println(endReason)
         when (endReason) {
-            AudioTrackEndReason.FINISHED -> {
-                val firstTrack = trackQueue.removeFirstOrNull()
-                if (firstTrack != null)
-                    player.playTrack(firstTrack)
-            }
+            AudioTrackEndReason.STOPPED -> nextTrack()
+            AudioTrackEndReason.FINISHED -> nextTrack()
         }
+    }
+
+    fun nextTrack() {
+        val firstTrack = trackQueue.removeFirstOrNull()
+        if (firstTrack != null)
+            player.playTrack(firstTrack)
     }
 
     override fun onTrackException(player: AudioPlayer, track: AudioTrack, exception: FriendlyException) {
