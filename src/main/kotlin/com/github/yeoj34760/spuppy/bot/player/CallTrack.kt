@@ -7,17 +7,18 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.dv8tion.jda.api.entities.User
 
 object CallTrack {
     data class CallLTrackResult(val playlist: AudioPlaylist?,
-                                val tracks: List<AudioTrack>?,
+                                val track: AudioTrack?,
                                 val isFailed: Boolean,
                                 val exceptionContent: String?,
                                 val isNoMatches: Boolean)
 
-    suspend fun call(url: String): CallLTrackResult {
+    suspend fun call(user: User, url: String): CallLTrackResult {
         var tempPlaylist: AudioPlaylist? = null
-        var tempTracks: List<AudioTrack>? = null
+        var tempTrack: AudioTrack? = null
         var isFailed: Boolean = false
         var exceptionContent: String? = null
         var isNoMatches = false
@@ -28,14 +29,14 @@ object CallTrack {
         mutex.withLock {
             Bot.playerManager.loadItem(url, object : AudioLoadResultHandler {
                 override fun trackLoaded(track: AudioTrack) {
-                    tempTracks = listOf(track)
+                    tempTrack = track
                     mutex.unlock()
 
                 }
 
                 override fun playlistLoaded(playlist: AudioPlaylist) {
                     tempPlaylist = playlist
-                    tempTracks = playlist.tracks
+                    tempTrack = playlist.tracks.first()
                     mutex.unlock()
                 }
 
@@ -54,6 +55,8 @@ object CallTrack {
             mutex.lock()
         }
 
-        return CallLTrackResult(tempPlaylist, tempTracks, isFailed, exceptionContent, isNoMatches)
+        tempTrack?.userData = user
+        tempPlaylist?.tracks?.forEach { it.userData = user }
+        return CallLTrackResult(tempPlaylist, tempTrack, isFailed, exceptionContent, isNoMatches)
     }
 }

@@ -1,2 +1,5 @@
 {
+  "play_error_1": "a something error occurred..",
+  "not_play": "I don't played now.",
+  "stop_success": "Stopped the music."
 }

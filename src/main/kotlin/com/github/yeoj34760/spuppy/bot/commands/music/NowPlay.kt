@@ -9,7 +9,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.entities.User
 
 object NowPlay : Command(name = "nowPlay", alias = Bot.commands["nowplay"] ?: error("umm..")) {
-    const val BAR_LENGTH = 30
+    private const val BAR_LENGTH = 30
     override suspend fun execute(event: CommandEvent) {
         val control = PlayerUtil.loadPlayerControl(event) ?: return
         val first = control.playingTrack()!!
@@ -56,7 +56,7 @@ object NowPlay : Command(name = "nowPlay", alias = Bot.commands["nowplay"] ?: er
         }
     }
 
-    fun createBar(track: AudioTrack): String {
+   private fun createBar(track: AudioTrack): String {
         var length = (track.position.toDouble() / track.duration * BAR_LENGTH).toInt()
         var barContent = StringBuffer("`├")
 

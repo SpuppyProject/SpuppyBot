@@ -38,9 +38,7 @@ class PlayerControl(private val player: AudioPlayer) : AudioEventAdapter() {
 
     }
 
-    private  fun nextTrack() {
-        val firstTrack = trackQueue.removeFirstOrNull()
-        if (firstTrack != null)
-            player.playTrack(firstTrack)
+    private fun nextTrack() {
+        player.playTrack(trackQueue.removeFirstOrNull() ?: return)
     }
 }

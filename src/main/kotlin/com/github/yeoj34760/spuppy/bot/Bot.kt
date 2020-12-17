@@ -12,6 +12,7 @@ import com.github.yeoj34760.spuppy.command.CommandManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
+import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamSegmentUrlProvider
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
