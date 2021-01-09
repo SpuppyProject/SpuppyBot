@@ -6,13 +6,10 @@ import com.github.yeoj34760.spuppy.bot.commands.music.NowPlay
 import com.github.yeoj34760.spuppy.bot.commands.music.Play
 import com.github.yeoj34760.spuppy.bot.commands.music.Skip
 import com.github.yeoj34760.spuppy.bot.commands.music.Stop
-import com.github.yeoj34760.spuppy.bot.language.Language
-import com.github.yeoj34760.spuppy.bot.language.Languages
 import com.github.yeoj34760.spuppy.command.CommandManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
-import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamSegmentUrlProvider
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -31,6 +28,8 @@ object Bot {
 
     init {
         loadCommands()
+
+        //load SourceManagers
         playerManager.registerSourceManager(YoutubeAudioSourceManager())
         playerManager.registerSourceManager(TwitchStreamAudioSourceManager())
         AudioSourceManagers.registerRemoteSources(playerManager)
@@ -38,19 +37,23 @@ object Bot {
 
     private fun loadCommands() {
         val element = Json.parseToJsonElement(File("commands.json").readText())
+        //key - command name, value - aliases.
         val temp = mutableMapOf<String, List<String>>()
-        element.jsonObject["commands"]!!.jsonArray.forEach {
-            val name = it.jsonObject["name"]!!.jsonPrimitive!!.content
-            val alias: MutableList<String> = mutableListOf()
-            it.jsonObject["command"]!!.jsonArray.forEach { alias.add(it.jsonPrimitive!!.content) }
-            temp[name] = alias
+
+        element.jsonObject["commands"]!!.jsonArray.forEach { command ->
+            val name = command.jsonObject["name"]!!.jsonPrimitive.content
+            val aliasesList: MutableList<String> = mutableListOf()
+
+            //read aliases of the command but add this in aliasesList.
+            command.jsonObject["command"]!!.jsonArray.forEach { aliasesList.add(it.jsonPrimitive.content) }
+            temp[name] = aliasesList
         }
         commands = temp
     }
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val cmdManager = CommandManager(listOf(Ping, Play, Test, Stop, Skip, NowPlay), info.prefix)
+        val cmdManager = CommandManager(listOf(Ping, Play, Test, Stop, Skip, NowPlay, com.github.yeoj34760.spuppy.bot.commands.music.List), info.prefix)
         JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
     }
 }

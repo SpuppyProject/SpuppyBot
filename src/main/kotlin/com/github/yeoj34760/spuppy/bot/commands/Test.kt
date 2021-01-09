@@ -4,7 +4,7 @@ import com.github.yeoj34760.spuppy.bot.Bot
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 
-object Test : Command(name = "test", alias = listOf("t")) {
+object Test : Command(name = "test", aliases = listOf("t")) {
     override suspend fun execute(event: CommandEvent) {
         if (event.author.idLong != Bot.info.ownerId)
             return

@@ -7,19 +7,24 @@ import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.util.function.Consumer
 
+/**
+ * Custom MessageReceivedEvent
+ */
 class CommandEvent(api: JDA, responseNumber: Long, message: Message, prefix: String) : MessageReceivedEvent(api, responseNumber, message) {
     val args: List<String>
     val content: String = message.contentRaw.substring(prefix.length + 1).trim()
+
     init {
         val temp = mutableListOf<String>()
         "[^ ]+".toRegex().findAll(content).forEach { temp.add(it.value) }
         args = temp
     }
+
     fun send(text: CharSequence): Message = channel.sendMessage(text).complete()
     fun send(msg: Message): Message = channel.sendMessage(msg).complete()
     fun send(embed: MessageEmbed): Message = channel.sendMessage(embed).complete()
-    fun send(embed: KEmbedBuilder.() -> Unit): Message  {
-    return    channel.sendMessage(KEmbedBuilder().apply(embed).build()).complete()
+    fun send(embed: KEmbedBuilder.() -> Unit): Message {
+        return channel.sendMessage(KEmbedBuilder().apply(embed).build()).complete()
     }
 
 

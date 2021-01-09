@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-object Ping : Command(name = "ping", alias = listOf("ping")) {
+object Ping : Command(name = "ping", aliases = listOf("ping")) {
     override suspend fun execute(event: CommandEvent) {
         event.send("`${event.ping()}ms` pong!")
     }

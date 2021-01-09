@@ -9,7 +9,7 @@ import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import java.net.URL
 
-object Play : Command(name = "play", alias = Bot.commands["play"] ?: error("umm..")) {
+object Play : Command(name = "play", aliases = Bot.commands["play"] ?: error("umm..")) {
     override suspend fun execute(event: CommandEvent) {
         try {
             URL(event.content)

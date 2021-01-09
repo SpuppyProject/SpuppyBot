@@ -8,7 +8,7 @@ import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.api.entities.User
 
-object NowPlay : Command(name = "nowPlay", alias = Bot.commands["nowplay"] ?: error("umm..")) {
+object NowPlay : Command(name = "nowPlay", aliases = Bot.commands["nowplay"] ?: error("umm..")) {
     private const val BAR_LENGTH = 30
     override suspend fun execute(event: CommandEvent) {
         val control = PlayerUtil.loadPlayerControl(event) ?: return

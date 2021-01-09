@@ -12,7 +12,7 @@ class CommandManager(commands: List<Command>,
 
     init {
         val tempMap = mutableMapOf<String, Command>()
-        commands.forEach { cmd -> cmd.alias.forEach { alias -> tempMap[alias] = cmd } }
+        commands.forEach { cmd -> cmd.aliases.forEach { alias -> tempMap[alias] = cmd } }
         aliasMap = tempMap.toSortedMap(compareBy<String> { it.length }.thenBy { it }.reversed())
     }
 

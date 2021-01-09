@@ -11,8 +11,8 @@ repositories {
 
 dependencies {
     //The discord related libraries
-    implementation("net.dv8tion:JDA:4.2.0_217")
-    implementation("com.github.Devoxin:lavaplayer:1.3.61")
+    implementation("net.dv8tion:JDA:4.2.0_226")
+    implementation("com.sedmelluq:lavaplayer:1.3.66")
 
     //other
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
