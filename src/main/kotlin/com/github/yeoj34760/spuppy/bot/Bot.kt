@@ -2,10 +2,7 @@ package com.github.yeoj34760.spuppy.bot
 
 import com.github.yeoj34760.spuppy.bot.commands.Ping
 import com.github.yeoj34760.spuppy.bot.commands.Test
-import com.github.yeoj34760.spuppy.bot.commands.music.NowPlay
-import com.github.yeoj34760.spuppy.bot.commands.music.Play
-import com.github.yeoj34760.spuppy.bot.commands.music.Skip
-import com.github.yeoj34760.spuppy.bot.commands.music.Stop
+import com.github.yeoj34760.spuppy.bot.commands.music.*
 import com.github.yeoj34760.spuppy.command.CommandManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
@@ -53,7 +50,7 @@ object Bot {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val cmdManager = CommandManager(listOf(Ping, Play, Test, Stop, Skip, NowPlay, com.github.yeoj34760.spuppy.bot.commands.music.List), info.prefix)
+        val cmdManager = CommandManager(listOf(Ping, Play, Test, Stop, Skip, NowPlay, com.github.yeoj34760.spuppy.bot.commands.music.List, Remove), info.prefix)
         JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
     }
 }

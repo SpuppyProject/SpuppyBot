@@ -26,6 +26,7 @@ class PlayerControl(private val player: AudioPlayer) : AudioEventAdapter() {
     fun isPaused() = player.isPaused
     fun playingTrack(): AudioTrack? = player.playingTrack
     fun trackList(): List<AudioTrack> = trackQueue
+    fun removeTrack(number: Int): AudioTrack = trackQueue.removeAt(number)
 
     override fun onTrackEnd(player: AudioPlayer, track: AudioTrack, endReason: AudioTrackEndReason) {
         when (endReason) {
