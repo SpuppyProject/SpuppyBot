@@ -31,6 +31,11 @@ object PlayerUtil {
     fun youtubeToThumbnail(Identifier: String): String = "https://img.youtube.com/vi/$Identifier/mqdefault.jpg"
 
     fun youtubeSearch(str: String): AudioPlaylist? {
-        return YoutubeSearchProvider().loadSearchResult(str) { YoutubeAudioTrack(it, YoutubeAudioSourceManager()) } as? AudioPlaylist
+        return YoutubeSearchProvider().loadSearchResult(str) {
+            YoutubeAudioTrack(
+                it,
+                YoutubeAudioSourceManager()
+            )
+        } as? AudioPlaylist
     }
 }

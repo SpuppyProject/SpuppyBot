@@ -8,6 +8,7 @@ object TimeFormat {
         val minute = (secondTime % (3600)) / 60
         val second = (secondTime % (60))
     }
+
     fun simple(time: Long): String {
         val t = Time(time)
 

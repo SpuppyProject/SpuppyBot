@@ -50,7 +50,18 @@ object Bot {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val cmdManager = CommandManager(listOf(Ping, Play, Test, Stop, Skip, NowPlay, com.github.yeoj34760.spuppy.bot.commands.music.List, Remove), info.prefix)
+        val cmdManager = CommandManager(
+            listOf(
+                Ping,
+                Play,
+                Test,
+                Stop,
+                Skip,
+                NowPlay,
+                com.github.yeoj34760.spuppy.bot.commands.music.List,
+                Remove
+            ), info.prefix
+        )
         JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
     }
 }

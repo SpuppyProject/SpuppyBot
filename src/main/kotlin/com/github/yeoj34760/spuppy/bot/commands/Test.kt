@@ -9,11 +9,13 @@ object Test : Command(name = "test", aliases = listOf("t")) {
         if (event.author.idLong != Bot.info.ownerId)
             return
 
-        event.send("""
+        event.send(
+            """
             voiceState: ${event.member?.voiceState}
             chennal: ${event.member?.voiceState?.channel}
           permissions:  ${event.member?.voiceState?.channel?.permissionOverrides}
-        """.trimIndent())
+        """.trimIndent()
+        )
 
         event.send {
             author { name = "hello" }

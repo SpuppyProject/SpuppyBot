@@ -10,11 +10,13 @@ import kotlinx.coroutines.sync.withLock
 import net.dv8tion.jda.api.entities.User
 
 object CallTrack {
-    data class CallLTrackResult(val playlist: AudioPlaylist?,
-                                val track: AudioTrack?,
-                                val isFailed: Boolean,
-                                val exceptionContent: String?,
-                                val isNoMatches: Boolean)
+    data class CallLTrackResult(
+        val playlist: AudioPlaylist?,
+        val track: AudioTrack?,
+        val isFailed: Boolean,
+        val exceptionContent: String?,
+        val isNoMatches: Boolean
+    )
 
     suspend fun call(user: User, url: String): CallLTrackResult {
         var tempPlaylist: AudioPlaylist? = null

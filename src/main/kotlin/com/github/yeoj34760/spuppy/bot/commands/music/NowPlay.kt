@@ -28,7 +28,7 @@ object NowPlay : Command(name = "nowPlay", aliases = Bot.commands["nowplay"] ?: 
             thumbnail = PlayerUtil.youtubeToThumbnail(first.info.identifier)
 
 
-            when(first.info.isStream) {
+            when (first.info.isStream) {
                 false -> addField {
                     name = "video length"
                     value = "[${TimeFormat.simple(first.duration)}]"
@@ -56,7 +56,7 @@ object NowPlay : Command(name = "nowPlay", aliases = Bot.commands["nowplay"] ?: 
         }
     }
 
-   private fun createBar(track: AudioTrack): String {
+    private fun createBar(track: AudioTrack): String {
         var length = (track.position.toDouble() / track.duration * BAR_LENGTH).toInt()
         var barContent = StringBuffer("`├")
 

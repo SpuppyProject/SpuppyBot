@@ -10,7 +10,8 @@ import java.util.function.Consumer
 /**
  * Custom MessageReceivedEvent
  */
-class CommandEvent(api: JDA, responseNumber: Long, message: Message, prefix: String) : MessageReceivedEvent(api, responseNumber, message) {
+class CommandEvent(api: JDA, responseNumber: Long, message: Message, prefix: String) :
+    MessageReceivedEvent(api, responseNumber, message) {
     val args: List<String>
     val content: String = message.contentRaw.substring(prefix.length + 1).trim()
 

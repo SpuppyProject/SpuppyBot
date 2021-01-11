@@ -4,9 +4,10 @@ import kotlinx.coroutines.*
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
-class CommandManager(commands: List<Command>,
-                     private val prefix: String,
-                     private val filterCommands: List<FilterCommand> = listOf()
+class CommandManager(
+    commands: List<Command>,
+    private val prefix: String,
+    private val filterCommands: List<FilterCommand> = listOf()
 ) : ListenerAdapter() {
     private val aliasMap: Map<String, Command>
 
@@ -16,10 +17,11 @@ class CommandManager(commands: List<Command>,
         aliasMap = tempMap.toSortedMap(compareBy<String> { it.length }.thenBy { it }.reversed())
     }
 
-    override fun onMessageReceived(event: MessageReceivedEvent)  {
-             messageCheck(event)
+    override fun onMessageReceived(event: MessageReceivedEvent) {
+        messageCheck(event)
 
     }
+
     private fun messageCheck(event: MessageReceivedEvent) {
         aliasMap.forEach { (alias, cmd) ->
             val message = event.message.contentRaw
@@ -51,6 +53,6 @@ class CommandManager(commands: List<Command>,
     }
 
     private fun runExecute(command: Command, commandEvent: CommandEvent) {
-        GlobalScope.launch {command.execute(commandEvent)}
+        GlobalScope.launch { command.execute(commandEvent) }
     }
 }

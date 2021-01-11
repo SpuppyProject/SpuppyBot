@@ -6,7 +6,9 @@ import net.dv8tion.jda.api.entities.Guild
 object PlayerGuildManager {
     private val playerControls: MutableMap<Long, PlayerControl> = mutableMapOf()
 
-    fun check(guildId: Long): Boolean = playerControls[guildId] != null && !playerControls[guildId]!!.isPlayed() || playerControls[guildId]!!.trackList().isEmpty()
+    fun check(guildId: Long): Boolean =
+        playerControls[guildId] != null && !playerControls[guildId]!!.isPlayed() || playerControls[guildId]!!.trackList()
+            .isEmpty()
 
     fun create(guild: Guild): PlayerControl {
         if (playerControls.containsKey(guild.idLong))

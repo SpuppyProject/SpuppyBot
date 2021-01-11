@@ -11,8 +11,9 @@ object List : Command(name = "list", aliases = Bot.commands["list"] ?: error("um
 
     override suspend fun execute(event: CommandEvent) {
         if (PlayerGuildManager[event.guild] != null
-                && !PlayerGuildManager[event.guild]!!.isPlayed()
-                || PlayerGuildManager[event.guild]!!.trackList().isEmpty()) {
+            && !PlayerGuildManager[event.guild]!!.isPlayed()
+            || PlayerGuildManager[event.guild]!!.trackList().isEmpty()
+        ) {
             event.send("리스트에 텅 비어있어요")
             return
         }
@@ -42,8 +43,11 @@ object List : Command(name = "list", aliases = Bot.commands["list"] ?: error("um
 
         event.send() {
             description = contentEmbed.toString()
-            author { name = "${event.guild.name}'s playlist"; iconUrl = event.author.avatarUrl ?: event.author.defaultAvatarUrl}
-            footer { text = "${pagePosition+1}/${pageCount}" }
+            author {
+                name = "${event.guild.name}'s playlist"; iconUrl =
+                event.author.avatarUrl ?: event.author.defaultAvatarUrl
+            }
+            footer { text = "${pagePosition + 1}/${pageCount}" }
         }
     }
 }

@@ -14,7 +14,8 @@ object Language {
     init {
         Languages.values().forEach {
             sentence[it] = mutableMapOf()
-            val element = Json.parseToJsonElement(javaClass.getResource("/languages/${it.name.toLowerCase()}.json").readText())
+            val element =
+                Json.parseToJsonElement(javaClass.getResource("/languages/${it.name.toLowerCase()}.json").readText())
             element.jsonObject.forEach { id, content -> sentence[it]!![id] = content.jsonPrimitive.content }
         }
     }
