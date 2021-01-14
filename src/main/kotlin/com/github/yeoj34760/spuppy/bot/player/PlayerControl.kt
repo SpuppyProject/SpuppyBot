@@ -27,6 +27,9 @@ class PlayerControl(private val player: AudioPlayer) : AudioEventAdapter() {
     fun playingTrack(): AudioTrack? = player.playingTrack
     fun trackList(): List<AudioTrack> = trackQueue
     fun removeTrack(number: Int): AudioTrack = trackQueue.removeAt(number)
+    fun shuffle() {
+        trackQueue.shuffle()
+    }
 
     override fun onTrackEnd(player: AudioPlayer, track: AudioTrack, endReason: AudioTrackEndReason) {
         when (endReason) {

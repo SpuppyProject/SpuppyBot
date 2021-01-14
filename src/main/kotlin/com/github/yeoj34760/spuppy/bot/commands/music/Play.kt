@@ -3,12 +3,18 @@ package com.github.yeoj34760.spuppy.bot.commands.music
 import com.github.yeoj34760.spuppy.bot.Bot
 import com.github.yeoj34760.spuppy.bot.language.Language
 import com.github.yeoj34760.spuppy.bot.player.CallTrack
+import com.github.yeoj34760.spuppy.bot.player.PlayerControl
 import com.github.yeoj34760.spuppy.bot.player.PlayerGuildManager
 import com.github.yeoj34760.spuppy.bot.player.PlayerUtil
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import java.net.URL
 
+/**
+ * if bot have searched but doesn't have playlist to will call onlyTrackPlay.
+ */
 object Play : Command(name = "play", aliases = Bot.commands["play"] ?: error("umm..")) {
     override suspend fun execute(event: CommandEvent) {
         try {
@@ -17,6 +23,10 @@ object Play : Command(name = "play", aliases = Bot.commands["play"] ?: error("um
             search(event); return
         }
 
+        url(event)
+    }
+
+    private suspend fun url(event: CommandEvent) {
         val callTrack = CallTrack.call(event.author, event.content)
         if (callTrack.isFailed) {
             event.send(Language.toText("play_error_1", event.author.idLong))
@@ -26,19 +36,22 @@ object Play : Command(name = "play", aliases = Bot.commands["play"] ?: error("um
         PlayerUtil.voiceChannelConnect(event)
         val control = PlayerGuildManager.create(event.guild)
 
-
         when (callTrack.playlist) {
-            null -> {
-                control.play(callTrack.track!!)
-                event.send("`${callTrack.track!!.info.title}`을(를) 추가했어요!")
-            }
-            else -> {
-                val playlistName = callTrack.playlist.name
-                val playlistCount = callTrack.playlist.tracks.size
-                callTrack.playlist.tracks!!.forEach { control.play(it) }
-                event.send("`${callTrack.playlist.name}`에 있는 `${playlistCount}`개 음악들을 추가했어요!")
-            }
+            null -> onlyTrackPlay(event, control, callTrack.track!!)
+            else -> manyTrackPlay(event, control, callTrack.playlist)
         }
+    }
+
+    private fun onlyTrackPlay(event: CommandEvent,control: PlayerControl, track: AudioTrack) {
+        control.play(track)
+        event.send("`${track.info.title}`을(를) 추가했어요!")
+    }
+
+    private fun manyTrackPlay(event: CommandEvent, control: PlayerControl, audioPlaylist: AudioPlaylist) {
+        val playlistName = audioPlaylist.name
+        val playlistCount = audioPlaylist.tracks.size
+        audioPlaylist.tracks!!.forEach { control.play(it) }
+        event.send("`${audioPlaylist.name}`에 있는 `${playlistCount}`개 음악들을 추가했어요!")
     }
 
     private fun search(event: CommandEvent) {
