@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppy.bot.commands.music
 
 import com.github.yeoj34760.spuppy.bot.Bot
+import com.github.yeoj34760.spuppy.bot.enhance.EmbedColor
 import com.github.yeoj34760.spuppy.bot.player.PlayerGuildManager
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
@@ -31,7 +32,7 @@ object List : Command(name = "list", aliases = Bot.commands["list"] ?: error("um
         val contentEmbed = StringBuffer()
 
         if (pagePosition >= pageCount || pagePosition < 0) {
-            event.send("숫자가 뭔가 잘못되었어요")
+            event.send("숫자가 뭔가 잘못되어 있는 것 같아요")
             return
         }
 
@@ -42,6 +43,7 @@ object List : Command(name = "list", aliases = Bot.commands["list"] ?: error("um
         }
 
         event.send() {
+            color = EmbedColor.GREEN.rgb
             description = contentEmbed.toString()
             author {
                 name = "${event.guild.name}'s playlist"; iconUrl =

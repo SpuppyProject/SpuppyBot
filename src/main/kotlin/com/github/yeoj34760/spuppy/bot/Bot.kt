@@ -1,5 +1,7 @@
 package com.github.yeoj34760.spuppy.bot
 
+import com.github.yeoj34760.spuppy.bot.commands.About
+import com.github.yeoj34760.spuppy.bot.commands.Help
 import com.github.yeoj34760.spuppy.bot.commands.Ping
 import com.github.yeoj34760.spuppy.bot.commands.Test
 import com.github.yeoj34760.spuppy.bot.commands.music.*
@@ -58,8 +60,10 @@ object Bot {
                 Stop,
                 Skip,
                 NowPlay,
-                com.github.yeoj34760.spuppy.bot.commands.music.List,
-                Remove
+                List,
+                Remove,
+                Help,
+                About
             ), info.prefix
         )
         JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()

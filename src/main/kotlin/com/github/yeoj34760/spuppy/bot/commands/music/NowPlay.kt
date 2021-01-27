@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppy.bot.commands.music
 
 import com.github.yeoj34760.spuppy.bot.Bot
+import com.github.yeoj34760.spuppy.bot.enhance.EmbedColor
 import com.github.yeoj34760.spuppy.bot.enhance.TimeFormat
 import com.github.yeoj34760.spuppy.bot.player.PlayerUtil
 import com.github.yeoj34760.spuppy.command.Command
@@ -19,6 +20,8 @@ object NowPlay : Command(name = "nowPlay", aliases = Bot.commands["nowplay"] ?: 
                 name = event.author.name
                 iconUrl = event.author.avatarUrl ?: event.author.defaultAvatarUrl
             }
+
+            color = EmbedColor.YELLOW.rgb
 
             description = """
                 **${first.info.title}**

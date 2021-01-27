@@ -184,7 +184,7 @@
       ]
     },
     {
-      "name": "info",
+      "name": "help",
       "command": [
         "info",
         "if",
@@ -500,6 +500,12 @@
       "name": "ReplaceWeapon",
       "command": [
         "무기교체"
+      ]
+    },
+    {
+      "name": "about",
+      "command": [
+        "ab"
       ]
     }
   ]
