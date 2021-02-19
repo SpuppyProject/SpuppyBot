@@ -9,13 +9,21 @@ repositories {
     maven(url = "https://jitpack.io")
 }
 
+val exposedVersion:String = "0.29.1"
+
 dependencies {
     //The discord related libraries
-    implementation("net.dv8tion:JDA:4.2.0_226")
-    implementation("com.sedmelluq:lavaplayer:1.3.66")
+    implementation("net.dv8tion:JDA:4.2.0_228")
+    implementation("com.sedmelluq:lavaplayer:1.3.71")
+
+    //Expsed
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
 
     //other
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
+    implementation("org.mariadb.jdbc:mariadb-java-client:2.1.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

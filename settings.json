@@ -3,8 +3,7 @@
   "prefix": "",
   "owner_id": "",
   "version": "",
-  "db": {
-    "rpg_url": "",
+  "spuppyDB": {
     "url": "",
     "user": "",
     "password": ""

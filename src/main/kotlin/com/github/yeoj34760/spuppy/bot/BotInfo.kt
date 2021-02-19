@@ -8,13 +8,12 @@ data class BotInfo(
     val token: String,
     val prefix: String,
     @SerialName("owner_id") val ownerId: Long,
-    val version: Double,
-    val db: Database
+    val version: String,
+    val spuppyDB: SpuppyDB
 )
 
 @Serializable
-data class Database(
-    @SerialName("rpg_url") val rpgUrl: String,
+data class SpuppyDB(
     val url: String,
     val user: String,
     val password: String
