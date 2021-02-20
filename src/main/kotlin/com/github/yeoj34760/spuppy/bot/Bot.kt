@@ -1,15 +1,13 @@
 package com.github.yeoj34760.spuppy.bot
 
-import com.github.yeoj34760.spuppy.bot.cache.MariaCustomCoinCache
 import com.github.yeoj34760.spuppy.bot.commands.About
 import com.github.yeoj34760.spuppy.bot.commands.Help
 import com.github.yeoj34760.spuppy.bot.commands.Ping
 import com.github.yeoj34760.spuppy.bot.commands.Test
+import com.github.yeoj34760.spuppy.bot.commands.gamble.Gamble
 import com.github.yeoj34760.spuppy.bot.commands.money.GetMoney
 import com.github.yeoj34760.spuppy.bot.commands.money.Money
 import com.github.yeoj34760.spuppy.bot.commands.music.*
-import com.github.yeoj34760.spuppy.bot.database.Coin
-import com.github.yeoj34760.spuppy.bot.database.DatabaseUser
 import com.github.yeoj34760.spuppy.command.CommandManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
@@ -22,9 +20,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import net.dv8tion.jda.api.JDABuilder
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
-
 
 object Bot {
     val info = Json.decodeFromString<BotInfo>(File("settings.json").readText())
@@ -95,7 +91,8 @@ object Bot {
                 Help,
                 About,
                 Money,
-                GetMoney
+                GetMoney,
+                Gamble
             ), info.prefix
         )
         JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()

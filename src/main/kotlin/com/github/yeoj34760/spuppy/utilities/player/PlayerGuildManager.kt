@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppy.bot.player
+package com.github.yeoj34760.spuppy.utilities.player
 
 import com.github.yeoj34760.spuppy.bot.Bot
 import net.dv8tion.jda.api.entities.Guild

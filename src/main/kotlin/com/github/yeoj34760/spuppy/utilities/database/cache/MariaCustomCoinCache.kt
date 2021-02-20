@@ -1,7 +1,6 @@
-package com.github.yeoj34760.spuppy.bot.cache
+package com.github.yeoj34760.spuppy.utilities.database.cache
 
 import com.github.yeoj34760.spuppy.bot.Bot
-import kotlinx.coroutines.selects.select
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.selectAll

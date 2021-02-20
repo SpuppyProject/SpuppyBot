@@ -10,6 +10,7 @@ repositories {
 }
 
 val exposedVersion:String = "0.29.1"
+val logbackVersion: String = "0.9.26"
 
 dependencies {
     //The discord related libraries
@@ -21,12 +22,16 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
 
+    //logback
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+
     //other
     implementation("org.mariadb.jdbc:mariadb-java-client:2.1.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.projectlombok:lombok:1.18.16")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

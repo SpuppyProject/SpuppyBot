@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppy.bot.language
+package com.github.yeoj34760.spuppy.utilities.language
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject

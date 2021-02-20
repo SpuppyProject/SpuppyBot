@@ -1,8 +1,7 @@
-package com.github.yeoj34760.spuppy.bot.enhance
+package com.github.yeoj34760.spuppy.utilities.enhance
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
-import kotlin.concurrent.fixedRateTimer
 
 class KEmbedBuilder {
     data class Author(var name: String? = null, var url: String? = null, var iconUrl: String? = null)

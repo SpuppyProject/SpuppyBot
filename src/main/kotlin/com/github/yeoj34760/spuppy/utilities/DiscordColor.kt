@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppy.bot
+package com.github.yeoj34760.spuppy.utilities
 
 enum class DiscordColor(val rpb: Int) {
     YELLOW(0xf0e446),

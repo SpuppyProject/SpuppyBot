@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppy.bot.database
+package com.github.yeoj34760.spuppy.utilities.database
 
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass

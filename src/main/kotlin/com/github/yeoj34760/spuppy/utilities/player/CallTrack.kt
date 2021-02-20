@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppy.bot.player
+package com.github.yeoj34760.spuppy.utilities.player
 
 import com.github.yeoj34760.spuppy.bot.Bot
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler

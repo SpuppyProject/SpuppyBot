@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppy.bot.cache
+package com.github.yeoj34760.spuppy.utilities.database.cache
 
 data class AsicModel(
     val id: String,

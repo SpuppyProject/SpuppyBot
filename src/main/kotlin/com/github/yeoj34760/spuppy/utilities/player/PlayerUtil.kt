@@ -1,6 +1,6 @@
-package com.github.yeoj34760.spuppy.bot.player
+package com.github.yeoj34760.spuppy.utilities.player
 
-import com.github.yeoj34760.spuppy.bot.language.Language
+import com.github.yeoj34760.spuppy.utilities.language.Language
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack

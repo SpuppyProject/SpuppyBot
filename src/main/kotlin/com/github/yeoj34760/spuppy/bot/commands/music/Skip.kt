@@ -1,9 +1,7 @@
 package com.github.yeoj34760.spuppy.bot.commands.music
 
 import com.github.yeoj34760.spuppy.bot.Bot
-import com.github.yeoj34760.spuppy.bot.language.Language
-import com.github.yeoj34760.spuppy.bot.player.PlayerGuildManager
-import com.github.yeoj34760.spuppy.bot.player.PlayerUtil
+import com.github.yeoj34760.spuppy.utilities.player.PlayerUtil
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 

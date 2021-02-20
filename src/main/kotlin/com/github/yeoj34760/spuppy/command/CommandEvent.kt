@@ -1,6 +1,6 @@
 package com.github.yeoj34760.spuppy.command
 
-import com.github.yeoj34760.spuppy.bot.enhance.KEmbedBuilder
+import com.github.yeoj34760.spuppy.utilities.enhance.KEmbedBuilder
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed

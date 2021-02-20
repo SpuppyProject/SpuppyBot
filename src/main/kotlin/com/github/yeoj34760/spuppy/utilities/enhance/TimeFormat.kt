@@ -1,4 +1,4 @@
-package com.github.yeoj34760.spuppy.bot.enhance
+package com.github.yeoj34760.spuppy.utilities.enhance
 
 object TimeFormat {
     private data class Time(private val time: Long) {

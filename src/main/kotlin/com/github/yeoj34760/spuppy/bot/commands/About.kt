@@ -1,7 +1,7 @@
 package com.github.yeoj34760.spuppy.bot.commands
 
 import com.github.yeoj34760.spuppy.bot.Bot
-import com.github.yeoj34760.spuppy.bot.enhance.EmbedColor
+import com.github.yeoj34760.spuppy.utilities.enhance.EmbedColor
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 

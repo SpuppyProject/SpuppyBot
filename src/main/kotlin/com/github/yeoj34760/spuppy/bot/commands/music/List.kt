@@ -1,8 +1,8 @@
 package com.github.yeoj34760.spuppy.bot.commands.music
 
 import com.github.yeoj34760.spuppy.bot.Bot
-import com.github.yeoj34760.spuppy.bot.enhance.EmbedColor
-import com.github.yeoj34760.spuppy.bot.player.PlayerGuildManager
+import com.github.yeoj34760.spuppy.utilities.enhance.EmbedColor
+import com.github.yeoj34760.spuppy.utilities.player.PlayerGuildManager
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
 import kotlin.math.ceil
