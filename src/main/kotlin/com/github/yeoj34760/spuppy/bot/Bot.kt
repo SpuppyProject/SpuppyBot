@@ -95,6 +95,8 @@ object Bot {
                 Gamble
             ), info.prefix
         )
-        JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
+     JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
+
+
     }
 }

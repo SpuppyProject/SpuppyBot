@@ -22,12 +22,17 @@ object About: Command(name = "about", aliases = Bot.commands["help"] ?: error("u
                 value = """
                     [JDA](https://github.com/DV8FromTheWorld/JDA)
                     [LavaPlayer](https://github.com/sedmelluq/lavaplayer)
+                    [Logback](http://logback.qos.ch/)
+                    [mariadb java client](https://mariadb.com/kb/en/about-mariadb-connector-j/)
+                    [kotlin coroutines](https://github.com/Kotlin/kotlinx.coroutines)
+                    [Kotlin serialization](https://github.com/Kotlin/kotlinx.serialization)
+                    [exposed](https://github.com/JetBrains/Exposed)
                 """.trimIndent()
                 inline = true
             }
 
             addField {
-                name = "만든이"
+                name = "developer"
                 value = """
                     ${event.jda.retrieveUserById(Bot.info.ownerId).complete().asTag}
                 """.trimIndent()
