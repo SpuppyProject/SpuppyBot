@@ -9,6 +9,7 @@ data class BotInfo(
     val prefix: String,
     @SerialName("owner_id") val ownerId: Long,
     val version: String,
+    @SerialName("fixer_key") val fixerKey: String,
     val spuppyDB: SpuppyDB
 )
 

@@ -41,5 +41,5 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = "com.github.yeoj34760.bot.BotAt"
+    mainClassName = "com.github.yeoj34760.spuppy.bot.Bot"
 }

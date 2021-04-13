@@ -1,9 +1,10 @@
-token: token_key
-prefix: !
-owner_id: your_discord_id
-version: 4.0
+token: token_value
+prefix: prefix_value
+owner_id: owner_value
+version: version_value
+fixer_key: fixer_value
 
 spuppyDB:
-  url: db_url
-  user: db_user
-  password: db_passwsord
+  url: spuppy_url
+  user: spuppy_user
+  password: spuppy_password

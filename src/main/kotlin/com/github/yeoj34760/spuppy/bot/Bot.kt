@@ -101,7 +101,5 @@ object Bot {
             ), info.prefix
         )
      JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
-
-
     }
 }
