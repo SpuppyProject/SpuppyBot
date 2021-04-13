@@ -1,14 +1,13 @@
 package com.github.yeoj34760.spuppy.utilities.database.cache
 
-import java.math.BigInteger
+import com.github.yeoj34760.spuppy.utilities.database.manager.MoneyManager
+import java.math.BigDecimal
 
 interface UserCache {
     data class User(
         val id: Long,
-        var money: BigInteger
+        var money: BigDecimal
     )
 
-    fun addMoney(id: Long, sum: BigInteger): BigInteger
-    fun minusMoney(id: Long, sum: BigInteger): BigInteger
-    fun currentMoney(id: Long): BigInteger
+    fun money(id: Long): MoneyManager
 }

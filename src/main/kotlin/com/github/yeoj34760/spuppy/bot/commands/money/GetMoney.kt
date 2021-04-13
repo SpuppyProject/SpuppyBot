@@ -4,7 +4,7 @@ import com.github.yeoj34760.spuppy.utilities.database.cache.MariaUserCache
 import com.github.yeoj34760.spuppy.utilities.money.MoneyCoolDown
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
-import java.math.BigInteger
+import java.math.BigDecimal
 
 object GetMoney : Command(name = "getmoney", aliases = listOf("돈받기")) {
     override suspend fun execute(event: CommandEvent) {
@@ -14,8 +14,9 @@ object GetMoney : Command(name = "getmoney", aliases = listOf("돈받기")) {
             return
         }
 
-        val previousMoney = MariaUserCache.currentMoney(event.author.idLong)
-        val currentMoney = MariaUserCache.addMoney(event.author.idLong, BigInteger("20"))
+        val money = MariaUserCache.money(event.author.idLong)
+        val currentMoney = money.current()
+        money += BigDecimal("20")
 
         MoneyCoolDown.start(event.author.idLong)
         event.send {
@@ -23,13 +24,13 @@ object GetMoney : Command(name = "getmoney", aliases = listOf("돈받기")) {
 
             addField {
                 name = "받기 전"
-                value = "```diff\n+${previousMoney}```"
+                value = "```diff\n+${currentMoney}```"
                 inline = true
             }
 
             addField {
                 name = "받은 후"
-                value = "```diff\n+${currentMoney}```"
+                value = "```diff\n+${money.current()}```"
                 inline = true
             }
         }

@@ -47,7 +47,7 @@ object NowPlay : Command(name = "nowPlay", aliases = Bot.commands["nowplay"] ?: 
 
             addField {
                 name = "만든이"
-                value = "${first.info.author}"
+                value = first.info.author
                 inline = true
             }
 
@@ -60,8 +60,8 @@ object NowPlay : Command(name = "nowPlay", aliases = Bot.commands["nowplay"] ?: 
     }
 
     private fun createBar(track: AudioTrack): String {
-        var length = (track.position.toDouble() / track.duration * BAR_LENGTH).toInt()
-        var barContent = StringBuffer("`├")
+        val length = (track.position.toDouble() / track.duration * BAR_LENGTH).toInt()
+        val barContent = StringBuffer("`├")
 
         for (i in 0 until BAR_LENGTH) {
             barContent.append("─")

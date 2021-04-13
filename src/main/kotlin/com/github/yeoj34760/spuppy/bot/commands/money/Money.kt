@@ -11,7 +11,7 @@ object Money : Command(name = "money", aliases = listOf("돈")) {
             color = EmbedColor.GREEN.rgb
             addField {
                 name = "돈"
-                value = "```$${MariaUserCache.currentMoney(event.author.idLong)}```"
+                value = "```$${MariaUserCache.money(event.author.idLong).current()}```"
             }
         }
     }

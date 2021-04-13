@@ -4,11 +4,14 @@ import com.github.yeoj34760.spuppy.bot.commands.About
 import com.github.yeoj34760.spuppy.bot.commands.Help
 import com.github.yeoj34760.spuppy.bot.commands.Ping
 import com.github.yeoj34760.spuppy.bot.commands.Test
+import com.github.yeoj34760.spuppy.bot.commands.gamble.AllIn
 import com.github.yeoj34760.spuppy.bot.commands.gamble.Gamble
+import com.github.yeoj34760.spuppy.bot.commands.gamble.Half
 import com.github.yeoj34760.spuppy.bot.commands.money.GetMoney
 import com.github.yeoj34760.spuppy.bot.commands.money.Money
 import com.github.yeoj34760.spuppy.bot.commands.music.*
 import com.github.yeoj34760.spuppy.command.CommandManager
+import com.github.yeoj34760.spuppy.fixer.Fixer
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
@@ -92,7 +95,9 @@ object Bot {
                 About,
                 Money,
                 GetMoney,
-                Gamble
+                Gamble,
+                Half,
+                AllIn
             ), info.prefix
         )
      JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
