@@ -1,3 +1,4 @@
+[![build](https://github.com/yeoj34760/SpuppyBot/actions/workflows/gradle.yml/badge.svg)](https://github.com/yeoj34760/SpuppyBot/actions/workflows/gradle.yml)
 # SpuppyBot
 
 ## 개요
