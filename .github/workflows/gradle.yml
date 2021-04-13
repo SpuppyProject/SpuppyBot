@@ -44,7 +44,7 @@ jobs:
     - name: set fixerKey in config.yml
       env:
         FIXER_KEY: ${{ FIXER_KEY }}
-      run: sed -i 's/fixer_value/oh/g' config.yml
+      run: sed -i 's/fixer_value/FIXER_KEY/g' config.yml
 
     - name: set url of spuppyDB in config.yml
       env:
@@ -54,7 +54,7 @@ jobs:
     - name: set user of spuppyDB in config.yml
       env:
         SPUPPYDB_USER: ${{ SPUPPYDB_USER }}
-      run: sed -i 's/spuppy_user/oh/g' config.yml
+      run: sed -i 's/spuppy_user/SPUPPYDB_USER/g' config.yml
 
     - name: set password of spuppyDB in config.yml
       env:
