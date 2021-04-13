@@ -1,5 +1,6 @@
 package com.github.yeoj34760.spuppy.bot
 
+import com.charleskorn.kaml.Yaml
 import com.github.yeoj34760.spuppy.bot.commands.About
 import com.github.yeoj34760.spuppy.bot.commands.Help
 import com.github.yeoj34760.spuppy.bot.commands.Ping
@@ -26,7 +27,7 @@ import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 object Bot {
-    val info = Json.decodeFromString<BotInfo>(File("settings.json").readText())
+    val info = Yaml.default.decodeFromString(BotInfo.serializer(), File("./config.yml").readText())
     val playerManager = DefaultAudioPlayerManager()
 
     var mainDB: Database? = null
@@ -34,7 +35,6 @@ object Bot {
 
     var coinDB: Database? = null
         private set
-
     lateinit var commands: Map<String, List<String>>
         private set
 

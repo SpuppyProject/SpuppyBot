@@ -1,0 +1,9 @@
+token: token_key
+prefix: !
+owner_id: your_discord_id
+version: 4.0
+
+spuppyDB:
+  url: db_url
+  user: db_user
+  password: db_passwsord
