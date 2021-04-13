@@ -49,9 +49,9 @@ data class Fixer(
         rates.forEach { (rate, _) ->
             if (rate != name)
                 newRates[rate] = rates[rate]!!.multiply(onePrice).divide(BigDecimal("100"))
-        }
 
-        newRates[base] = BigDecimal("1")
+        }
+        newRates[base] = BigDecimal("1").multiply(onePrice).divide(BigDecimal("100"))
         return Fixer(timestamp, name, newRates)
     }
 }
