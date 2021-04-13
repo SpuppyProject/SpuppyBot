@@ -25,44 +25,35 @@ jobs:
       env:
         TOKEN: ${{ TOKEN }}
       run: sed -i 's/token_value/$TOKEN/g' config.yml
-
     - name: set prefix in config.yml
       env:
         PREFIX: ${{ PREFIX }}
       run: sed -i 's/prefix_value/$PREFIX/g' config.yml
-
     - name: set ownerId in config.yml
       env:
         OWNER_ID: ${{ OWNER_ID }}
       run: sed -i 's/owner_value/$OWNER_ID/g' config.yml
-
     - name: set version in config.yml
       env:
         VERSION: ${{ VERSION }}
       run: sed -i 's/version_value/$VERSION/g' config.yml
-
     - name: set fixerKey in config.yml
       env:
         FIXER_KEY: ${{ FIXER_KEY }}
       run: sed -i 's/fixer_value/FIXER_KEY/g' config.yml
-
     - name: set url of spuppyDB in config.yml
       env:
         SPUPPYDB_URL: ${{ SPUPPYDB_URL }}
       run: sed -i 's/spuppy_url/SPUPPYDB_URL/g' config.yml
-
     - name: set user of spuppyDB in config.yml
       env:
         SPUPPYDB_USER: ${{ SPUPPYDB_USER }}
       run: sed -i 's/spuppy_user/SPUPPYDB_USER/g' config.yml
-
     - name: set password of spuppyDB in config.yml
       env:
         SPUPPYDB_PASSWORD: ${{ SPUPPYDB_PASSWORD }}
       run: sed -i 's/spuppy_password/SPUPPYDB_PASSWORD/g' config.yml
-
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-
     - name: Build with Gradle
       run: ./gradlew build
