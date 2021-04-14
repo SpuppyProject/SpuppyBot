@@ -6,9 +6,10 @@ import org.junit.Test
 
 class FixerTest {
     @Test
-    fun changeTest() {
-        val fixer = Fixer.create(Bot.info.fixerKey)
-        println(fixer!!.changeBase("KRW"))
+    fun allTest() {
+        val fixer = Fixer.create(Bot.info.fixerKey) ?: error("fixer is null")
+        println(fixer)
         println(fixer.changeBase("USD"))
+        println(fixer.changeBase("KRW"))
     }
 }

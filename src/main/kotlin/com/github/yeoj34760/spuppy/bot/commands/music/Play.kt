@@ -56,7 +56,7 @@ object Play : Command(name = "play", aliases = Bot.commands["play"] ?: error("um
 
     private fun search(event: CommandEvent) {
         val list = PlayerUtil.youtubeSearch(event.content)
-        if (list != null && list?.tracks?.isNotEmpty()!!) {
+        if (list != null && list.tracks?.isNotEmpty()!!) {
             val track = list.tracks[0]
             event.send("`${track.info.title}`을(를) 추가했어요!")
             PlayerUtil.voiceChannelConnect(event)
