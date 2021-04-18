@@ -10,6 +10,7 @@ import com.github.yeoj34760.spuppy.bot.commands.gamble.Gamble
 import com.github.yeoj34760.spuppy.bot.commands.gamble.Half
 import com.github.yeoj34760.spuppy.bot.commands.money.GetMoney
 import com.github.yeoj34760.spuppy.bot.commands.money.Money
+import com.github.yeoj34760.spuppy.bot.commands.money.SetMoney
 import com.github.yeoj34760.spuppy.bot.commands.music.*
 import com.github.yeoj34760.spuppy.command.CommandManager
 import com.github.yeoj34760.spuppy.fixer.Fixer
@@ -97,7 +98,8 @@ object Bot {
                 GetMoney,
                 Gamble,
                 Half,
-                AllIn
+                AllIn,
+                SetMoney
             ), info.prefix
         )
      JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
