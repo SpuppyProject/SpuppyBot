@@ -68,13 +68,18 @@ object MariaUserCache : UserCache {
 
     class MariaMoneyManager(private val id: Long) : MoneyManager {
         override fun plusAssign(value: BigDecimal) {
-            val user = userList.first {it.id == id}
+            val user = userList.first { it.id == id }
             update(user, user.money.add(value.round(MathContext(4))), value)
         }
 
         override fun minusAssign(value: BigDecimal) {
-            val user = userList.first {it.id == id}
+            val user = userList.first { it.id == id }
             update(user, user.money.minus(value.round(MathContext(4))), value)
+        }
+
+        override fun set(value: BigDecimal) {
+            val user = userList.first { it.id == id }
+            update(user, value, value)
         }
 
         override fun current(): BigDecimal = userList.first { it.id == id }.money
