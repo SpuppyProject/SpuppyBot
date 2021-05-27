@@ -18,19 +18,19 @@ object MariaCustomCoinCache : CustomCoinCache {
     private val asicModelList: MutableList<AsicModel>
     init {
         val tempList: MutableList<AsicModel> = mutableListOf()
-        transaction(Bot.coinDB) {
-            AsicModelTable.selectAll().forEach {
-                tempList.add(
-                    AsicModel(
-                        it[AsicModelTable.asicId],
-                        it[AsicModelTable.name],
-                        it[AsicModelTable.company],
-                        it[AsicModelTable.performance],
-                        it[AsicModelTable.price]
-                    )
-                )
-            }
-        }
+//        transaction(Bot.coinDB) {
+//            AsicModelTable.selectAll().forEach {
+//                tempList.add(
+//                    AsicModel(
+//                        it[AsicModelTable.asicId],
+//                        it[AsicModelTable.name],
+//                        it[AsicModelTable.company],
+//                        it[AsicModelTable.performance],
+//                        it[AsicModelTable.price]
+//                    )
+//                )
+//            }
+//        }
 
         asicModelList = tempList
     }

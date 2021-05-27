@@ -35,6 +35,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.charleskorn.kaml:kaml:0.30.0")
+    implementation("junit:junit:4.13.1")
+    implementation("junit:junit:4.13.1")
+    implementation("com.oracle.ojdbc:ojdbc8:19.3.0.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

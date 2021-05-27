@@ -26,12 +26,12 @@ object MariaUserCache : UserCache {
 
     //데이터베이스에 있는 유저 정보를 userList에 저장합니다.
     init {
-        transaction(Bot.mainDB) {
-            DatabaseUser.all().forEach {
-                val tempUser = UserCache.User(it.id.value, BigDecimal(it.money))
-                userList.add(tempUser)
-            }
-        }
+//        transaction(Bot.mainDB) {
+//            DatabaseUser.all().forEach {
+//                val tempUser = UserCache.User(it.id.value, BigDecimal(it.money))
+//                userList.add(tempUser)
+//            }
+//        }
 
         startAutoDatabaseUpdate()
     }
@@ -45,13 +45,13 @@ object MariaUserCache : UserCache {
                     continue
 
                 log.info("유저 정보를 데이터베이스에 업데이트합니다.")
-                transaction(Bot.mainDB) {
-                    DatabaseUser.forIds(updateUserList.map { it.id }).forEach { user ->
-                        val updateUserMoney = updateUserList.first { it.id == user.id.value }.money.toString()
-                        log.info("update database: {} to {}", user.money, updateUserMoney)
-                        user.money = updateUserMoney
-                    }
-                }
+//                transaction(Bot.mainDB) {
+//                    DatabaseUser.forIds(updateUserList.map { it.id }).forEach { user ->
+//                        val updateUserMoney = updateUserList.first { it.id == user.id.value }.money.toString()
+//                        log.info("update database: {} to {}", user.money, updateUserMoney)
+//                        user.money = updateUserMoney
+//                    }
+//                }
                 updateUserList.clear()
             }
         }

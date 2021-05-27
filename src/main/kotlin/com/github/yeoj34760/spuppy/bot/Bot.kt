@@ -28,34 +28,14 @@ import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 object Bot {
-    val info = Yaml.default.decodeFromString(BotInfo.serializer(), File("./config.yml").readText())
+   val info = Yaml.default.decodeFromString(BotInfo.serializer(), File("./config.yml").readText())
     val playerManager = DefaultAudioPlayerManager()
-
-    var mainDB: Database? = null
-        private set
-
-    var coinDB: Database? = null
-        private set
     lateinit var commands: Map<String, List<String>>
         private set
 
 
 
     init {
-        mainDB = Database.connect(
-            "${info.spuppyDB.url}/spuppybot",
-            driver = "org.mariadb.jdbc.Driver",
-            user = info.spuppyDB.user,
-            password = info.spuppyDB.password
-        )
-
-        coinDB = Database.connect(
-            "${info.spuppyDB.url}/custom_coin",
-            driver = "org.mariadb.jdbc.Driver",
-            user = info.spuppyDB.user,
-            password = info.spuppyDB.password
-        )
-
         loadCommands()
 
         //load SourceManagers
