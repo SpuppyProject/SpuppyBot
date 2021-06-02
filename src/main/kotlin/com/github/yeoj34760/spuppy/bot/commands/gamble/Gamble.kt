@@ -3,8 +3,6 @@ package com.github.yeoj34760.spuppy.bot.commands.gamble
 import com.github.yeoj34760.spuppy.bot.Bot
 import com.github.yeoj34760.spuppy.command.Command
 import com.github.yeoj34760.spuppy.command.CommandEvent
-import com.github.yeoj34760.spuppy.utilities.database.cache.MariaUserCache
-import com.github.yeoj34760.spuppy.utilities.gamble.GambleChanceCache
 import com.github.yeoj34760.spuppy.utilities.randomGamble
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

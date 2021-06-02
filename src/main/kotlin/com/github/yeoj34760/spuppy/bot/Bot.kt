@@ -1,30 +1,25 @@
 package com.github.yeoj34760.spuppy.bot
 
 import com.charleskorn.kaml.Yaml
-import com.github.yeoj34760.spuppy.bot.commands.About
-import com.github.yeoj34760.spuppy.bot.commands.Help
-import com.github.yeoj34760.spuppy.bot.commands.Ping
-import com.github.yeoj34760.spuppy.bot.commands.Test
+import com.github.yeoj34760.spuppy.bot.commands.*
 import com.github.yeoj34760.spuppy.bot.commands.gamble.AllIn
 import com.github.yeoj34760.spuppy.bot.commands.gamble.Gamble
 import com.github.yeoj34760.spuppy.bot.commands.gamble.Half
-import com.github.yeoj34760.spuppy.bot.commands.money.GetMoney
+import com.github.yeoj34760.spuppy.bot.commands.money.GiveMoney
 import com.github.yeoj34760.spuppy.bot.commands.money.Money
 import com.github.yeoj34760.spuppy.bot.commands.money.SetMoney
 import com.github.yeoj34760.spuppy.bot.commands.music.*
 import com.github.yeoj34760.spuppy.command.CommandManager
-import com.github.yeoj34760.spuppy.fixer.Fixer
+import com.github.yeoj34760.spuppy.command.ReactionEvent
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import net.dv8tion.jda.api.JDABuilder
-import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 object Bot {
@@ -75,13 +70,14 @@ object Bot {
                 Help,
                 About,
                 Money,
-                GetMoney,
+                GiveMoney,
                 Gamble,
                 Half,
                 AllIn,
-                SetMoney
+                SetMoney,
+                    Register
             ), info.prefix
         )
-     JDABuilder.createDefault(info.token).addEventListeners(cmdManager).build()
+     JDABuilder.createDefault(info.token).addEventListeners(cmdManager, ReactionEvent).build()
     }
 }

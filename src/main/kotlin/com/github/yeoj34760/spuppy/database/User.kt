@@ -9,32 +9,18 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.math.BigDecimal
 
-data class User(val id: Long, val _money: BigDecimal) {
+data class User(val id: Long, private val _money: BigDecimal) {
+    var usedTime: Long = System.currentTimeMillis()
+        private set
+
     var money: BigDecimal = _money
         set(value) {
-            val _id = id
-            transaction {
-                Users.update({ Users.id eq _id }) {
-                    it[money] = value.toString()
-                }
-            }
-
+            DBController.cache.updateUserEvent(this)
+            usedTime = System.currentTimeMillis()
             field = value
         }
-
-    companion object {
-        fun create(id: Long): User {
-            DBManager //call DBManager init function
-            return transaction {
-                val user: ResultRow? = Users.select { Users.id eq id }.firstOrNull()
-
-                var money: String = if (user == null) {
-                    Users.insert { it[Users.id] = id; it[money] = "0" };"0"
-                } else {
-                    user[Users.money]
-                }
-                User(id, BigDecimal(money))
-            }
+        get() {
+            usedTime = System.currentTimeMillis()
+            return field
         }
-    }
 }

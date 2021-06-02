@@ -9,6 +9,9 @@ import org.jetbrains.exposed.sql.exists
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object DBController {
+    val cache: DBCache = DBCache()
+    val cacheCleaner: DBCacheCleaner = DBCacheCleaner(cache)
+    val manager: DBManager = DBManager()
     private var connect: Database?
     private var able: Boolean = true
 
@@ -28,6 +31,8 @@ object DBController {
                 if (!Users.exists())
                     SchemaUtils.create(Users)
             }
+
+            cacheCleaner.start()
         } catch (e: Exception) {
             connect = null
             able = false

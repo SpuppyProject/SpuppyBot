@@ -1,6 +1,7 @@
 package com.github.yeoj34760.spuppy.music
 
 import com.github.yeoj34760.spuppy.bot.Bot
+import com.github.yeoj34760.spuppy.database.DBController
 import com.github.yeoj34760.spuppy.database.DBManager
 import com.github.yeoj34760.spuppy.utilities.player.CallTrack
 import com.github.yeoj34760.spuppy.utilities.player.PlayerUtil
@@ -30,5 +31,12 @@ class MusicTest {
         list.tracks.forEach {
             println("search result: ${it.info.title}")
         }
+    }
+
+    @Test
+    fun wow() {
+        DBController.cache.addUser(10101010)
+        val user = DBController.cache.addUser(10101010)
+        println(user)
     }
 }
