@@ -37,7 +37,10 @@ dependencies {
     implementation("com.charleskorn.kaml:kaml:0.30.0")
     implementation("junit:junit:4.13.1")
     implementation("junit:junit:4.13.1")
-    implementation("com.oracle.ojdbc:ojdbc8:19.3.0.0")
+    implementation("com.oracle.ojdbc:ojdbc8:19.3.0.0") {
+        exclude(module = "simplefan")
+        exclude(module = "ons")
+    }
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

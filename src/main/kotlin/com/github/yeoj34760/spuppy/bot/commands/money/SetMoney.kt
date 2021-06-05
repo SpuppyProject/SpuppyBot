@@ -11,14 +11,18 @@ object SetMoney : Command(name = "setmoney", aliases = listOf("setmoney")) {
             return
         }
 
-//        val id = event.args[0].toLong()
-//        val moneyNum = event.args[1].toBigDecimal()
-//        val money = MariaUserCache.money(id)
-//        val beforeMoney = money.current()
-//        MariaUserCache.money(id).set(moneyNum)
-//
-//        event.send("${event.author.name} 유저의 돈값을 `${beforeMoney}`\$에서 `${moneyNum}`\$로 변경하였습니다.")
+        val id = event.args[0].toLong()
+        val user = event.db.cache.getUser(id)
 
+        if (user == null) {
+            event.send("입력하신 id는 데이터베이스에 없습니다.")
+            return
+        }
 
+        val moneyNum = event.args[1].toBigDecimal()
+        val beforeMoney = user.money.toString()
+        user.money = moneyNum
+
+        event.send("해당 유저의 돈값을 `${beforeMoney}`\$에서 `${moneyNum}`\$로 변경하였습니다.")
     }
 }

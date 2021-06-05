@@ -17,7 +17,7 @@ object GiveMoney : Command(name = "getmoney", aliases = listOf("돈받기")) {
         val user = CheckUser.databaseUserExist(event) ?: return
 
         val currentMoney = user.money
-        user.money.add(BigDecimal("20"))
+        user.money = user.money.add(BigDecimal("20"))
 
         MoneyCoolDown.start(event.author.idLong)
         event.send {

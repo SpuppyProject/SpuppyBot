@@ -8,11 +8,21 @@ class DBCacheCleaner(private val cache: DBCache) {
     private fun thread() {
         job = GlobalScope.launch {
             while (true) {
-                delay(1000 * 60 * 5)
+                delay(1000 * 60 * 1)
                 val currentTime = System.currentTimeMillis()
+                val removeList: MutableList<User> = mutableListOf()
                 for (user in cache.userList) {
-                    if (currentTime - user.usedTime <= 1000 * 60 * 10)
-                        cache.userList.remove(user)
+                    if (currentTime - user.usedTime <= 1000 * 60 * 1)
+                        removeList.add(user)
+                }
+
+                for (user in removeList)
+                    cache.userList.remove(user)
+
+                val tempUpdateUserList = cache.updateUserList.toMutableList()
+                cache.updateUserList.clear()
+                for (user in tempUpdateUserList) {
+                    DBController.manager.updateUser(user)
                 }
             }
         }

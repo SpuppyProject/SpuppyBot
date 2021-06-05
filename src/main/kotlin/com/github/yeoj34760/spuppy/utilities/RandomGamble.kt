@@ -20,14 +20,14 @@ fun randomGamble(event: CommandEvent, num: BigDecimal) {
         in 0..GambleChanceCache.currentChance(event.author.idLong) -> {
             log.info("<${event.author.idLong}> gamble is good")
             event.send("성공!")
-            user.money.add(num)
+          user.money =   user.money.add(num)
 
         }
 
         else -> {
             log.info("<${event.author.idLong}> gamble is bad")
             event.send("실패!")
-            user.money.div(num)
+            user.money = user.money.minus(num)
         }
     }
 }

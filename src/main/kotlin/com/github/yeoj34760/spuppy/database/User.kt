@@ -13,9 +13,14 @@ data class User(val id: Long, private val _money: BigDecimal) {
     var usedTime: Long = System.currentTimeMillis()
         private set
 
+  private  var  isAddedUpdate: Boolean = false
+
     var money: BigDecimal = _money
         set(value) {
-            DBController.cache.updateUserEvent(this)
+            if (!isAddedUpdate) {
+                DBController.cache.updateUserEvent(this)
+                isAddedUpdate = true
+            }
             usedTime = System.currentTimeMillis()
             field = value
         }

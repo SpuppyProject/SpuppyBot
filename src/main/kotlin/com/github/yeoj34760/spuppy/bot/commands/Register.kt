@@ -15,7 +15,8 @@ object Register : Command(name = "register", aliases = listOf("가입")) {
             if (it.userIdLong != event.author.idLong)
                  return@add false
 
-            println("wow")
+            event.db.cache.addUser(event.author.idLong)
+            event.send("데이터베이스에 추가되었습니다!")
             true
         }
     }

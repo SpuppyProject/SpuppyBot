@@ -7,6 +7,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.math.BigDecimal
 
 class DBManager {
@@ -24,9 +25,9 @@ class DBManager {
     fun loadUser(id: Long): User? {
         return transaction {
             val money = Users.select { Users.id eq id }.firstOrNull()?.get(Users.money)
-
+            println(money)
             if (money != null)
-                User(id, BigDecimal(money))
+                return@transaction User(id, BigDecimal(money))
 
             null
         }
@@ -35,6 +36,14 @@ class DBManager {
     fun addUser(user: User) {
         transaction {
             Users.insert { it[Users.id] = user.id; it[Users.money] = user.money.toString() }
+        }
+    }
+
+    fun updateUser(user: User) {
+        transaction {
+            Users.update({Users.id eq user.id}) {
+                it[money] = user.money.toString()
+            }
         }
     }
 }
